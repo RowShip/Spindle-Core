@@ -29,7 +29,6 @@ abstract contract SSUniVaultStorage is
     // solhint-disable-next-line const-name-snakecase
     string public constant version = "1.0.0";
     // solhint-disable-next-line const-name-snakecase
-    uint16 public constant gelatoFeeBPS = 250;
 
     // XXXXXXXX DO NOT MODIFY ORDERING XXXXXXXX
     int24 public lowerTick;
@@ -45,12 +44,12 @@ abstract contract SSUniVaultStorage is
 
     uint256 public managerBalance0;
     uint256 public managerBalance1;
-    uint256 public gelatoBalance0;
-    uint256 public gelatoBalance1;
 
     IUniswapV3Pool public pool;
     IERC20 public token0;
     IERC20 public token1;
+    int24 public lowerTickL;
+    int24 public upperTickL; 
     // APPPEND ADDITIONAL STATE VARS BELOW:
     // XXXXXXXX DO NOT MODIFY ORDERING XXXXXXXX
 
@@ -78,7 +77,7 @@ abstract contract SSUniVaultStorage is
     /// @param _managerFeeBPS proportion of fees earned that go to manager treasury
     /// note that the 4 above params are NOT UPDATEABLE AFTER INILIALIZATION
     /// @param _lowerTick initial lowerTick (only changeable with executiveRebalance)
-    /// @param _lowerTick initial upperTick (only changeable with executiveRebalance)
+    /// @param _upperTick initial upperTick (only changeable with executiveRebalance)
     /// @param _manager_ address of manager (ownership can be transferred)
     function initialize(
         string memory _name,
@@ -89,7 +88,6 @@ abstract contract SSUniVaultStorage is
         int24 _upperTick,
         address _manager_
     ) external initializer {
-        require(_managerFeeBPS <= 10000 - gelatoFeeBPS, "mBPS");
 
         // these variables are immutable after initialization
         pool = IUniswapV3Pool(_pool);
@@ -115,20 +113,16 @@ abstract contract SSUniVaultStorage is
     /// @notice change configurable parameters, only manager can call
     /// @param newRebalanceBPS controls frequency of gelato rebalances: gas fee to execute
     /// rebalance can be gelatoRebalanceBPS proportion of fees earned since last rebalance
-    /// @param newWithdrawBPS controls frequency of gelato withdrawals: gas fee to execute
-    /// withdrawal can be gelatoWithdrawBPS proportion of fees accrued since last withdraw
     /// @param newSlippageBPS maximum slippage on swaps during gelato rebalance
     /// @param newSlippageInterval length of time for TWAP used in computing slippage on swaps
     /// @param newTreasury address where managerFee withdrawals are sent
     // solhint-disable-next-line code-complexity
     function updateGelatoParams(
         uint16 newRebalanceBPS,
-        uint16 newWithdrawBPS,
         uint16 newSlippageBPS,
         uint32 newSlippageInterval,
         address newTreasury
     ) external onlyManager {
-        require(newWithdrawBPS <= 10000, "BPS");
         require(newRebalanceBPS <= 10000, "BPS");
         require(newSlippageBPS <= 10000, "BPS");
         emit UpdateGelatoParams(
@@ -138,7 +132,6 @@ abstract contract SSUniVaultStorage is
             newSlippageInterval
         );
         if (newRebalanceBPS != 0) gelatoRebalanceBPS = newRebalanceBPS;
-        if (newWithdrawBPS != 0) gelatoWithdrawBPS = newWithdrawBPS;
         if (newSlippageBPS != 0) gelatoSlippageBPS = newSlippageBPS;
         if (newSlippageInterval != 0)
             gelatoSlippageInterval = newSlippageInterval;
@@ -151,10 +144,6 @@ abstract contract SSUniVaultStorage is
     /// @param _managerFeeBPS proportion of fees earned that are credited to manager in Basis Points
     function initializeManagerFee(uint16 _managerFeeBPS) external onlyManager {
         require(managerFeeBPS == 0, "fee");
-        require(
-            _managerFeeBPS > 0 && _managerFeeBPS <= 10000 - gelatoFeeBPS,
-            "mBPS"
-        );
         emit SetManagerFee(_managerFeeBPS);
         managerFeeBPS = _managerFeeBPS;
     }
@@ -167,11 +156,15 @@ abstract contract SSUniVaultStorage is
         super.renounceOwnership();
     }
 
-    function getPositionID() external view returns (bytes32 positionID) {
-        return _getPositionID();
+    function getPositionID(bool primary) external view returns (bytes32 positionID) {
+        return _getPositionID(primary);
     }
 
-    function _getPositionID() internal view returns (bytes32 positionID) {
-        return keccak256(abi.encodePacked(address(this), lowerTick, upperTick));
+    function _getPositionID(bool primary) internal view returns (bytes32 positionID) {
+        return keccak256(abi.encodePacked(
+            address(this), 
+            primary ? lowerTick : lowerTickL,
+            primary ? upperTick : upperTickL
+        ));
     }
 }

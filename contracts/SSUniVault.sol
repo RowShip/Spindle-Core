@@ -163,6 +163,7 @@ contract SSUniVault is
                 amount0 - amount0Limit,
                 amount1 - amount1Limit
             );
+            pool.mint(address(this), lowerTick, upperTick, liquidityMinted, "");
         } else {
             // deposit as much new liquidity as possible
             liquidityMinted = LiquidityAmounts.getLiquidityForAmounts(

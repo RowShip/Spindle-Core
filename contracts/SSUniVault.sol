@@ -96,12 +96,17 @@ contract SSUniVault is
 
         (uint160 sqrtRatioX96, , , , , , ) = pool.slot0();
 
+        uint256 amount0Current;
+        uint256 amount1Current;
+        uint256 amount0Limit;
+        uint256 amount1Limit;
+
         if (totalSupply > 0) {
             (
-                uint256 amount0Current,
-                uint256 amount1Current,
-                uint256 amount0Limit,
-                uint256 amount1Limit
+                amount0Current,
+                amount1Current,
+                amount0Limit,
+                amount1Limit
             ) = getUnderlyingBalances();
 
             amount0 = FullMath.mulDivRoundingUp(
@@ -163,7 +168,6 @@ contract SSUniVault is
                 amount0 - amount0Limit,
                 amount1 - amount1Limit
             );
-            pool.mint(address(this), lowerTick, upperTick, liquidityMinted, "");
         } else {
             // deposit as much new liquidity as possible
             liquidityMinted = LiquidityAmounts.getLiquidityForAmounts(
@@ -173,10 +177,76 @@ contract SSUniVault is
                 amount0,
                 amount1
             );
-            pool.mint(address(this), lowerTick, upperTick, liquidityMinted, "");
         }
+        pool.mint(address(this), lowerTick, upperTick, liquidityMinted, "");
         _mint(receiver, mintAmount);
         emit Minted(receiver, mintAmount, amount0, amount1, liquidityMinted);
+    }
+
+    /// @notice burn SS-UNI tokens (fractional shares of a Uniswap V3 position) and receive tokens
+    /// @param burnAmount The number of SS-UNI tokens to burn
+    /// @param receiver The account to receive the underlying amounts of token0 and token1
+    /// @return amount0 amount of token0 transferred to receiver for burning `burnAmount`
+    /// @return amount1 amount of token1 transferred to receiver for burning `burnAmount`
+    /// @return liquidityBurned amount of liquidity removed from the underlying Uniswap V3 position
+    // solhint-disable-next-line function-max-lines
+    function burn(uint256 burnAmount, address receiver)
+        external
+        nonReentrant
+        returns (
+            uint256 amount0,
+            uint256 amount1,
+            uint128 liquidityBurned
+        )
+    {
+        require(burnAmount > 0, "burn 0");
+
+        uint256 totalSupply = totalSupply();
+
+        (uint128 liquidity, , , , ) = pool.positions(_getPositionID(true));
+
+        _burn(msg.sender, burnAmount);
+
+        uint256 liquidityBurned_ =
+            FullMath.mulDiv(burnAmount, liquidity, totalSupply);
+        liquidityBurned = SafeCast.toUint128(liquidityBurned_);
+        (uint256 burn0, uint256 burn1, uint256 fee0, uint256 fee1) =
+            _withdraw(lowerTick, upperTick, liquidityBurned);
+        if(lowerTickL != upperTickL){
+
+        }
+        _applyFees(fee0, fee1);
+        (fee0, fee1) = _subtractAdminFees(fee0, fee1);
+        emit FeesEarned(fee0, fee1);
+
+        amount0 =
+            burn0 +
+            FullMath.mulDiv(
+                token0.balanceOf(address(this)) -
+                    burn0 -
+                    managerBalance0,
+                burnAmount,
+                totalSupply
+            );
+        amount1 =
+            burn1 +
+            FullMath.mulDiv(
+                token1.balanceOf(address(this)) -
+                    burn1 -
+                    managerBalance1,
+                burnAmount,
+                totalSupply
+            );
+
+        if (amount0 > 0) {
+            token0.safeTransfer(receiver, amount0);
+        }
+
+        if (amount1 > 0) {
+            token1.safeTransfer(receiver, amount1);
+        }
+
+        emit Burned(receiver, burnAmount, amount0, amount1, liquidityBurned);
     }
 
     // Gelatofied functions => Automatically called by Gelato
@@ -214,7 +284,7 @@ contract SSUniVault is
         emit Rebalance(lowerTick, upperTick, liquidity, newLiquidity);
     }
 
-    function recenter() external gelatofy(feeAmount, paymentToken) {}
+    //function recenter() external gelatofy(feeAmount, paymentToken) {}
 
     /// @notice withdraw manager fees accrued, only gelato executors can call.
     /// Target account to receive fees is managerTreasury, alterable by manager.
@@ -332,7 +402,12 @@ contract SSUniVault is
     function getUnderlyingBalancesAtPrice(uint160 sqrtRatioX96)
         external
         view
-        returns (uint256 amount0Current, uint256 amount1Current)
+        returns (
+            uint256 amount0Current, 
+            uint256 amount1Current, 
+            uint256 amount0Limit, 
+            uint256 amount1Limit
+        )
     {
         (, int24 tick, , , , , ) = pool.slot0();
         return _getUnderlyingBalances(sqrtRatioX96, tick);
@@ -365,26 +440,26 @@ contract SSUniVault is
                 upperTick.getSqrtRatioAtTick(),
                 liquidity
             );
-        uint256 fee0
-        uint256 fee1
+        uint256 fee0;
+        uint256 fee1;
         // If the limit order has been placed to recenter then 
         // compute underlying balance using the _limitOrderAmounts function.
         // Seperate function included to handle this edge case to prevent
         // stack too deep error. Also don't need to compute fees for either position
         // b/c both will be out of range since last rebalance. 
         if (upperTickL != lowerTickL) {
-            (amount0Limit, amount1Limit) = _limitOrderAmounts(sqrtRatioX96)
+            (amount0Limit, amount1Limit) = _limitOrderAmounts(sqrtRatioX96);
             amount0Current += amount0Limit;
             amount1Current += amount1Limit;
         } else {
             // compute current fees earned
-            uint256 fee0 = _computeFeesEarned(
+            fee0 = _computeFeesEarned(
                 true,
                 feeGrowthInside0Last,
                 tick,
                 liquidity
             ) + uint256(tokensOwed0);
-            uint256 fee1 = _computeFeesEarned(
+            fee1 = _computeFeesEarned(
                 false,
                 feeGrowthInside1Last,
                 tick,
@@ -411,10 +486,10 @@ contract SSUniVault is
     {
         (
             uint128 liquidityL,
-            uint256,
-            uint256,
-            uint128,
-            uint128
+            ,
+            ,
+            ,
+            
         ) = pool.positions(_getPositionID(true));
         (amount0Limit, amount1Limit) = LiquidityAmounts
             .getAmountsForLiquidity(
@@ -621,7 +696,8 @@ contract SSUniVault is
     {
         (
             uint256 amount0Current,
-            uint256 amount1Current
+            uint256 amount1Current,
+            ,
         ) = getUnderlyingBalances();
 
         // compute proportional amount of tokens to mint

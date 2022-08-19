@@ -113,12 +113,15 @@ abstract contract SSUniVaultStorage is
     /// @notice change configurable parameters, only manager can call
     /// @param newRebalanceBPS controls frequency of gelato rebalances: gas fee to execute
     /// rebalance can be gelatoRebalanceBPS proportion of fees earned since last rebalance
+    /// @param newWithdrawBPS controls frequency of gelato withdrawals: gas fee to execute
+    /// withdrawal can be gelatoWithdrawBPS proportion of fees accrued since last withdraw
     /// @param newSlippageBPS maximum slippage on swaps during gelato rebalance
     /// @param newSlippageInterval length of time for TWAP used in computing slippage on swaps
     /// @param newTreasury address where managerFee withdrawals are sent
     // solhint-disable-next-line code-complexity
     function updateGelatoParams(
         uint16 newRebalanceBPS,
+        uint16 newWithdrawBPS,
         uint16 newSlippageBPS,
         uint32 newSlippageInterval,
         address newTreasury

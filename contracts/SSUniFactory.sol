@@ -24,16 +24,16 @@ contract SSUniFactory is SSUniFactoryStorage, ISSUniFactory {
         SSUniFactoryStorage(_uniswapV3Factory)
     {} // solhint-disable-line no-empty-blocks
 
-    /// @notice createManagedPool creates a new instance of a G-UNI token on a specified
+    /// @notice createManagedPool creates a new instance of a SS-UNI token on a specified
     /// UniswapV3Pool. The msg.sender is the initial manager of the pool and will
-    /// forever be associated with the G-UNI pool as it's `deployer`
+    /// forever be associated with the SS-UNI pool as it's `deployer`
     /// @param tokenA one of the tokens in the uniswap pair
     /// @param tokenB the other token in the uniswap pair
     /// @param uniFee fee tier of the uniswap pair
     /// @param managerFee proportion of earned fees that go to pool manager in Basis Points
     /// @param lowerTick initial lower bound of the Uniswap V3 position
     /// @param upperTick initial upper bound of the Uniswap V3 position
-    /// @return pool the address of the newly created G-UNI pool (proxy)
+    /// @return pool the address of the newly created SS-UNI pool (proxy)
     function createManagedPool(
         address tokenA,
         address tokenB,
@@ -54,15 +54,15 @@ contract SSUniFactory is SSUniFactoryStorage, ISSUniFactory {
             );
     }
 
-    /// @notice createPool creates a new instance of a G-UNI token on a specified
+    /// @notice createPool creates a new instance of a SS-UNI token on a specified
     /// UniswapV3Pool. Here the manager role is immediately burned, however msg.sender will still
-    /// forever be associated with the G-UNI pool as it's `deployer`
+    /// forever be associated with the SS-UNI pool as it's `deployer`
     /// @param tokenA one of the tokens in the uniswap pair
     /// @param tokenB the other token in the uniswap pair
     /// @param uniFee fee tier of the uniswap pair
     /// @param lowerTick initial lower bound of the Uniswap V3 position
     /// @param upperTick initial upper bound of the Uniswap V3 position
-    /// @return pool the address of the newly created G-UNI pool (proxy)
+    /// @return pool the address of the newly created SS-UNI pool (proxy)
     function createPool(
         address tokenA,
         address tokenB,
@@ -95,7 +95,7 @@ contract SSUniFactory is SSUniFactoryStorage, ISSUniFactory {
 
         pool = address(new EIP173Proxy(poolImplementation, address(this), ""));
 
-        string memory name = "Gelato Uniswap LP";
+        string memory name = "SwapSweep Uniswap Vault";
         try this.getTokenName(token0, token1) returns (string memory result) {
             name = result;
         } catch {} // solhint-disable-line no-empty-blocks
@@ -142,7 +142,7 @@ contract SSUniFactory is SSUniFactoryStorage, ISSUniFactory {
         string memory symbol0 = IERC20Metadata(token0).symbol();
         string memory symbol1 = IERC20Metadata(token1).symbol();
 
-        return _append("Gelato Uniswap ", symbol0, "/", symbol1, " LP");
+        return _append("SwapSweep Uniswap ", symbol0, "/", symbol1, " Vault");
     }
 
     function upgradePools(address[] memory pools) external onlyManager {
@@ -170,22 +170,15 @@ contract SSUniFactory is SSUniFactoryStorage, ISSUniFactory {
         }
     }
 
-    /// @notice isPoolImmutable checks if a certain G-UNI pool is "immutable" i.e. that the
+    /// @notice isPoolImmutable checks if a certain SS-UNI pool is "immutable" i.e. that the
     /// proxyAdmin is the zero address and thus the underlying implementation cannot be upgraded
-    /// @param pool address of the G-UNI pool
+    /// @param pool address of the SS-UNI pool
     /// @return bool signaling if pool is immutable (true) or not (false)
     function isPoolImmutable(address pool) external view returns (bool) {
         return address(0) == getProxyAdmin(pool);
     }
 
-    /// @notice getGelatoPools gets all the G-UNI pools deployed by Gelato's
-    /// default deployer address (since anyone can deploy and manage G-UNI pools)
-    /// @return list of Gelato managed G-UNI pool addresses
-    function getGelatoPools() external view returns (address[] memory) {
-        return getPools(gelatoDeployer);
-    }
-
-    /// @notice getDeployers fetches all addresses that have deployed a G-UNI pool
+    /// @notice getDeployers fetches all addresses that have deployed a SS-UNI pool
     /// @return deployers the list of deployer addresses
     function getDeployers() public view returns (address[] memory) {
         uint256 length = numDeployers();
@@ -197,9 +190,9 @@ contract SSUniFactory is SSUniFactoryStorage, ISSUniFactory {
         return deployers;
     }
 
-    /// @notice getPools fetches all the G-UNI pool addresses deployed by `deployer`
-    /// @param deployer address that has potentially deployed G-UNI pools (can return empty array)
-    /// @return pools the list of G-UNI pool addresses deployed by `deployer`
+    /// @notice getPools fetches all the SS-UNI pool addresses deployed by `deployer`
+    /// @param deployer address that has potentially deployed SS-UNI pools (can return empty array)
+    /// @return pools the list of SS-UNI pool addresses deployed by `deployer`
     function getPools(address deployer) public view returns (address[] memory) {
         uint256 length = numPools(deployer);
         address[] memory pools = new address[](length);
@@ -210,8 +203,8 @@ contract SSUniFactory is SSUniFactoryStorage, ISSUniFactory {
         return pools;
     }
 
-    /// @notice numPools counts the total number of G-UNI pools in existence
-    /// @return result total number of G-UNI pools deployed
+    /// @notice numPools counts the total number of SS-UNI pools in existence
+    /// @return result total number of SS-UNI pools deployed
     function numPools() public view returns (uint256 result) {
         address[] memory deployers = getDeployers();
         for (uint256 i = 0; i < deployers.length; i++) {
@@ -219,25 +212,25 @@ contract SSUniFactory is SSUniFactoryStorage, ISSUniFactory {
         }
     }
 
-    /// @notice numDeployers counts the total number of G-UNI pool deployer addresses
-    /// @return total number of G-UNI pool deployer addresses
+    /// @notice numDeployers counts the total number of SS-UNI pool deployer addresses
+    /// @return total number of SS-UNI pool deployer addresses
     function numDeployers() public view returns (uint256) {
         return _deployers.length();
     }
 
-    /// @notice numPools counts the total number of G-UNI pools deployed by `deployer`
+    /// @notice numPools counts the total number of SS-UNI pools deployed by `deployer`
     /// @param deployer deployer address
-    /// @return total number of G-UNI pools deployed by `deployer`
+    /// @return total number of SS-UNI pools deployed by `deployer`
     function numPools(address deployer) public view returns (uint256) {
         return _pools[deployer].length();
     }
 
     /// @notice getProxyAdmin gets the current address who controls the underlying implementation
-    /// of a G-UNI pool. For most all pools either this contract address or the zero address will
+    /// of a SS-UNI pool. For most all pools either this contract address or the zero address will
     /// be the proxyAdmin. If the admin is the zero address the pool's implementation is naturally
     /// no longer upgradable (no one owns the zero address).
-    /// @param pool address of the G-UNI pool
-    /// @return address that controls the G-UNI implementation (has power to upgrade it)
+    /// @param pool address of the SS-UNI pool
+    /// @return address that controls the SS-UNI implementation (has power to upgrade it)
     function getProxyAdmin(address pool) public view returns (address) {
         return IEIP173Proxy(pool).proxyAdmin();
     }

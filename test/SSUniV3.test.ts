@@ -119,11 +119,10 @@ describe("SSUniVault", () => {
 
     await sSUniFactory.initialize(
       implementationAddress,
-      await user0.getAddress(),
       await user0.getAddress()
     );
 
-    await sSUniFactory.createManagedPool(
+    const pool = await sSUniFactory.createManagedPool(
       token0.address,
       token1.address,
       3000,
@@ -134,16 +133,11 @@ describe("SSUniVault", () => {
 
     const deployers = await sSUniFactory.getDeployers();
     const deployer = deployers[0];
-    const gelatoDeployer = await sSUniFactory.gelatoDeployer();
-    expect(deployer).to.equal(gelatoDeployer);
     const pools = await sSUniFactory.getPools(deployer);
-    const gelatoPools = await sSUniFactory.getGelatoPools();
-    expect(pools[0]).to.equal(gelatoPools[0]);
-    expect(pools.length).to.equal(gelatoPools.length);
+    expect(pools.length).to.equal(1);
+    expect(pools[0]).to.equal(pool);
 
     sSUniVault = (await ethers.getContractAt("SSUniVault", pools[0])) as SSUniVault;
-    const gelatoFee = await sSUniVault.gelatoFeeBPS();
-    expect(gelatoFee.toString()).to.equal("250");
   });
   describe("Before liquidity deposited", function () {
     beforeEach(async function () {

@@ -70,9 +70,9 @@ abstract contract SSUniVaultStorage is
     // solhint-disable-next-line max-line-length
     constructor(address payable _gelato) Gelatofied(_gelato) {} // solhint-disable-line no-empty-blocks
 
-    /// @notice initialize storage variables on a new G-UNI pool, only called once
-    /// @param _name name of G-UNI token
-    /// @param _symbol symbol of G-UNI token
+    /// @notice initialize storage variables on a new SS-UNI pool, only called once
+    /// @param _name name of SS-UNI token
+    /// @param _symbol symbol of SS-UNI token
     /// @param _pool address of Uniswap V3 pool
     /// @param _managerFeeBPS proportion of fees earned that go to manager treasury
     /// note that the 4 above params are NOT UPDATEABLE AFTER INILIALIZATION
@@ -105,7 +105,7 @@ abstract contract SSUniVaultStorage is
         upperTick = _upperTick;
         _manager = _manager_;
 
-        // e.g. "Gelato Uniswap V3 USDC/DAI LP" and "G-UNI"
+        // e.g. "Gelato Uniswap V3 USDC/DAI LP" and "SS-UNI"
         __ERC20_init(_name, _symbol);
         __ReentrancyGuard_init();
     }

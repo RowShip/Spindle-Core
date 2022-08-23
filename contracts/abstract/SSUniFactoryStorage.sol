@@ -21,7 +21,6 @@ contract SSUniFactoryStorage is
     string public constant version = "1.0.0";
     address public immutable factory;
     address public poolImplementation;
-    address public gelatoDeployer;
     EnumerableSet.AddressSet internal _deployers;
     mapping(address => EnumerableSet.AddressSet) internal _pools;
     // APPPEND ADDITIONAL STATE VARS BELOW:
@@ -32,10 +31,6 @@ contract SSUniFactoryStorage is
         address newImplementation
     );
 
-    event UpdateGelatoDeployer(
-        address previosGelatoDeployer,
-        address newGelatoDeployer
-    );
 
     constructor(address _uniswapV3Factory) {
         factory = _uniswapV3Factory;
@@ -43,11 +38,9 @@ contract SSUniFactoryStorage is
 
     function initialize(
         address _implementation,
-        address _gelatoDeployer,
         address _manager_
     ) external initializer {
         poolImplementation = _implementation;
-        gelatoDeployer = _gelatoDeployer;
         _manager = _manager_;
     }
 
@@ -59,11 +52,4 @@ contract SSUniFactoryStorage is
         poolImplementation = nextImplementation;
     }
 
-    function setGelatoDeployer(address nextGelatoDeployer)
-        external
-        onlyManager
-    {
-        emit UpdateGelatoDeployer(gelatoDeployer, nextGelatoDeployer);
-        gelatoDeployer = nextGelatoDeployer;
-    }
 }

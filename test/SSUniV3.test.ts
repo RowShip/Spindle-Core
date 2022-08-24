@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { assert, expect } from "chai";
 import { BigNumber } from "bignumber.js";
 import { ethers, network } from "hardhat";
 import {
@@ -9,8 +9,9 @@ import {
   SSUniVault,
   SSUniFactory,
   EIP173Proxy,
-} from "../typechain-types";
+} from "../typechain";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
+import { BigNumberish } from "ethers";
 
 
 describe("SSUniVault", () => {
@@ -32,6 +33,15 @@ describe("SSUniVault", () => {
       ["address", "int24", "int24"],
       [address, lowerTick, upperTick]
     );
+  }
+  async function mint (
+    vault: SSUniVault,
+    amount0: BigNumberish, 
+    amount1: BigNumberish,
+    receiver: string
+    ){
+      const result = await vault.getMintAmounts(amount0,amount1);
+      await vault.mint(result.mintAmount, receiver);
   }
 
   let uniswapFactory: IUniswapV3Factory;
@@ -67,8 +77,8 @@ describe("SSUniVault", () => {
     )) as IUniswapV3Factory;
 
     const mockERC20Factory = await ethers.getContractFactory("MockERC20");
-    token0 = (await mockERC20Factory.deploy()) as IERC20;
-    token1 = (await mockERC20Factory.deploy()) as IERC20;
+    token0 = (await mockERC20Factory.deploy({ gasLimit: 30000000 })) as IERC20;
+    token1 = (await mockERC20Factory.deploy({ gasLimit: 30000000 })) as IERC20;
 
     await token0.approve(
       swapTest.address,
@@ -122,7 +132,16 @@ describe("SSUniVault", () => {
       await user0.getAddress()
     );
 
-    const pool = await sSUniFactory.createManagedPool(
+    const pool = await sSUniFactory.callStatic.createManagedPool(
+      token0.address,
+      token1.address,
+      3000,
+      0,
+      -887220,
+      887220
+    );
+
+    await sSUniFactory.createManagedPool(
       token0.address,
       token1.address,
       3000,
@@ -150,5 +169,124 @@ describe("SSUniVault", () => {
         ethers.utils.parseEther("1000000")
       );
     });
-  })
+    describe("deposit", function () {
+      it("should deposit funds into SSUniVault", async function () {
+        await mint(sSUniVault, ethers.utils.parseEther("1"), ethers.utils.parseEther("1"), await user0.getAddress());
+        expect(await token0.balanceOf(uniswapPool.address)).to.be.gt(0);
+        expect(await token1.balanceOf(uniswapPool.address)).to.be.gt(0);
+        const [liquidity] = await uniswapPool.positions(
+          position(sSUniVault.address, -887220, 887220)
+        );
+        expect(liquidity).to.be.gt(0);
+        const supply = await sSUniVault.totalSupply();
+        expect(supply).to.be.gt(0);
+
+        await mint(sSUniVault, ethers.utils.parseEther("0.5"), ethers.utils.parseEther("1"), await user0.getAddress());
+        const [liquidity2] = await uniswapPool.positions(
+          position(sSUniVault.address, -887220, 887220)
+        );
+        assert(liquidity2.gt(liquidity));
+
+        await sSUniVault.transfer(
+          await user1.getAddress(),
+          ethers.utils.parseEther("1")
+        );
+        await sSUniVault
+          .connect(user1)
+          .approve(await user0.getAddress(), ethers.utils.parseEther("1"));
+        await sSUniVault
+          .connect(user0)
+          .transferFrom(
+            await user1.getAddress(),
+            await user0.getAddress(),
+            ethers.utils.parseEther("1")
+          );
+
+        const decimals = await sSUniVault.decimals();
+        const symbol = await sSUniVault.symbol();
+        const name = await sSUniVault.name();
+        expect(symbol).to.equal("SS-UNI");
+        expect(decimals).to.equal(18);
+        expect(name).to.equal("SwapSweep Uniswap TOKEN/TOKEN Vault");
+      });
+    });
+    describe("onlyGelato", function () {
+      it("should fail if not called by gelato", async function () {
+        const errorMessage = "Gelatofied: Only gelato"
+        // TODO: include test case for recenter function as well once thats coded out
+        await expect(
+          sSUniVault
+            .connect(user1)
+            .rebalance(
+              encodePriceSqrt("10", "1"),
+              1000,
+              true,
+              10,
+              token0.address
+            )
+        ).to.be.revertedWith(errorMessage);
+        await expect(
+          sSUniVault.connect(user1).withdrawManagerBalance(1, token0.address)
+        ).to.be.revertedWith(errorMessage);
+      });
+      it("should fail if no fees earned", async function () {
+        const errorMessage = "high fee"
+        // TODO: include test case for recenter function as well once thats coded out
+        // deposit liquidity
+        await mint(sSUniVault, ethers.utils.parseEther("1"), ethers.utils.parseEther("1"), await user0.getAddress());
+        // Update oracle params to ensure checkSlippage computes without error.
+        const tx = await sSUniVault
+          .connect(user0)
+          .updateGelatoParams(
+            "9000",
+            "9000",
+            "500",
+            "300",
+            await user1.getAddress()
+          );
+        await tx.wait();
+        if (network.provider && tx.blockHash && user0.provider) {
+          const block = await user0.provider.getBlock(tx.blockHash);
+          const executionTime = block.timestamp + 300;
+          await network.provider.send("evm_mine", [executionTime]);
+        }
+        await sSUniVault.connect(user0).initializeManagerFee(5000);
+        await expect(
+          sSUniVault
+            .connect(gelato)
+            .rebalance(
+              encodePriceSqrt("10", "1"),
+              1000,
+              true,
+              10,
+              token0.address
+            )
+        ).to.be.revertedWith(errorMessage);
+        await expect(
+          sSUniVault.connect(gelato).withdrawManagerBalance(1, token0.address)
+        ).to.be.revertedWith(errorMessage);
+      });
+    });
+    describe("onlyManager", function () {
+      it("should fail if not called by manager", async function () {
+        const errorMessage = "Ownable: caller is not the manager"
+        await expect(
+          sSUniVault
+            .connect(gelato)
+            .updateGelatoParams(300, 5000, 5000, 5000, await user0.getAddress())
+        ).to.be.revertedWith(errorMessage);
+
+        await expect(
+          sSUniVault.connect(gelato).transferOwnership(await user1.getAddress())
+        ).to.be.revertedWith(errorMessage);
+        await expect(sSUniVault.connect(gelato).renounceOwnership()).to.be
+          .revertedWith(errorMessage);
+        await expect(sSUniVault.connect(gelato).initializeManagerFee(100)).to.be
+          .revertedWith(errorMessage);
+      });
+    });
+    describe("after liquidity deposited", function () {
+
+    }) 
+  });
 });

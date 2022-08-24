@@ -264,7 +264,7 @@ contract SSUniVault is
         uint256 feeAmount,
         address paymentToken
     ) external gelatofy(feeAmount, paymentToken) {
-        // if the current tick is above
+
         if (swapAmountBPS > 0) {
             _checkSlippage(swapThresholdPrice, zeroForOne);
         }

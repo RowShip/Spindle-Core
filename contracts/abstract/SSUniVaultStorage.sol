@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.8.4;
+pragma solidity ^0.8.10;
 
 import {Gelatofied} from "./Gelatofied.sol";
 import {OwnableUninitialized} from "./OwnableUninitialized.sol";
@@ -52,6 +52,11 @@ abstract contract SSUniVaultStorage is
     int24 public lowerTickL;
     int24 public upperTickL; 
     // APPPEND ADDITIONAL STATE VARS BELOW:
+    int24 public constant MIN_WIDTH = 402; 
+
+    int24 public constant MAX_WIDTH = 27728; 
+
+    uint8 public constant B = 2; // primary Uniswap position should cover 95% (2 std. dev.) of trading activity
     // XXXXXXXX DO NOT MODIFY ORDERING XXXXXXXX
 
     event UpdateAdminTreasury(

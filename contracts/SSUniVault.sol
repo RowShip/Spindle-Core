@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.10;
 import {IUniswapV3MintCallback} from "@uniswap/v3-core/contracts/interfaces/callback/IUniswapV3MintCallback.sol";
 import {IUniswapV3SwapCallback} from "@uniswap/v3-core/contracts/interfaces/callback/IUniswapV3SwapCallback.sol";
 import {SSUniVaultStorage} from "./abstract/SSUniVaultStorage.sol";
 import {IUniswapV3Pool} from "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
-import {TickMath} from "./uniswap/TickMath.sol";
+import {TickMath} from "./libraries/TickMath.sol";
 import {IERC20, SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {SafeCast} from "@openzeppelin/contracts/utils/math/SafeCast.sol";
-import {FullMath, LiquidityAmounts} from "./uniswap/LiquidityAmounts.sol";
+import {FullMath, LiquidityAmounts} from "./libraries/LiquidityAmounts.sol";
 
 contract SSUniVault is
     IUniswapV3MintCallback,
@@ -256,7 +256,7 @@ contract SSUniVault is
     /// Frequency of rebalance configured with gelatoRebalanceBPS, alterable by manager.
     /// Create resolver function for rebalance. Call it checkCanRebalance()
     /// Make it to where it generates the swapAmountBPS parameter by simulating the entire operation.
-    ///
+    /// 
     function rebalance(
         uint160 swapThresholdPrice,
         uint256 swapAmountBPS,
@@ -284,7 +284,17 @@ contract SSUniVault is
         emit Rebalance(lowerTick, upperTick, liquidity, newLiquidity);
     }
 
-    //function recenter() external gelatofy(feeAmount, paymentToken) {}
+
+    function _computeNextPositionWidth(uint256 _sigma) external pure returns (int24) {
+        if (_sigma <= 6.6400651257e15) return 402; // \frac{1e18}{B} (1 - \frac{1}{1.0001^(MIN_WIDTH / 2)})
+        if (_sigma >= 2.5000651258e17) return 27728; // \frac{1e18}{B} (1 - \frac{1}{1.0001^(MAX_WIDTH / 2)})
+        _sigma *= 3; // scale by a constant factor to increase confidence
+
+        unchecked {
+            uint160 ratio = uint160((2**96 * 1e18) / (1e18 - _sigma));
+            return TickMath.getTickAtSqrtRatio(ratio);
+        }
+    }
 
     /// @notice withdraw manager fees accrued, only gelato executors can call.
     /// Target account to receive fees is managerTreasury, alterable by manager.

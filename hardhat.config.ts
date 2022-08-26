@@ -66,6 +66,12 @@ const config: HardhatUserConfig = {
           optimizer: { enabled: true, runs: 1 },
         },
       },
+      {
+        version: "0.8.10",
+        settings: {
+          optimizer: { enabled: true, runs: 1 },
+        },
+      }
     ],
   },
   typechain: {

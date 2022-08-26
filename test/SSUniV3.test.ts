@@ -286,7 +286,112 @@ describe("SSUniVault", () => {
       });
     });
     describe("after liquidity deposited", function () {
+      beforeEach(async function () {
+        await mint(sSUniVault, ethers.utils.parseEther("1"), ethers.utils.parseEther("1"), await user0.getAddress());
+      });
+      describe("withdrawal", function () {
+        it("should burn vault tokens and withdraw funds", async function () {
+          await sSUniVault.burn(
+            (await sSUniVault.totalSupply()).div("2"),
+            await user0.getAddress()
+          );
+          const [liquidity2] = await uniswapPool.positions(
+            position(sSUniVault.address, -887220, 887220)
+          );
+          expect(liquidity2).to.be.gt(0);
+          expect(await sSUniVault.totalSupply()).to.be.gt(0);
+          expect(await sSUniVault.balanceOf(await user0.getAddress())).to.equal(
+            ethers.utils.parseEther("0.5")
+          );
+        });
+      });
+      describe("after fees earned on trades", function () {
+        beforeEach(async function () {
+          await swapTest.washTrade(
+            uniswapPool.address,
+            "50000000000000",
+            100,
+            2
+          );
+          await swapTest.washTrade(
+            uniswapPool.address,
+            "50000000000000",
+            100,
+            3
+          );
+          await swapTest.washTrade(
+            uniswapPool.address,
+            "50000000000000",
+            100,
+            3
+          );
+          await swapTest.washTrade(
+            uniswapPool.address,
+            "50000000000000",
+            100,
+            3
+          );
+        });
 
+        describe("reinvest fees", function () {
+          it("should redeposit fees with a rebalance", async function () {
+            const [liquidityOld] = await uniswapPool.positions(
+              position(sSUniVault.address, -887220, 887220)
+            );
+            const gelatoBalanceBefore = await token1.balanceOf(
+              await gelato.getAddress()
+            );
+
+            await expect(
+              sSUniVault
+                .connect(gelato)
+                .rebalance(
+                  encodePriceSqrt("1", "1"),
+                  5000,
+                  true,
+                  10,
+                  token0.address
+                )
+            ).to.be.revertedWith("OLD");
+
+            const tx = await sSUniVault.updateGelatoParams(
+              "1000",
+              "100",
+              "500",
+              "300",
+              await user0.getAddress()
+            );
+            if (network.provider && user0.provider && tx.blockHash) {
+              const block = await user0.provider.getBlock(tx.blockHash);
+              const executionTime = block.timestamp + 300;
+              await network.provider.send("evm_mine", [executionTime]);
+            }
+
+            const { sqrtPriceX96 } = await uniswapPool.slot0();
+            // TODO: Write a resolver function that automatically generates slippagePrice from oracle readings.
+            const slippagePrice = sqrtPriceX96.sub(
+              sqrtPriceX96.div(ethers.BigNumber.from("25"))
+            );
+
+            await sSUniVault
+              .connect(gelato)
+              .rebalance(slippagePrice, 5000, true, 5, token1.address);
+            // TODO: Write a resolver function with a gas limit to control.
+            const gelatoBalanceAfter = await token1.balanceOf(
+              await gelato.getAddress()
+            );
+            expect(gelatoBalanceAfter).to.be.gt(gelatoBalanceBefore);
+            expect(
+              Number(gelatoBalanceAfter.sub(gelatoBalanceBefore))
+            ).to.be.equal(5);
+
+            const [liquidityNew] = await uniswapPool.positions(
+              position(sSUniVault.address, -887220, 887220)
+            );
+            expect(liquidityNew).to.be.gt(liquidityOld);
+          });
+        });
+      })
     }) 
   });
 });

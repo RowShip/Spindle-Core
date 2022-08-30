@@ -15,6 +15,12 @@ import {
     ERC20Upgradeable
 } from "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 
+import { SSUniFactoryStorage } from "./SSUniFactoryStorage.sol";
+import {IVolatilityOracle} from "../interfaces/IVolatilityOracle.sol";
+
+// Implement packed slot and load packed slot to store a variety of key parameters used frequently in the vault's code, stored in a single slot to save gas
+// Implement Uniswap library to further save on gas
+
 /// @dev Single Global upgradeable state var storage base: APPEND ONLY
 /// @dev Add all inherited contracts with state vars here: APPEND ONLY
 /// @dev ERC20Upgradable Includes Initialize
@@ -51,12 +57,28 @@ abstract contract SSUniVaultStorage is
     IERC20 public token1;
     int24 public lowerTickL;
     int24 public upperTickL; 
-    // APPPEND ADDITIONAL STATE VARS BELOW:
+
     int24 public constant MIN_WIDTH = 402; 
-
     int24 public constant MAX_WIDTH = 27728; 
+    uint8 public constant B = 2; // primary Uniswap position should cover 99.7% (3 std. dev.) of trading activity
+    IVolatilityOracle public volatilityOracle;
 
-    uint8 public constant B = 2; // primary Uniswap position should cover 95% (2 std. dev.) of trading activity
+    struct PackedSlot {
+        // The primary position's lower tick bound
+        int24 primaryLower;
+        // The primary position's upper tick bound
+        int24 primaryUpper;
+        // The limit order's lower tick bound
+        int24 limitLower;
+        // The limit order's upper tick bound
+        int24 limitUpper;
+        // Whether the vault is currently locked to reentrancy
+        bool locked;
+    }
+
+    PackedSlot public packedSlot;
+
+    // APPPEND ADDITIONAL STATE VARS BELOW:
     // XXXXXXXX DO NOT MODIFY ORDERING XXXXXXXX
 
     event UpdateAdminTreasury(
@@ -100,15 +122,15 @@ abstract contract SSUniVaultStorage is
         token0 = IERC20(pool.token0());
         token1 = IERC20(pool.token1());
         managerFeeBPS = _managerFeeBPS; // if set to 0 here manager can still initialize later
-
+        volatilityOracle = SSUniFactoryStorage(msg.sender).volatilityOracle();
         // these variables can be udpated by the manager
         gelatoSlippageInterval = 5 minutes; // default: last five minutes;
         gelatoSlippageBPS = 500; // default: 5% slippage
         gelatoWithdrawBPS = 100; // default: only auto withdraw if tx fee is lt 1% withdrawn
         gelatoRebalanceBPS = 200; // default: only rebalance if tx fee is lt 2% reinvested
         managerTreasury = _manager_; // default: treasury is admin
-        lowerTick = _lowerTick;
-        upperTick = _upperTick;
+        packedSlot.primaryLower = _lowerTick;
+        packedSlot.primaryUpper = _upperTick;
         _manager = _manager_;
 
         // e.g. "Gelato Uniswap V3 USDC/DAI LP" and "SS-UNI"
@@ -165,15 +187,4 @@ abstract contract SSUniVaultStorage is
         super.renounceOwnership();
     }
 
-    function getPositionID(bool primary) external view returns (bytes32 positionID) {
-        return _getPositionID(primary);
-    }
-
-    function _getPositionID(bool primary) internal view returns (bytes32 positionID) {
-        return keccak256(abi.encodePacked(
-            address(this), 
-            primary ? lowerTick : lowerTickL,
-            primary ? upperTick : upperTickL
-        ));
-    }
 }

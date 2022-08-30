@@ -17,11 +17,13 @@ import {
     EnumerableSet
 } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
+import {IVolatilityOracle} from "./interfaces/IVolatilityOracle.sol";
+
 contract SSUniFactory is SSUniFactoryStorage, ISSUniFactory {
     using EnumerableSet for EnumerableSet.AddressSet;
 
-    constructor(address _uniswapV3Factory)
-        SSUniFactoryStorage(_uniswapV3Factory)
+    constructor(address _uniswapV3Factory, IVolatilityOracle _volatilityOracle)
+        SSUniFactoryStorage(_uniswapV3Factory, _volatilityOracle)
     {} // solhint-disable-line no-empty-blocks
 
     /// @notice createManagedPool creates a new instance of a SS-UNI token on a specified

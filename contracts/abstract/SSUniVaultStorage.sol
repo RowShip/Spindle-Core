@@ -17,6 +17,7 @@ import {
 
 import { SSUniFactoryStorage } from "./SSUniFactoryStorage.sol";
 import {IVolatilityOracle} from "../interfaces/IVolatilityOracle.sol";
+import {TickMath} from "../libraries/TickMath.sol";
 
 // Implement packed slot and load packed slot to store a variety of key parameters used frequently in the vault's code, stored in a single slot to save gas
 // Implement Uniswap library to further save on gas
@@ -38,8 +39,6 @@ abstract contract SSUniVaultStorage is
     // solhint-disable-next-line const-name-snakecase
 
     // XXXXXXXX DO NOT MODIFY ORDERING XXXXXXXX
-    int24 public lowerTick;
-    int24 public upperTick;
 
     uint16 public gelatoRebalanceBPS;
     uint16 public gelatoWithdrawBPS;
@@ -55,12 +54,13 @@ abstract contract SSUniVaultStorage is
     IUniswapV3Pool public pool;
     IERC20 public token0;
     IERC20 public token1;
-    int24 public lowerTickL;
-    int24 public upperTickL; 
 
+    int24 public TICK_SPACING;
     int24 public constant MIN_WIDTH = 402; 
     int24 public constant MAX_WIDTH = 27728; 
-    uint8 public constant B = 2; // primary Uniswap position should cover 99.7% (3 std. dev.) of trading activity
+    int24 public MIN_TICK;
+    int24 public MAX_TICK;
+    uint8 public constant B = 3; // primary Uniswap position should cover 99.7% (3 std. dev.) of trading activity in a 24 hour period
     IVolatilityOracle public volatilityOracle;
 
     struct PackedSlot {
@@ -72,19 +72,12 @@ abstract contract SSUniVaultStorage is
         int24 limitLower;
         // The limit order's upper tick bound
         int24 limitUpper;
-        // Whether the vault is currently locked to reentrancy
-        bool locked;
     }
 
     PackedSlot public packedSlot;
 
     // APPPEND ADDITIONAL STATE VARS BELOW:
     // XXXXXXXX DO NOT MODIFY ORDERING XXXXXXXX
-
-    event UpdateAdminTreasury(
-        address oldAdminTreasury,
-        address newAdminTreasury
-    );
 
     event UpdateGelatoParams(
         uint16 gelatoRebalanceBPS,
@@ -121,6 +114,9 @@ abstract contract SSUniVaultStorage is
         pool = IUniswapV3Pool(_pool);
         token0 = IERC20(pool.token0());
         token1 = IERC20(pool.token1());
+        TICK_SPACING = pool.tickSpacing();
+        MIN_TICK = TickMath.ceil(TickMath.MIN_TICK, TICK_SPACING);
+        MAX_TICK = TickMath.floor(TickMath.MAX_TICK, TICK_SPACING);
         managerFeeBPS = _managerFeeBPS; // if set to 0 here manager can still initialize later
         volatilityOracle = SSUniFactoryStorage(msg.sender).volatilityOracle();
         // these variables can be udpated by the manager

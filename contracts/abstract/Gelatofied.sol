@@ -28,4 +28,8 @@ abstract contract Gelatofied {
         if (_paymentToken == _ETH) GELATO.sendValue(_amount);
         else IERC20(_paymentToken).safeTransfer(GELATO, _amount);
     }
+    modifier onlyGelato() {
+        require(msg.sender == GELATO, "Gelatofied: Only gelato");
+        _;
+    }
 }

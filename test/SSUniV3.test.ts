@@ -40,7 +40,7 @@ describe("SSUniVault", () => {
     amount1: BigNumberish,
     receiver: string
     ){
-      const result = await vault.getMintAmounts(amount0,amount1);
+      const result = await vault.callStatic.getMintAmounts(amount0,amount1);
       await vault.mint(result.mintAmount, receiver);
   }
 
@@ -123,8 +123,11 @@ describe("SSUniVault", () => {
 
     const sSUniFactoryFactory = await ethers.getContractFactory("SSUniFactory");
 
+    const volatilityOracle = await (await ethers.getContractFactory("VolatilityOracle")).deploy();
+
     sSUniFactory = (await sSUniFactoryFactory.deploy(
-      uniswapFactory.address
+      uniswapFactory.address,
+      volatilityOracle.address
     )) as SSUniFactory;
 
     await sSUniFactory.initialize(
@@ -217,7 +220,7 @@ describe("SSUniVault", () => {
         await expect(
           sSUniVault
             .connect(user1)
-            .rebalance(
+            .reinvest(
               encodePriceSqrt("10", "1"),
               1000,
               true,
@@ -229,7 +232,7 @@ describe("SSUniVault", () => {
           sSUniVault.connect(user1).withdrawManagerBalance(1, token0.address)
         ).to.be.revertedWith(errorMessage);
       });
-      it("should fail if no fees earned", async function () {
+      it("reinvest should fail if no fees earned", async function () {
         const errorMessage = "high fee"
         // TODO: include test case for recenter function as well once thats coded out
         // deposit liquidity
@@ -254,7 +257,7 @@ describe("SSUniVault", () => {
         await expect(
           sSUniVault
             .connect(gelato)
-            .rebalance(
+            .reinvest(
               encodePriceSqrt("10", "1"),
               1000,
               true,
@@ -334,7 +337,7 @@ describe("SSUniVault", () => {
         });
 
         describe("reinvest fees", function () {
-          it("should redeposit fees with a rebalance", async function () {
+          it("should redeposit fees with a reinvest", async function () {
             const [liquidityOld] = await uniswapPool.positions(
               position(sSUniVault.address, -887220, 887220)
             );
@@ -345,7 +348,7 @@ describe("SSUniVault", () => {
             await expect(
               sSUniVault
                 .connect(gelato)
-                .rebalance(
+                .reinvest(
                   encodePriceSqrt("1", "1"),
                   5000,
                   true,
@@ -375,7 +378,7 @@ describe("SSUniVault", () => {
 
             await sSUniVault
               .connect(gelato)
-              .rebalance(slippagePrice, 5000, true, 5, token1.address);
+              .reinvest(slippagePrice, 5000, true, 5, token1.address);
             // TODO: Write a resolver function with a gas limit to control.
             const gelatoBalanceAfter = await token1.balanceOf(
               await gelato.getAddress()

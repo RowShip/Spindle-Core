@@ -60,7 +60,9 @@ abstract contract SSUniVaultStorage is
     int24 public constant MAX_WIDTH = 27728; 
     int24 public MIN_TICK;
     int24 public MAX_TICK;
-    uint8 public constant B = 3; // primary Uniswap position should cover 99.7% (3 std. dev.) of trading activity in a 24 hour period
+
+    /// @dev B = 2*sqrt(7)*10_000 
+    uint16 public constant B = 5.2915e4; // Liquidity position should cover 95% (2 std. dev.) of trading activity over a 7 day period
     IVolatilityOracle public volatilityOracle;
 
     struct PackedSlot {

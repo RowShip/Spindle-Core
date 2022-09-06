@@ -297,8 +297,7 @@ contract SSUniVault is
     /// Frequency of rebalance configured with gelatoRebalanceBPS, alterable by manager.
     /// Create resolver function for rebalance. Call it checkCanRebalance()
     /// Make it to where it generates the swapAmountBPS parameter by simulating the entire operation.
-    ///
-    function rebalance(
+    function reinvest(
         uint160 swapThresholdPrice,
         uint256 swapAmountBPS,
         bool zeroForOne,
@@ -309,7 +308,7 @@ contract SSUniVault is
         (Uniswap.Position memory primary, Uniswap.Position memory limit) = _loadPackedSlot();
 
         require(
-            limit.upper != limit.lower,
+            limit.upper == limit.lower,
             "Can't rebalance when limit order is open"
         );
 
@@ -338,6 +337,10 @@ contract SSUniVault is
     /// to achieve approx. 50/50 inventory ratio once pushed through.
     /// only gelato executor can call
     // solhint-disable-next-line function-max-lines
+
+    // We place a limit order to get recenter the position.
+    // Once limit order has been pushed through we call this function again.
+    // Withdraw from the primary position and actually adjust the bounds of this position.
     struct RecenterCache {
         uint160 sqrtRatioX96;
         int24 tick;
@@ -475,17 +478,17 @@ contract SSUniVault is
     }
 
     /// @dev Computes position width based on volatility. Doesn't revert
+    /// @dev ExpectedMove = P0 * IV * sqrt(T)
     function _computeNextPositionWidth(uint256 _sigma)
         internal
         pure
         returns (int24)
     {
-        if (_sigma <= 6.6400651257e15) return MIN_WIDTH; // \frac{1e18}{B} (1 - \frac{1}{1.0001^(MIN_WIDTH / 2)})
-        if (_sigma >= 2.5000651258e17) return MAX_WIDTH; // \frac{1e18}{B} (1 - \frac{1}{1.0001^(MAX_WIDTH / 2)})
-        _sigma *= 3; // scale by a constant factor to increase confidence
-
+        if (_sigma <= 3.760435956e15) return MIN_WIDTH; // \frac{1e18}{B} (1 - \frac{1}{1.0001^(MIN_WIDTH / 2*sqrt(7))})
+        if (_sigma >= 1.417383935e17) return MAX_WIDTH; // \frac{1e18}{B} (1 - \frac{1}{1.0001^(MAX_WIDTH / 2*sqrt(7))})
+        _sigma = FullMath.mulDiv(_sigma, B, 10_000); 
         unchecked {
-            uint160 ratio = uint160((2**96 * 1e18) / (1e18 - _sigma));
+            uint160 ratio = uint160((Q96 * 1e18) / (1e18 - _sigma));
             return TickMath.getTickAtSqrtRatio(ratio);
         }
     }

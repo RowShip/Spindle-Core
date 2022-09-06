@@ -214,8 +214,9 @@ describe("SSUniVault", () => {
       });
     });
     describe("onlyGelato", function () {
+      let errorMessage: string;
       it("should fail if not called by gelato", async function () {
-        const errorMessage = "Gelatofied: Only gelato"
+        errorMessage = "Gelatofied: Only gelato"
         // TODO: include test case for recenter function as well once thats coded out
         await expect(
           sSUniVault
@@ -229,13 +230,13 @@ describe("SSUniVault", () => {
             )
         ).to.be.revertedWith(errorMessage);
         await expect(
-          sSUniVault.connect(user1).withdrawManagerBalance(1, token0.address)
+          sSUniVault
+            .connect(user1)
+            .recenter()
         ).to.be.revertedWith(errorMessage);
       });
       it("reinvest should fail if no fees earned", async function () {
-        const errorMessage = "high fee"
-        // TODO: include test case for recenter function as well once thats coded out
-        // deposit liquidity
+        errorMessage = "high fee"
         await mint(sSUniVault, ethers.utils.parseEther("1"), ethers.utils.parseEther("1"), await user0.getAddress());
         // Update oracle params to ensure checkSlippage computes without error.
         const tx = await sSUniVault
@@ -267,6 +268,12 @@ describe("SSUniVault", () => {
         ).to.be.revertedWith(errorMessage);
         await expect(
           sSUniVault.connect(gelato).withdrawManagerBalance(1, token0.address)
+        ).to.be.revertedWith(errorMessage);
+      });
+      it("should fail to recenter before deposits", async function () {
+        errorMessage = "Denom != 0"
+        await expect(
+          sSUniVault.connect(gelato).recenter()
         ).to.be.revertedWith(errorMessage);
       });
     });
@@ -308,6 +315,7 @@ describe("SSUniVault", () => {
           );
         });
       });
+      
       describe("after fees earned on trades", function () {
         beforeEach(async function () {
           await swapTest.washTrade(

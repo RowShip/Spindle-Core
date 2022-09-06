@@ -41,7 +41,6 @@ abstract contract SSUniVaultStorage is
     // XXXXXXXX DO NOT MODIFY ORDERING XXXXXXXX
 
     uint16 public gelatoRebalanceBPS;
-    uint16 public gelatoWithdrawBPS;
     uint16 public gelatoSlippageBPS;
     uint32 public gelatoSlippageInterval;
 
@@ -124,7 +123,6 @@ abstract contract SSUniVaultStorage is
         // these variables can be udpated by the manager
         gelatoSlippageInterval = 5 minutes; // default: last five minutes;
         gelatoSlippageBPS = 500; // default: 5% slippage
-        gelatoWithdrawBPS = 100; // default: only auto withdraw if tx fee is lt 1% withdrawn
         gelatoRebalanceBPS = 200; // default: only rebalance if tx fee is lt 2% reinvested
         managerTreasury = _manager_; // default: treasury is admin
         packedSlot.primaryLower = _lowerTick;

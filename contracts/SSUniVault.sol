@@ -315,7 +315,7 @@ contract SSUniVault is
         if (swapAmountBPS > 0) _checkSlippage(swapThresholdPrice, zeroForOne);
         
         (uint128 liquidity, , , , ) = primary.info();
-        _rebalance(
+        _reinvest(
             primary,
             liquidity,
             swapThresholdPrice,
@@ -359,7 +359,7 @@ contract SSUniVault is
             uint256 amount0Current,
             uint256 amount1Current,
             InventoryDetails memory d
-        ) = getUnderlyingBalances();
+        ) = _getUnderlyingBalances(primary, limit, cache.sqrtRatioX96);
         
         // Remove the limit order if it exists
         if (d.limitLiquidity != 0) {
@@ -493,19 +493,12 @@ contract SSUniVault is
         }
     }
 
-    /// @notice withdraw manager fees accrued, only gelato executors can call.
-    /// Target account to receive fees is managerTreasury, alterable by manager.
-    /// Frequency of withdrawals configured with gelatoWithdrawBPS, alterable by manager.
-    function withdrawManagerBalance(uint256 feeAmount, address feeToken)
+    /// @notice withdraw manager fees accrued
+    function withdrawManagerBalance()
         external
-        gelatofy(feeAmount, feeToken)
     {
-        (uint256 amount0, uint256 amount1) = _balancesToWithdraw(
-            managerBalance0,
-            managerBalance1,
-            feeAmount,
-            feeToken
-        );
+        uint256 amount0 = managerBalance0;
+        uint256 amount1 = managerBalance1;
 
         managerBalance0 = 0;
         managerBalance1 = 0;
@@ -516,31 +509,6 @@ contract SSUniVault is
 
         if (amount1 > 0) {
             token1.safeTransfer(managerTreasury, amount1);
-        }
-    }
-
-    function _balancesToWithdraw(
-        uint256 balance0,
-        uint256 balance1,
-        uint256 feeAmount,
-        address feeToken
-    ) internal view returns (uint256 amount0, uint256 amount1) {
-        if (feeToken == address(token0)) {
-            require(
-                (balance0 * gelatoWithdrawBPS) / 10000 >= feeAmount,
-                "high fee"
-            );
-            amount0 = balance0 - feeAmount;
-            amount1 = balance1;
-        } else if (feeToken == address(token1)) {
-            require(
-                (balance1 * gelatoWithdrawBPS) / 10000 >= feeAmount,
-                "high fee"
-            );
-            amount1 = balance1 - feeAmount;
-            amount0 = balance0;
-        } else {
-            revert("wrong token");
         }
     }
 
@@ -587,13 +555,23 @@ contract SSUniVault is
         public
         returns (
             uint256 amount0Current,
-            uint256 amount1Current,
-            InventoryDetails memory d
+            uint256 amount1Current
         )
     {
         (Uniswap.Position memory primary, Uniswap.Position memory limit) = _loadPackedSlot();
         (uint160 sqrtRatioX96, , , , , , ) = pool.slot0();
-        return _getUnderlyingBalances(primary, limit, sqrtRatioX96);
+        (amount0Current, amount1Current,)= _getUnderlyingBalances(primary, limit, sqrtRatioX96);
+    }
+
+    function getUnderlyingBalancesAtPrice(uint160 sqrtRatioX96)
+        external
+        returns (
+            uint256 amount0Current,
+            uint256 amount1Current
+        )
+    {
+        (Uniswap.Position memory primary, Uniswap.Position memory limit) = _loadPackedSlot();
+        (amount0Current, amount1Current,)= _getUnderlyingBalances(primary, limit, sqrtRatioX96);
     }
 
     // solhint-disable-next-line function-max-lines
@@ -635,7 +613,7 @@ contract SSUniVault is
 
         d.primaryLiquidity = liquidity;
 
-        // compute current holdings from d.liquidityPrimary
+        // compute current holdings from d.primaryLiquidity
         (amount0Current, amount1Current) = _primary.amountsForLiquidity(
             _sqrtPriceX96,
             d.primaryLiquidity
@@ -675,7 +653,7 @@ contract SSUniVault is
     // Private functions
 
     // solhint-disable-next-line function-max-lines
-    function _rebalance(
+    function _reinvest(
         Uniswap.Position memory primary,
         uint128 liquidity,
         uint160 swapThresholdPrice,
@@ -826,7 +804,7 @@ contract SSUniVault is
     {
         (
             uint256 amount0Current,
-            uint256 amount1Current,
+            uint256 amount1Current
         ) = getUnderlyingBalances();
 
         // compute proportional amount of tokens to mint

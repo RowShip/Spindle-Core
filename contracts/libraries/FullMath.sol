@@ -17,7 +17,7 @@ library FullMath {
         uint256 denominator
     ) internal pure returns (uint256 result) {
         // Handle division by zero
-        require(denominator != 0);
+        require(denominator != 0, "Denom != 0");
         
         unchecked {
             // 512-bit multiply [prod1 prod0] = a * b

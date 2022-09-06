@@ -1,13 +1,15 @@
-# Sample Hardhat Project
+# Swap Sweep Vault V1 Core
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+A shared fungible (ERC20) Uniswap V3 Liquidity Position for liquidity aggregation, management and optimization. SSUniVault earned fees are auto-compounded by Gelato Network keepers, intermittently harvesting and reinvesting the earnings into the liquidity position. Liquidity positions bounds are automatically recentered around the current market price on a weekly basis. The width of the recentered bounds is scaled according to the implied volatility of the pool such that there is 95 percent probability that the price will stay in bounds after one week.
 
-Try running some of the following tasks:
+Vaults can be permissionlessly deployed by anyone on any existing Uniswap V3 pair, via the SS contract.
 
-```shell
-npx hardhat help
-npx hardhat test
-GAS_REPORT=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
-```
+(see [docs](*INSERT_DOCUMENTATION_LINK_HERE*) for more info)
+
+# test
+
+yarn
+
+yarn compile
+
+yarn test

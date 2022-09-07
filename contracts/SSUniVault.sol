@@ -343,10 +343,6 @@ contract SSUniVault is
     /// to achieve approx. 50/50 inventory ratio once pushed through.
     /// only gelato executor can call
     // solhint-disable-next-line function-max-lines
-
-    // We place a limit order to get recenter the position.
-    // Once limit order has been pushed through we call this function again.
-    // Withdraw from the primary position and actually adjust the bounds of this position.
     struct RecenterCache {
         uint160 sqrtRatioX96;
         int24 tick;
@@ -516,7 +512,7 @@ contract SSUniVault is
         }
     }
 
-    /// @notice withdraw arrakis fees accrued
+    /// @notice withdraw SS fees accrued
     function withdrawSwapSweepBalance() external {
         uint256 amount0 = SSBalance0;
         uint256 amount1 = SSBalance1;

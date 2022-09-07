@@ -10,6 +10,6 @@ Vaults can be permissionlessly deployed by anyone on any existing Uniswap V3 pai
 
 yarn
 
-yarn compile
+yarn hardhat compile
 
-yarn test
+yarn hardhat test

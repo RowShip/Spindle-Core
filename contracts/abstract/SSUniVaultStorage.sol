@@ -37,7 +37,9 @@ abstract contract SSUniVaultStorage is
     // solhint-disable-next-line const-name-snakecase
     string public constant version = "1.0.0";
     // solhint-disable-next-line const-name-snakecase
+    uint16 public constant SSFeeBPS = 250;
 
+    address public immutable SSTreasury;
     // XXXXXXXX DO NOT MODIFY ORDERING XXXXXXXX
 
     uint16 public gelatoRebalanceBPS;
@@ -49,6 +51,8 @@ abstract contract SSUniVaultStorage is
 
     uint256 public managerBalance0;
     uint256 public managerBalance1;
+    uint256 public SSBalance0;
+    uint256 public SSBalance1;
 
     IUniswapV3Pool public pool;
     IERC20 public token0;
@@ -90,13 +94,14 @@ abstract contract SSUniVaultStorage is
     event SetManagerFee(uint16 managerFee);
 
     // solhint-disable-next-line max-line-length
-    constructor(address payable _gelato) Gelatofied(_gelato) {} // solhint-disable-line no-empty-blocks
+    constructor(address payable _gelato, address _ssTreasury) Gelatofied(_gelato) {
+        SSTreasury = _ssTreasury;
+    } // solhint-disable-line no-empty-blocks
 
     /// @notice initialize storage variables on a new SS-UNI pool, only called once
     /// @param _name name of SS-UNI token
     /// @param _symbol symbol of SS-UNI token
     /// @param _pool address of Uniswap V3 pool
-    /// @param _managerFeeBPS proportion of fees earned that go to manager treasury
     /// note that the 4 above params are NOT UPDATEABLE AFTER INILIALIZATION
     /// @param _lowerTick initial lowerTick (only changeable with executiveRebalance)
     /// @param _upperTick initial upperTick (only changeable with executiveRebalance)
@@ -105,7 +110,6 @@ abstract contract SSUniVaultStorage is
         string memory _name,
         string memory _symbol,
         address _pool,
-        uint16 _managerFeeBPS,
         int24 _lowerTick,
         int24 _upperTick,
         address _manager_
@@ -118,7 +122,6 @@ abstract contract SSUniVaultStorage is
         TICK_SPACING = pool.tickSpacing();
         MIN_TICK = TickMath.ceil(TickMath.MIN_TICK, TICK_SPACING);
         MAX_TICK = TickMath.floor(TickMath.MAX_TICK, TICK_SPACING);
-        managerFeeBPS = _managerFeeBPS; // if set to 0 here manager can still initialize later
         volatilityOracle = SSUniFactoryStorage(msg.sender).volatilityOracle();
         // these variables can be udpated by the manager
         gelatoSlippageInterval = 5 minutes; // default: last five minutes;
@@ -129,7 +132,7 @@ abstract contract SSUniVaultStorage is
         packedSlot.primaryUpper = _upperTick;
         _manager = _manager_;
 
-        // e.g. "Gelato Uniswap V3 USDC/DAI LP" and "SS-UNI"
+        // e.g. "Swap Sweep Uniswap V3 USDC/DAI LP" and "SS-UNI"
         __ERC20_init(_name, _symbol);
         __ReentrancyGuard_init();
     }
@@ -163,16 +166,6 @@ abstract contract SSUniVaultStorage is
         if (newSlippageInterval != 0)
             gelatoSlippageInterval = newSlippageInterval;
         if (newTreasury != address(0)) managerTreasury = newTreasury;
-    }
-
-    /// @notice initializeManagerFee sets a managerFee, only manager can call.
-    /// If a manager fee was not set in the initialize function it can be set here
-    /// but ONLY ONCE- after it is set to a non-zero value, managerFee can never be set again.
-    /// @param _managerFeeBPS proportion of fees earned that are credited to manager in Basis Points
-    function initializeManagerFee(uint16 _managerFeeBPS) external onlyManager {
-        require(managerFeeBPS == 0, "fee");
-        emit SetManagerFee(_managerFeeBPS);
-        managerFeeBPS = _managerFeeBPS;
     }
 
     function renounceOwnership() public virtual override onlyManager {

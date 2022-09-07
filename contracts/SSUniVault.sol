@@ -59,7 +59,7 @@ contract SSUniVault is
     event FeesEarned(uint256 feesEarned0, uint256 feesEarned1);
 
     // solhint-disable-next-line max-line-length
-    constructor(address payable _gelato) SSUniVaultStorage(_gelato) {} // solhint-disable-line no-empty-blocks
+    constructor(address payable _gelato, address _ssTreasury) SSUniVaultStorage(_gelato, _ssTreasury) {} // solhint-disable-line no-empty-blocks
 
     /// @notice Uniswap V3 callback fn, called back on pool.mint
     function uniswapV3MintCallback(
@@ -255,9 +255,9 @@ contract SSUniVault is
 
             cache.burn0 += cacheL.burn0;
             cache.burn1 += cacheL.burn1;
-            // All of the fees earned from limit gets paid to manager
-            managerBalance0 += cacheL.fee0;
-            managerBalance1 += cacheL.fee1;
+            // All of the fees earned from limit gets paid to SSTreasury
+            SSBalance0 += cacheL.fee0;
+            SSBalance1 += cacheL.fee1;
         }
         _applyFees(cache.fee0, cache.fee1);
         (cache.fee0, cache.fee1) = _subtractAdminFees(cache.fee0, cache.fee1);
@@ -266,14 +266,20 @@ contract SSUniVault is
         amount0 =
             cache.burn0 +
             FullMath.mulDiv(
-                token0.balanceOf(address(this)) - cache.burn0 - managerBalance0,
+                token0.balanceOf(address(this)) - 
+                    cache.burn0 - 
+                    managerBalance0 -
+                    SSBalance0,
                 burnAmount,
                 totalSupply
             );
         amount1 =
             cache.burn1 +
             FullMath.mulDiv(
-                token1.balanceOf(address(this)) - cache.burn1 - managerBalance1,
+                token1.balanceOf(address(this)) - 
+                    cache.burn1 - 
+                    managerBalance1 -
+                    SSBalance1,
                 burnAmount,
                 totalSupply
             );
@@ -364,9 +370,9 @@ contract SSUniVault is
         // Remove the limit order if it exists
         if (d.limitLiquidity != 0) {
             (, , uint256 fee0, uint256 fee1) = limit.withdraw(d.limitLiquidity);
-            // All of the fees earned from limit gets paid to manager
-            managerBalance0 += fee0;
-            managerBalance1 += fee1;
+            // All of the fees earned from limit gets paid to SSTreasury
+            SSBalance0 += fee0;
+            SSBalance1 += fee1;
         }
         // Compute inventory ratio to determine what happens next
         cache.priceX96 = uint224(FullMath.mulDiv(cache.sqrtRatioX96, cache.sqrtRatioX96, Q96));
@@ -384,7 +390,7 @@ contract SSUniVault is
             uint256 amount1 = (amount1Current - FullMath.mulDiv(amount0Current, cache.priceX96, Q96)) >> 1;
             // If contract balance is insufficient, burn liquidity from primary. 
             unchecked {
-                uint256 balance1 = token1.balanceOf(address(this)) - managerBalance1;
+                uint256 balance1 = token1.balanceOf(address(this)) - managerBalance1 - SSBalance1;
                 if (balance1 < amount1) {
                     (, uint256 burned1) = primary.pool.burn(
                         primary.lower, 
@@ -405,7 +411,7 @@ contract SSUniVault is
             uint256 amount0 = (amount0Current - FullMath.mulDiv(amount1Current, Q96, cache.priceX96)) >> 1;
             // If contract balance is insufficient, burn liquidity from primary. 
             unchecked {
-                uint256 balance0 = token0.balanceOf(address(this)) - managerBalance0;
+                uint256 balance0 = token0.balanceOf(address(this)) - managerBalance0 - SSBalance0;
                 if (balance0 < amount0) {
                     (uint256 burned0, ) = primary.pool.burn(
                         primary.lower, 
@@ -456,8 +462,8 @@ contract SSUniVault is
         );
         emit FeesEarned(feesEarned0, feesEarned1);
 
-        uint256 amount0 = token0.balanceOf(address(this)) - managerBalance0;
-        uint256 amount1 = token1.balanceOf(address(this)) - managerBalance1;
+        uint256 amount0 = token0.balanceOf(address(this)) - managerBalance0 - SSBalance0;
+        uint256 amount1 = token1.balanceOf(address(this)) - managerBalance1 - SSBalance1;
 
         // Decide primary position width...
         int24 w =_computeNextPositionWidth(volatilityOracle.estimate24H(pool));
@@ -494,9 +500,7 @@ contract SSUniVault is
     }
 
     /// @notice withdraw manager fees accrued
-    function withdrawManagerBalance()
-        external
-    {
+    function withdrawManagerBalance() external {
         uint256 amount0 = managerBalance0;
         uint256 amount1 = managerBalance1;
 
@@ -509,6 +513,23 @@ contract SSUniVault is
 
         if (amount1 > 0) {
             token1.safeTransfer(managerTreasury, amount1);
+        }
+    }
+
+    /// @notice withdraw arrakis fees accrued
+    function withdrawSwapSweepBalance() external {
+        uint256 amount0 = SSBalance0;
+        uint256 amount1 = SSBalance1;
+
+        SSBalance0 = 0;
+        SSBalance1 = 0;
+
+        if (amount0 > 0) {
+            token0.safeTransfer(SSTreasury, amount0);
+        }
+
+        if (amount1 > 0) {
+            token1.safeTransfer(SSTreasury, amount1);
         }
     }
 
@@ -548,7 +569,7 @@ contract SSUniVault is
 
     /// @notice compute total underlying holdings of the SS-UNI token supply
     /// includes current liquidity invested in uniswap position, current fees earned, limit order
-    /// and any uninvested leftover (but does not include manager fees accrued)
+    /// and any uninvested leftover (but does not include manager and treasury fees accrued)
     /// @return amount0Current current total underlying balance of token0
     /// @return amount1Current current total underlying balance of token1
     function getUnderlyingBalances()
@@ -642,11 +663,13 @@ contract SSUniVault is
         amount0Current +=
             fee0 +
             token0.balanceOf(address(this)) -
-            managerBalance0;
+            managerBalance0 -
+            SSBalance0;
         amount1Current +=
             fee1 +
             token1.balanceOf(address(this)) -
-            managerBalance1;
+            managerBalance1 -
+            SSBalance1;
     }
 
 
@@ -662,8 +685,8 @@ contract SSUniVault is
         uint256 feeAmount,
         address paymentToken
     ) private {
-        uint256 leftover0 = token0.balanceOf(address(this)) - managerBalance0;
-        uint256 leftover1 = token1.balanceOf(address(this)) - managerBalance1;
+        uint256 leftover0 = token0.balanceOf(address(this)) - managerBalance0 - SSBalance0;
+        uint256 leftover1 = token1.balanceOf(address(this)) - managerBalance1 - SSBalance1;
 
         (, , uint256 feesEarned0, uint256 feesEarned1) = primary.withdraw(liquidity);
         _applyFees(feesEarned0, feesEarned1);
@@ -683,17 +706,19 @@ contract SSUniVault is
             leftover0 =
                 token0.balanceOf(address(this)) -
                 managerBalance0 -
+                SSBalance0 -
                 feeAmount;
-            leftover1 = token1.balanceOf(address(this)) - managerBalance1;
+            leftover1 = token1.balanceOf(address(this)) - managerBalance1 - SSBalance1;
         } else if (paymentToken == address(token1)) {
             require(
                 (feesEarned1 * gelatoRebalanceBPS) / 10000 >= feeAmount,
                 "high fee"
             );
-            leftover0 = token0.balanceOf(address(this)) - managerBalance0;
+            leftover0 = token0.balanceOf(address(this)) - managerBalance0 - SSBalance0;
             leftover1 =
                 token1.balanceOf(address(this)) -
                 managerBalance1 -
+                SSBalance1 -
                 feeAmount;
         } else {
             revert("wrong token");
@@ -856,6 +881,9 @@ contract SSUniVault is
     function _applyFees(uint256 _fee0, uint256 _fee1) private {
         managerBalance0 += (_fee0 * managerFeeBPS) / 10000;
         managerBalance1 += (_fee1 * managerFeeBPS) / 10000;
+        SSBalance0 += (_fee0 * SSFeeBPS) / 10000;
+        SSBalance1 += (_fee1 * SSFeeBPS) / 10000;
+
     }
 
     function _subtractAdminFees(uint256 rawFee0, uint256 rawFee1)
@@ -863,8 +891,8 @@ contract SSUniVault is
         view
         returns (uint256 fee0, uint256 fee1)
     {
-        uint256 deduct0 = (rawFee0 * (managerFeeBPS)) / 10000;
-        uint256 deduct1 = (rawFee1 * (managerFeeBPS)) / 10000;
+        uint256 deduct0 = (rawFee0 * (managerFeeBPS + SSFeeBPS)) / 10000;
+        uint256 deduct1 = (rawFee1 * (managerFeeBPS + SSFeeBPS)) / 10000;
         fee0 = rawFee0 - deduct0;
         fee1 = rawFee1 - deduct1;
     }

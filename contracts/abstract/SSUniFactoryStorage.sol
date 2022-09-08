@@ -26,6 +26,7 @@ contract SSUniFactoryStorage is
     EnumerableSet.AddressSet internal _deployers;
     mapping(address => EnumerableSet.AddressSet) internal _pools;
     IVolatilityOracle public immutable volatilityOracle;
+    uint256 public index;
     // APPPEND ADDITIONAL STATE VARS BELOW:
     // XXXXXXXX DO NOT MODIFY ORDERING XXXXXXXX
 

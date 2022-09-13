@@ -762,34 +762,6 @@ contract SSUniVault is
         packedSlot.limitUpper = limit.upper;
     }
 
-    function _swapAndDeposit(
-        Uniswap.Position memory primary,
-        uint256 amount0,
-        uint256 amount1,
-        int256 swapAmount,
-        uint160 swapThresholdPrice,
-        bool zeroForOne
-    ) private returns (uint256 finalAmount0, uint256 finalAmount1) {
-        (int256 amount0Delta, int256 amount1Delta) = pool.swap(
-            address(this),
-            zeroForOne,
-            swapAmount,
-            swapThresholdPrice,
-            ""
-        );
-        finalAmount0 = uint256(SafeCast.toInt256(amount0) - amount0Delta);
-        finalAmount1 = uint256(SafeCast.toInt256(amount1) - amount1Delta);
-
-        // Add liquidity a second time
-        (uint160 sqrtRatioX96, , , , , , ) = pool.slot0();
-        uint128 liquidityAfterSwap = primary.liquidityForAmounts(
-            sqrtRatioX96,
-            finalAmount0,
-            finalAmount1
-        );
-        if (liquidityAfterSwap > 0) primary.deposit(liquidityAfterSwap);
-    }
-
     // solhint-disable-next-line function-max-lines, code-complexity
     function _computeMintAmounts(
         uint256 totalSupply,

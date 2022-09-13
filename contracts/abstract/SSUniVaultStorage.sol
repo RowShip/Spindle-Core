@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.10;
 
-import {Gelatofied} from "./Gelatofied.sol";
+import {OpsReady} from "./OpsReady.sol";
 import {OwnableUninitialized} from "./OwnableUninitialized.sol";
 import {
     IUniswapV3Pool
@@ -30,7 +30,7 @@ abstract contract SSUniVaultStorage is
     ERC20Upgradeable, /* XXXX DONT MODIFY ORDERING XXXX */
     ReentrancyGuardUpgradeable,
     OwnableUninitialized,
-    Gelatofied
+    OpsReady
     // APPEND ADDITIONAL BASE WITH STATE VARS BELOW:
     // XXXX DONT MODIFY ORDERING XXXX
 {
@@ -64,6 +64,8 @@ abstract contract SSUniVaultStorage is
     int24 public MIN_TICK;
     int24 public MAX_TICK;
 
+    bool recentering; // True if limit order placed to recenter position is active
+
     /// @dev B = 2*sqrt(7)*10_000 
     uint16 public constant B = 5.2915e4; // Liquidity position should cover 95% (2 std. dev.) of trading activity over a 7 day period
     IVolatilityOracle public volatilityOracle;
@@ -84,17 +86,16 @@ abstract contract SSUniVaultStorage is
     // APPPEND ADDITIONAL STATE VARS BELOW:
     // XXXXXXXX DO NOT MODIFY ORDERING XXXXXXXX
 
-    event UpdateGelatoParams(
+    event UpdateManagerParams(
+        uint16 managerFeeBPS,
+        address managerTreasury,
         uint16 gelatoRebalanceBPS,
-        uint16 gelatoWithdrawBPS,
         uint16 gelatoSlippageBPS,
         uint32 gelatoSlippageInterval
     );
 
-    event SetManagerFee(uint16 managerFee);
-
     // solhint-disable-next-line max-line-length
-    constructor(address payable _gelato, address _ssTreasury) Gelatofied(_gelato) {
+    constructor(address payable _ops, address _ssTreasury) OpsReady(_ops) {
         SSTreasury = _ssTreasury;
     } // solhint-disable-line no-empty-blocks
 
@@ -110,6 +111,7 @@ abstract contract SSUniVaultStorage is
         string memory _name,
         string memory _symbol,
         address _pool,
+        uint16 _managerFeeBPS,
         int24 _lowerTick,
         int24 _upperTick,
         address _manager_
@@ -124,9 +126,8 @@ abstract contract SSUniVaultStorage is
         MAX_TICK = TickMath.floor(TickMath.MAX_TICK, TICK_SPACING);
         volatilityOracle = SSUniFactoryStorage(msg.sender).volatilityOracle();
         // these variables can be udpated by the manager
-        gelatoSlippageInterval = 5 minutes; // default: last five minutes;
-        gelatoSlippageBPS = 500; // default: 5% slippage
         gelatoRebalanceBPS = 200; // default: only rebalance if tx fee is lt 2% reinvested
+        managerFeeBPS = _managerFeeBPS;
         managerTreasury = _manager_; // default: treasury is admin
         packedSlot.primaryLower = _lowerTick;
         packedSlot.primaryUpper = _upperTick;
@@ -137,35 +138,37 @@ abstract contract SSUniVaultStorage is
         __ReentrancyGuard_init();
     }
 
-    /// @notice change configurable parameters, only manager can call
-    /// @param newRebalanceBPS controls frequency of gelato rebalances: gas fee to execute
-    /// rebalance can be gelatoRebalanceBPS proportion of fees earned since last rebalance
-    /// @param newWithdrawBPS controls frequency of gelato withdrawals: gas fee to execute
-    /// withdrawal can be gelatoWithdrawBPS proportion of fees accrued since last withdraw
-    /// @param newSlippageBPS maximum slippage on swaps during gelato rebalance
-    /// @param newSlippageInterval length of time for TWAP used in computing slippage on swaps
-    /// @param newTreasury address where managerFee withdrawals are sent
+    /// @notice change configurable gelato parameters, only manager can call
+    /// @param newManagerFeeBPS Basis Points of fees earned credited to manager (negative to ignore)
+    /// @param newManagerTreasury address that collects manager fees (Zero address to ignore)
+    /// @param newRebalanceBPS threshold fees earned for gelato rebalances (negative to ignore)
+    /// @param newSlippageBPS frontrun protection parameter (negative to ignore)
+    /// @param newSlippageInterval frontrun protection parameter (negative to ignore)
     // solhint-disable-next-line code-complexity
-    function updateGelatoParams(
-        uint16 newRebalanceBPS,
-        uint16 newWithdrawBPS,
-        uint16 newSlippageBPS,
-        uint32 newSlippageInterval,
-        address newTreasury
+    function updateManagerParams(
+        int16 newManagerFeeBPS,
+        address newManagerTreasury,
+        int16 newRebalanceBPS,
+        int16 newSlippageBPS,
+        int32 newSlippageInterval
     ) external onlyManager {
         require(newRebalanceBPS <= 10000, "BPS");
         require(newSlippageBPS <= 10000, "BPS");
-        emit UpdateGelatoParams(
-            newRebalanceBPS,
-            newWithdrawBPS,
-            newSlippageBPS,
-            newSlippageInterval
+        require(newManagerFeeBPS <= 10000 - int16(SSFeeBPS), "mBPS");
+        if (newManagerFeeBPS >= 0) managerFeeBPS = uint16(newManagerFeeBPS);
+        if (newRebalanceBPS >= 0) gelatoRebalanceBPS = uint16(newRebalanceBPS);
+        if (newSlippageBPS >= 0) gelatoSlippageBPS = uint16(newSlippageBPS);
+        if (newSlippageInterval >= 0)
+            gelatoSlippageInterval = uint32(newSlippageInterval);
+        if (address(0) != newManagerTreasury)
+            managerTreasury = newManagerTreasury;
+        emit UpdateManagerParams(
+            managerFeeBPS,
+            managerTreasury,
+            gelatoRebalanceBPS,
+            gelatoSlippageBPS,
+            gelatoSlippageInterval
         );
-        if (newRebalanceBPS != 0) gelatoRebalanceBPS = newRebalanceBPS;
-        if (newSlippageBPS != 0) gelatoSlippageBPS = newSlippageBPS;
-        if (newSlippageInterval != 0)
-            gelatoSlippageInterval = newSlippageInterval;
-        if (newTreasury != address(0)) managerTreasury = newTreasury;
     }
 
     function renounceOwnership() public virtual override onlyManager {

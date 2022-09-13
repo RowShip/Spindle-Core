@@ -34,14 +34,14 @@ describe("SSUniVault", () => {
       [address, lowerTick, upperTick]
     );
   }
-  async function mint (
+  async function mint(
     vault: SSUniVault,
-    amount0: BigNumberish, 
+    amount0: BigNumberish,
     amount1: BigNumberish,
     receiver: string
-    ){
-      const result = await vault.callStatic.getMintAmounts(amount0,amount1);
-      await vault.mint(result.mintAmount, receiver);
+  ) {
+    const result = await vault.callStatic.getMintAmounts(amount0, amount1);
+    await vault.mint(result.mintAmount, receiver);
   }
 
   let uniswapFactory: IUniswapV3Factory;
@@ -56,11 +56,12 @@ describe("SSUniVault", () => {
   let sSUniVault: SSUniVault;
   let sSUniFactory: SSUniFactory;
   let gelato: SignerWithAddress;
+  let SSTreasury: SignerWithAddress;
   let uniswapPoolAddress: string;
   let implementationAddress: string;
 
   before(async function () {
-    [user0, user1, user2, gelato] = await ethers.getSigners();
+    [user0, user1, user2, gelato, SSTreasury] = await ethers.getSigners();
 
     const swapTestFactory = await ethers.getContractFactory("SwapTest");
     swapTest = (await swapTestFactory.deploy()) as SwapTest;
@@ -112,14 +113,15 @@ describe("SSUniVault", () => {
     )) as IUniswapV3Pool;
     await uniswapPool.initialize(encodePriceSqrt("1", "1"));
 
-    await uniswapPool.increaseObservationCardinalityNext("5");
+    await uniswapPool.increaseObservationCardinalityNext("15");
 
     const sSUniVaultFactory = await ethers.getContractFactory("SSUniVault");
-    const gUniImplementation = await sSUniVaultFactory.deploy(
-      await gelato.getAddress()
+    const sSUniImplementation = await sSUniVaultFactory.deploy(
+      await gelato.getAddress(),
+      await SSTreasury.getAddress()
     );
 
-    implementationAddress = gUniImplementation.address;
+    implementationAddress = sSUniImplementation.address;
 
     const sSUniFactoryFactory = await ethers.getContractFactory("SSUniFactory");
 
@@ -135,19 +137,11 @@ describe("SSUniVault", () => {
       await user0.getAddress()
     );
 
-    const pool = await sSUniFactory.callStatic.createManagedPool(
+    await sSUniFactory.deployVault(
       token0.address,
       token1.address,
       3000,
-      0,
-      -887220,
-      887220
-    );
-
-    await sSUniFactory.createManagedPool(
-      token0.address,
-      token1.address,
-      3000,
+      await user0.getAddress(),
       0,
       -887220,
       887220
@@ -156,8 +150,6 @@ describe("SSUniVault", () => {
     const deployers = await sSUniFactory.getDeployers();
     const deployer = deployers[0];
     const pools = await sSUniFactory.getPools(deployer);
-    expect(pools.length).to.equal(1);
-    expect(pools[0]).to.equal(pool);
 
     sSUniVault = (await ethers.getContractAt("SSUniVault", pools[0])) as SSUniVault;
   });
@@ -208,9 +200,9 @@ describe("SSUniVault", () => {
         const decimals = await sSUniVault.decimals();
         const symbol = await sSUniVault.symbol();
         const name = await sSUniVault.name();
-        expect(symbol).to.equal("SS-UNI");
+        expect(symbol).to.equal("SS-UNI 1");
         expect(decimals).to.equal(18);
-        expect(name).to.equal("SwapSweep Uniswap TOKEN/TOKEN Vault");
+        expect(name).to.equal("SwapSweep Vault V1 TOKEN/TOKEN");
       });
     });
     describe("onlyGelato", function () {
@@ -238,23 +230,26 @@ describe("SSUniVault", () => {
       it("reinvest should fail if no fees earned", async function () {
         errorMessage = "high fee"
         await mint(sSUniVault, ethers.utils.parseEther("1"), ethers.utils.parseEther("1"), await user0.getAddress());
+        
         // Update oracle params to ensure checkSlippage computes without error.
-        const tx = await sSUniVault
-          .connect(user0)
-          .updateGelatoParams(
-            "9000",
-            "9000",
-            "500",
-            "300",
-            await user1.getAddress()
-          );
-        await tx.wait();
-        if (network.provider && tx.blockHash && user0.provider) {
+        const rebalanceBPS = 999;
+        const tx = await sSUniVault.updateManagerParams(
+          -1,
+          ethers.constants.AddressZero,
+          rebalanceBPS,
+          -1,
+          -1
+        );
+        if (network.provider && user0.provider && tx.blockHash) {
           const block = await user0.provider.getBlock(tx.blockHash);
           const executionTime = block.timestamp + 300;
           await network.provider.send("evm_mine", [executionTime]);
         }
-        await sSUniVault.connect(user0).initializeManagerFee(5000);
+        // get left over token 0 in contract
+        const leftover0 = await token0.balanceOf(sSUniVault.address);
+        // Set fee amount equal to the leftover token 0 times 1 basis point more than rebalanceBPS proportion
+        // to ensure that the feeAmount is just barely too high to be reinvested. 
+        let feeAmount = leftover0.mul(rebalanceBPS + 1).div(10000);
         await expect(
           sSUniVault
             .connect(gelato)
@@ -262,12 +257,24 @@ describe("SSUniVault", () => {
               encodePriceSqrt("10", "1"),
               1000,
               true,
-              10,
+              feeAmount,
               token0.address
             )
         ).to.be.revertedWith(errorMessage);
+
+        feeAmount = leftover0.mul(rebalanceBPS + 1).div(10000);
+        
+         await sSUniVault
+            .connect(gelato)
+            .reinvest(
+              encodePriceSqrt("10", "1"),
+              1000,
+              true,
+              feeAmount,
+              token0.address
+            )
         await expect(
-          sSUniVault.connect(gelato).withdrawManagerBalance(1, token0.address)
+          sSUniVault.connect(gelato).withdrawManagerBalance()
         ).to.be.revertedWith(errorMessage);
       });
       it("should fail to recenter before deposits", async function () {
@@ -283,15 +290,19 @@ describe("SSUniVault", () => {
         await expect(
           sSUniVault
             .connect(gelato)
-            .updateGelatoParams(300, 5000, 5000, 5000, await user0.getAddress())
+            .updateManagerParams(
+              -1,
+              ethers.constants.AddressZero,
+              300,
+              5000,
+              5000
+            )
         ).to.be.revertedWith(errorMessage);
 
         await expect(
           sSUniVault.connect(gelato).transferOwnership(await user1.getAddress())
         ).to.be.revertedWith(errorMessage);
         await expect(sSUniVault.connect(gelato).renounceOwnership()).to.be
-          .revertedWith(errorMessage);
-        await expect(sSUniVault.connect(gelato).initializeManagerFee(100)).to.be
           .revertedWith(errorMessage);
       });
     });
@@ -315,7 +326,7 @@ describe("SSUniVault", () => {
           );
         });
       });
-      
+
       describe("after fees earned on trades", function () {
         beforeEach(async function () {
           await swapTest.washTrade(
@@ -365,7 +376,7 @@ describe("SSUniVault", () => {
                 )
             ).to.be.revertedWith("OLD");
 
-            const tx = await sSUniVault.updateGelatoParams(
+            const tx = await sSUniVault.updateManagerParams(
               "1000",
               "100",
               "500",
@@ -403,6 +414,6 @@ describe("SSUniVault", () => {
           });
         });
       })
-    }) 
+    })
   });
 });

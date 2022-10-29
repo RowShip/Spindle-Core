@@ -24,11 +24,6 @@ abstract contract OwnableUninitialized {
         address indexed newManager
     );
 
-    /// @dev Initializes the contract setting the deployer as the initial manager.
-    /// CONSTRUCTOR EMPTY - USE INITIALIZIABLE INSTEAD
-    // solhint-disable-next-line no-empty-blocks
-    constructor() {}
-
     /**
      * @dev Returns the address of the current manager.
      */

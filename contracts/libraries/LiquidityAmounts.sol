@@ -67,7 +67,7 @@ library LiquidityAmounts {
         uint160 sqrtRatioBX96,
         uint256 amount0,
         uint256 amount1
-    ) internal pure returns (uint128 liquidity) {
+    ) internal pure returns (uint128 liquidity, bool limitedBy0) {
         if (sqrtRatioAX96 > sqrtRatioBX96)
             (sqrtRatioAX96, sqrtRatioBX96) = (sqrtRatioBX96, sqrtRatioAX96);
 
@@ -77,13 +77,19 @@ library LiquidityAmounts {
                 sqrtRatioBX96,
                 amount0
             );
+            limitedBy0 = true;
         } else if (sqrtRatioX96 < sqrtRatioBX96) {
             uint128 liquidity0 =
                 getLiquidityForAmount0(sqrtRatioX96, sqrtRatioBX96, amount0);
             uint128 liquidity1 =
                 getLiquidityForAmount1(sqrtRatioAX96, sqrtRatioX96, amount1);
 
-            liquidity = liquidity0 < liquidity1 ? liquidity0 : liquidity1;
+            if(liquidity0 < liquidity1) {
+                liquidity = liquidity0;
+                limitedBy0 = true;
+            } else {
+                liquidity = liquidity1;
+            }
         } else {
             liquidity = getLiquidityForAmount1(
                 sqrtRatioAX96,

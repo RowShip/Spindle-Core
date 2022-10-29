@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.10;
-
-import {OpsReady} from "./OpsReady.sol";
 import {OwnableUninitialized} from "./OwnableUninitialized.sol";
 import {
     IUniswapV3Pool
@@ -19,6 +17,8 @@ import { SSUniFactoryStorage } from "./SSUniFactoryStorage.sol";
 import {IVolatilityOracle} from "../interfaces/IVolatilityOracle.sol";
 import {TickMath} from "../libraries/TickMath.sol";
 
+import "@rari-capital/solmate/src/utils/FixedPointMathLib.sol";
+
 // Implement packed slot and load packed slot to store a variety of key parameters used frequently in the vault's code, stored in a single slot to save gas
 // Implement Uniswap library to further save on gas
 
@@ -28,31 +28,31 @@ import {TickMath} from "../libraries/TickMath.sol";
 // solhint-disable-next-line max-states-count
 abstract contract SSUniVaultStorage is
     ERC20Upgradeable, /* XXXX DONT MODIFY ORDERING XXXX */
-    ReentrancyGuardUpgradeable,
-    OwnableUninitialized,
-    OpsReady
+    OwnableUninitialized
     // APPEND ADDITIONAL BASE WITH STATE VARS BELOW:
     // XXXX DONT MODIFY ORDERING XXXX
 {
     // solhint-disable-next-line const-name-snakecase
     string public constant version = "1.0.0";
     // solhint-disable-next-line const-name-snakecase
-    uint16 public constant SSFeeBPS = 250;
 
-    address public immutable SSTreasury;
     // XXXXXXXX DO NOT MODIFY ORDERING XXXXXXXX
 
-    uint16 public gelatoRebalanceBPS;
-    uint16 public gelatoSlippageBPS;
-    uint32 public gelatoSlippageInterval;
+    uint16 public reinvestBPS; /// @dev percent of fees sent to caller of reinvest()
+    uint16 public recenterThresholdBPS; /// @dev min price percentage change for initiating recenter 
+    uint16 public recenterPriceThresholdBPS; /// @dev price percentage change to trigger a recenter
+    uint16 public recenterIVThresholdBPS; /// @dev implied volatility percentage change to trigger a recenter
+    uint32 public recenterTimeThreshold; /// @dev time difference to trigger a recenter
+   
+    uint224 public priceAtLastRecenter; /// @dev price when last recenter executed
+    uint256 public ivAtLastRecenter; /// @dev implied volatility when last recenter executed
+    uint256 public timeAtLastRecenter; /// @dev timestamp when last recenter executed
 
     uint16 public managerFeeBPS;
     address public managerTreasury;
 
     uint256 public managerBalance0;
     uint256 public managerBalance1;
-    uint256 public SSBalance0;
-    uint256 public SSBalance1;
 
     IUniswapV3Pool public pool;
     IERC20 public token0;
@@ -64,10 +64,19 @@ abstract contract SSUniVaultStorage is
     int24 public MIN_TICK;
     int24 public MAX_TICK;
 
-    bool recentering; // True if limit order placed to recenter position is active
+    uint16 public MAX_PRICE_MULTIPLIER_BPS = 10500; /// @dev Price multiplier of 1.05 at the start of recenter dutch auction
+    uint16 public MIN_PRICE_MULTIPLIER_BPS = 9500; /// @dev Price multiplier of 0.95 at the end of recenter dutch auction
+    uint16 public AUCTION_TIME = 600; /// @dev 10 minute duration for recenter dutch auctions.
+
+    /// @dev \frac{1e18}{B} (1 - \frac{1}{1.0001^(MIN_WIDTH / 2})
+    uint64 public A;
 
     /// @dev B = 2*sqrt(7)*10_000 
-    uint16 public constant B = 5.2915e4; // Liquidity position should cover 95% (2 std. dev.) of trading activity over a 7 day period
+    uint16 public B; // Liquidity position should cover 95% (2 std. dev.) of trading activity over a 7 day period
+
+    /// @dev \frac{1e18}{B} (1 - \frac{1}{1.0001^(MAX_WIDTH / 2})
+    uint64 public C;
+
     IVolatilityOracle public volatilityOracle;
 
     struct PackedSlot {
@@ -79,6 +88,8 @@ abstract contract SSUniVaultStorage is
         int24 limitLower;
         // The limit order's upper tick bound
         int24 limitUpper;
+        // Whether the vault is currently locked to reentrancy
+        bool locked;
     }
 
     PackedSlot public packedSlot;
@@ -89,15 +100,13 @@ abstract contract SSUniVaultStorage is
     event UpdateManagerParams(
         uint16 managerFeeBPS,
         address managerTreasury,
-        uint16 gelatoRebalanceBPS,
-        uint16 gelatoSlippageBPS,
-        uint32 gelatoSlippageInterval
+        uint16 reinvestBPS,
+        uint16 recenterThresholdBPS,
+        uint16 recenterPriceThresholdBPS,
+        uint16 recenterIVThresholdBPS,
+        uint32 recenterTimeThreshold,
+        uint16 stdBPS
     );
-
-    // solhint-disable-next-line max-line-length
-    constructor(address payable _ops, address _ssTreasury) OpsReady(_ops) {
-        SSTreasury = _ssTreasury;
-    } // solhint-disable-line no-empty-blocks
 
     /// @notice initialize storage variables on a new SS-UNI pool, only called once
     /// @param _name name of SS-UNI token
@@ -126,7 +135,7 @@ abstract contract SSUniVaultStorage is
         MAX_TICK = TickMath.floor(TickMath.MAX_TICK, TICK_SPACING);
         volatilityOracle = SSUniFactoryStorage(msg.sender).volatilityOracle();
         // these variables can be udpated by the manager
-        gelatoRebalanceBPS = 200; // default: only rebalance if tx fee is lt 2% reinvested
+        reinvestBPS = 200; // default: only rebalance if tx fee is lt 2% reinvested
         managerFeeBPS = _managerFeeBPS;
         managerTreasury = _manager_; // default: treasury is admin
         packedSlot.primaryLower = _lowerTick;
@@ -135,39 +144,53 @@ abstract contract SSUniVaultStorage is
 
         // e.g. "Swap Sweep Uniswap V3 USDC/DAI LP" and "SS-UNI"
         __ERC20_init(_name, _symbol);
-        __ReentrancyGuard_init();
     }
 
-    /// @notice change configurable gelato parameters, only manager can call
-    /// @param newManagerFeeBPS Basis Points of fees earned credited to manager (negative to ignore)
-    /// @param newManagerTreasury address that collects manager fees (Zero address to ignore)
-    /// @param newRebalanceBPS threshold fees earned for gelato rebalances (negative to ignore)
-    /// @param newSlippageBPS frontrun protection parameter (negative to ignore)
-    /// @param newSlippageInterval frontrun protection parameter (negative to ignore)
+    /// @notice change configurable strategy parameters, only manager can call
     // solhint-disable-next-line code-complexity
     function updateManagerParams(
         int16 newManagerFeeBPS,
         address newManagerTreasury,
-        int16 newRebalanceBPS,
-        int16 newSlippageBPS,
-        int32 newSlippageInterval
+        int16 newReinvestBPS,
+        int16 newThresholdBPS,
+        int16 newPriceThresholdBPS,
+        int16 newIVThresholdBPS,
+        int32 newTimeThreshold,
+        int16 newStdBPS /// @dev standard deviations of trading activity primary liquidity positions should cover over recenterTimeThreshold
     ) external onlyManager {
-        require(newRebalanceBPS <= 10000, "BPS");
-        require(newSlippageBPS <= 10000, "BPS");
-        require(newManagerFeeBPS <= 10000 - int16(SSFeeBPS), "mBPS");
+        require(newReinvestBPS <= 10000, "BPS");
+        require(newManagerFeeBPS <= 10000, "BPS");
         if (newManagerFeeBPS >= 0) managerFeeBPS = uint16(newManagerFeeBPS);
-        if (newRebalanceBPS >= 0) gelatoRebalanceBPS = uint16(newRebalanceBPS);
-        if (newSlippageBPS >= 0) gelatoSlippageBPS = uint16(newSlippageBPS);
-        if (newSlippageInterval >= 0)
-            gelatoSlippageInterval = uint32(newSlippageInterval);
         if (address(0) != newManagerTreasury)
             managerTreasury = newManagerTreasury;
+        if (newReinvestBPS >= 0) reinvestBPS = uint16(newReinvestBPS);
+        if (newThresholdBPS >= 0)
+            recenterTimeThreshold = uint16(newThresholdBPS);
+        if (newPriceThresholdBPS >= 0) recenterPriceThresholdBPS = uint16(newPriceThresholdBPS);
+        if (newIVThresholdBPS >= 0) recenterIVThresholdBPS = uint16(newIVThresholdBPS);
+        if (newTimeThreshold >= 0) recenterTimeThreshold = uint32(newTimeThreshold);
+        if (newStdBPS >= 0 && newTimeThreshold >= 0) {
+            B = uint16(
+                (uint16(newStdBPS)*
+                FixedPointMathLib.sqrt(uint32(newTimeThreshold)))/2940000 
+            ); // 2940000 = sqrt(seconds in a day)*10_000
+            A = uint64(
+                1e18/B*(1-FixedPointMathLib.rpow(10001, uint24(MIN_WIDTH/2), 1))
+            );// \frac{1e18}{B} (1 - \frac{1}{1.0001^(MIN_WIDTH / 2)})
+            C = uint64(
+                1e18/B*(1-FixedPointMathLib.rpow(10001, uint24(MAX_WIDTH/2), 1))
+            );// \frac{1e18}{B} (1 - \frac{1}{1.0001^(MAX_WIDTH / 2)})
+            
+        }
         emit UpdateManagerParams(
             managerFeeBPS,
             managerTreasury,
-            gelatoRebalanceBPS,
-            gelatoSlippageBPS,
-            gelatoSlippageInterval
+            reinvestBPS,
+            recenterThresholdBPS,
+            recenterPriceThresholdBPS,
+            recenterIVThresholdBPS,
+            recenterTimeThreshold,
+            uint16(newStdBPS)
         );
     }
 

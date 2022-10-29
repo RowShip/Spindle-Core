@@ -113,13 +113,29 @@ library Uniswap {
             );
     }
 
-    /// @dev Wrapper around `LiquidityAmounts.getLiquidityForAmounts()`.
+    /// @dev Wrapper around `LiquidityAmounts.getLiquidityForAmounts()` that excludes `limitedBy0`.
     function liquidityForAmounts(
         Position memory position,
         uint160 sqrtPriceX96,
         uint256 amount0,
         uint256 amount1
-    ) internal pure returns (uint128) {
+    ) internal pure returns (uint128 liquidity) {
+        (liquidity,) =
+            LiquidityAmounts.getLiquidityForAmounts(
+                sqrtPriceX96,
+                TickMath.getSqrtRatioAtTick(position.lower),
+                TickMath.getSqrtRatioAtTick(position.upper),
+                amount0,
+                amount1
+            );
+    }
+    /// @dev Wrapper around `LiquidityAmounts.getLiquidityForAmounts()` include `limitedBy0`.
+    function liquidityForAmountsCheck(
+        Position memory position,
+        uint160 sqrtPriceX96,
+        uint256 amount0,
+        uint256 amount1
+    ) internal pure returns (uint128, bool) {
         return
             LiquidityAmounts.getLiquidityForAmounts(
                 sqrtPriceX96,

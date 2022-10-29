@@ -9,26 +9,14 @@ import {IERC20, SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeE
 import {SafeCast} from "@openzeppelin/contracts/utils/math/SafeCast.sol";
 import {FullMath} from "./libraries/FullMath.sol";
 
-import { Uniswap } from "./libraries/Uniswap.sol";
+import {Uniswap} from "./libraries/Uniswap.sol";
 
 uint256 constant Q96 = 2**96;
 
-interface IOps {
-    function getFeeDetails() external view returns (uint256, address);
-}
-contract SSUniVault is
-    IUniswapV3MintCallback,
-    IUniswapV3SwapCallback,
-    SSUniVaultStorage
-{
+contract SSUniVault is IUniswapV3MintCallback, SSUniVaultStorage {
     using SafeERC20 for IERC20;
     using TickMath for int24;
     using Uniswap for Uniswap.Position;
-
-    enum Limit {
-        Opened,
-        Closed
-    }
 
     event Minted(
         address receiver,
@@ -46,25 +34,28 @@ contract SSUniVault is
         uint128 liquidityBurned
     );
 
-    event Rebalance(
+    event Reinvest(
         int24 lowerTick_,
         int24 upperTick_,
         uint128 liquidityBefore,
         uint128 liquidityAfter
     );
 
+    enum AuctionType {TIME, PRICE, IV}
+
     event Recenter(
+        AuctionType auctionType,
+        uint256 auctionTriggerTime,
         int24 lowerTick_,
         int24 upperTick_,
-        Limit indexed step
+        uint256 amount0Exchanged,
+        uint256 amount1Exchanged,
+        bool zeroForOne
     );
 
     event FeesEarned(uint256 feesEarned0, uint256 feesEarned1);
 
-    // solhint-disable-next-line max-line-length
-    constructor(address payable _ops, address _ssTreasury) SSUniVaultStorage(_ops, _ssTreasury) {} // solhint-disable-line no-empty-blocks
-
-    /// @notice Uniswap V3 callback fn, called back on pool.mint
+    /// @notice Uniswap V3 callback fn
     function uniswapV3MintCallback(
         uint256 amount0Owed,
         uint256 amount1Owed,
@@ -72,22 +63,8 @@ contract SSUniVault is
     ) external override {
         require(msg.sender == address(pool), "callback caller");
 
-        if (amount0Owed > 0) token0.safeTransfer(msg.sender, amount0Owed);
-        if (amount1Owed > 0) token1.safeTransfer(msg.sender, amount1Owed);
-    }
-
-    /// @notice Uniswap v3 callback fn, called back on pool.swap
-    function uniswapV3SwapCallback(
-        int256 amount0Delta,
-        int256 amount1Delta,
-        bytes calldata /*data*/
-    ) external override {
-        require(msg.sender == address(pool), "callback caller");
-
-        if (amount0Delta > 0)
-            token0.safeTransfer(msg.sender, uint256(amount0Delta));
-        else if (amount1Delta > 0)
-            token1.safeTransfer(msg.sender, uint256(amount1Delta));
+        if (amount0Owed != 0) token0.safeTransfer(msg.sender, amount0Owed);
+        if (amount1Owed != 0) token1.safeTransfer(msg.sender, amount1Owed);
     }
 
     // User functions => Should be called via a Router
@@ -102,7 +79,6 @@ contract SSUniVault is
     // solhint-disable-next-line function-max-lines, code-complexity
     function mint(uint256 mintAmount, address receiver)
         external
-        nonReentrant
         returns (
             uint256 amount0,
             uint256 amount1,
@@ -113,7 +89,11 @@ contract SSUniVault is
 
         uint256 totalSupply = totalSupply();
 
-        (Uniswap.Position memory primary, Uniswap.Position memory limit) = _loadPackedSlot();
+        (
+            Uniswap.Position memory primary,
+            Uniswap.Position memory limit
+        ) = _loadPackedSlot();
+        packedSlot.locked = true;
 
         (uint160 sqrtRatioX96, , , , , , ) = pool.slot0();
 
@@ -122,11 +102,11 @@ contract SSUniVault is
         InventoryDetails memory d;
 
         if (totalSupply > 0) {
-            (
-                amount0Current,
-                amount1Current,
-                d
-            ) = _getUnderlyingBalances(primary, limit, sqrtRatioX96);
+            (amount0Current, amount1Current, d) = _getUnderlyingBalances(
+                primary,
+                limit,
+                sqrtRatioX96
+            );
 
             amount0 = FullMath.mulDivRoundingUp(
                 amount0Current,
@@ -158,7 +138,7 @@ contract SSUniVault is
         // amount of tokens across both limit order
         // and primary position. If no limit order is open,
         // place all tokens across the primary position.
-        if(d.limitLiquidity != 0) {
+        if (d.limitLiquidity != 0) {
             d.amount0Limit = FullMath.mulDivRoundingUp(
                 d.amount0Limit,
                 mintAmount,
@@ -194,6 +174,7 @@ contract SSUniVault is
         }
         _mint(receiver, mintAmount);
         emit Minted(receiver, mintAmount, amount0, amount1, liquidityMinted);
+        packedSlot.locked = false;
     }
 
     /// @notice burn SS-UNI tokens (fractional shares of a Uniswap V3 position) and receive tokens
@@ -212,7 +193,6 @@ contract SSUniVault is
 
     function burn(uint256 burnAmount, address receiver)
         external
-        nonReentrant
         returns (
             uint256 amount0,
             uint256 amount1,
@@ -223,8 +203,11 @@ contract SSUniVault is
 
         uint256 totalSupply = totalSupply();
 
-        (Uniswap.Position memory primary, Uniswap.Position memory limit) = _loadPackedSlot();
-
+        (
+            Uniswap.Position memory primary,
+            Uniswap.Position memory limit
+        ) = _loadPackedSlot();
+        packedSlot.locked = true;
 
         (uint128 liquidity, , , , ) = primary.info();
 
@@ -240,7 +223,9 @@ contract SSUniVault is
 
         liquidityBurned = SafeCast.toUint128(liquidityBurned_);
 
-        (cache.burn0, cache.burn1, cache.fee0, cache.fee1) = primary.withdraw(liquidityBurned);
+        (cache.burn0, cache.burn1, cache.fee0, cache.fee1) = primary.withdraw(
+            liquidityBurned
+        );
 
         // Withdraw portion of limit order
         if (limit.upper != limit.lower) {
@@ -253,7 +238,9 @@ contract SSUniVault is
             );
             liquidityBurned += SafeCast.toUint128(liquidityBurned_);
 
-            (uint256 burn0, uint256 burn1, , ) = limit.withdraw(liquidityBurned);
+            (uint256 burn0, uint256 burn1, , ) = limit.withdraw(
+                liquidityBurned
+            );
 
             cache.burn0 += burn0;
             cache.burn1 += burn1;
@@ -265,20 +252,14 @@ contract SSUniVault is
         amount0 =
             cache.burn0 +
             FullMath.mulDiv(
-                token0.balanceOf(address(this)) - 
-                    cache.burn0 - 
-                    managerBalance0 -
-                    SSBalance0,
+                token0.balanceOf(address(this)) - cache.burn0 - managerBalance0,
                 burnAmount,
                 totalSupply
             );
         amount1 =
             cache.burn1 +
             FullMath.mulDiv(
-                token1.balanceOf(address(this)) - 
-                    cache.burn1 - 
-                    managerBalance1 -
-                    SSBalance1,
+                token1.balanceOf(address(this)) - cache.burn1 - managerBalance1,
                 burnAmount,
                 totalSupply
             );
@@ -292,18 +273,17 @@ contract SSUniVault is
         }
 
         emit Burned(receiver, burnAmount, amount0, amount1, liquidityBurned);
+        packedSlot.locked = false;
     }
 
-    /// @notice Reinvest fees earned into underlying position, only gelato ops can call
+    /// @notice Reinvest fees earned into primary position. Excess gets deposited into limit order
 
-    function reinvest() external onlyOps {
-
-        (Uniswap.Position memory primary, Uniswap.Position memory limit) = _loadPackedSlot();
-
-        require( 
-            !recentering,
-            "recentering != true"
-        );
+    function reinvest() external {
+        (
+            Uniswap.Position memory primary,
+            Uniswap.Position memory limit
+        ) = _loadPackedSlot();
+        packedSlot.locked = true;
 
         (uint128 liquidity, , , , ) = primary.info();
 
@@ -311,146 +291,101 @@ contract SSUniVault is
         uint256 leftover1;
 
         // withdraw limit order.
-        if(limit.lower != limit.upper) {
+        if (limit.lower != limit.upper) {
             (uint128 liquidityL, , , , ) = limit.info();
-            (uint256 burned0, uint256 burned1, , , ) = limit.withdraw(liquidityL);
-            leftover0 = token0.balanceOf(address(this)) - managerBalance0 - SSBalance0 - burned0;
-            leftover1 = token1.balanceOf(address(this)) - managerBalance1 - SSBalance1 - burned1;
+            (uint256 burned0, uint256 burned1, , ) = limit.withdraw(liquidityL);
+            leftover0 =
+                token0.balanceOf(address(this)) -
+                managerBalance0 -
+                burned0;
+            leftover1 =
+                token1.balanceOf(address(this)) -
+                managerBalance1 -
+                burned1;
         } else {
-            leftover0 = token0.balanceOf(address(this)) - managerBalance0 - SSBalance0;
-            leftover1 = token1.balanceOf(address(this)) - managerBalance1 - SSBalance1;
+            leftover0 = token0.balanceOf(address(this)) - managerBalance0;
+            leftover1 = token1.balanceOf(address(this)) - managerBalance1;
         }
 
-        _reinvest(
-            primary,
-            limit,
-            liquidity,
-            leftover0,
-            leftover1
-        );
+        _reinvest(primary, limit, liquidity, leftover0, leftover1);
 
         (uint128 newLiquidity, , , , ) = primary.info();
 
         require(newLiquidity > liquidity, "liquidity must increase");
 
-        emit Rebalance(primary.lower, primary.upper, liquidity, newLiquidity);
+        emit Reinvest(primary.lower, primary.upper, liquidity, newLiquidity);
+        packedSlot.locked = false;
     }
 
-
-    /// @notice Recenters primary UniswapV3 position around current tick,
-    /// rebalancing token 1 and token 0 by intellegintly placing limit orders 
-    /// as close to the current market price as possible 
-    /// to achieve approx. 50/50 inventory ratio once pushed through.
-    /// only gelato ops can call  
-    /// Define limit replacement time interval
-    // solhint-disable-next-line function-max-lines
     struct RecenterCache {
-        uint160 sqrtRatioX96;
-        int24 tick;
+        uint160 sqrtPriceX96;
         uint224 priceX96;
+        int24 tick;
     }
-    function recenter() external onlyOps {
-        Limit step;
 
+    /// @notice Strategy recentering based on time threshold
+    /// @param amount0Min minimum amount of token0 to receive
+    /// @param amount1Min minimum amount of token1 to receive
+    function timeRecenter(uint256 amount0Min, uint256 amount1Min) external {
+        // check if rebalancing based on time threshold is allowed
+        uint256 auctionTimestamp = timeAtLastRecenter + recenterTimeThreshold;
+
+        require(
+            block.timestamp >= auctionTimestamp,
+            "time threshold not reached"
+        );
         RecenterCache memory cache;
+        (cache.sqrtPriceX96, cache.tick, , , , , ) = pool.slot0();
 
-        (cache.sqrtRatioX96, cache.tick , , , , , ) = pool.slot0();
+        // get current price
+        cache.priceX96 = uint224(
+            FullMath.mulDiv(cache.sqrtPriceX96, cache.sqrtPriceX96, Q96)
+        );
 
-        (Uniswap.Position memory primary, Uniswap.Position memory limit) = _loadPackedSlot();
-
-        (
-            uint256 amount0Current,
-            uint256 amount1Current,
-            InventoryDetails memory d
-        ) = _getUnderlyingBalances(primary, limit, cache.sqrtRatioX96);
-        
-        // Remove the limit order if it exists
-        if (d.limitLiquidity != 0) {
-            limit.withdraw(d.limitLiquidity);
-        }
-        // Compute inventory ratio to determine what happens next
-        cache.priceX96 = uint224(FullMath.mulDiv(cache.sqrtRatioX96, cache.sqrtRatioX96, Q96));
         uint256 ratio = FullMath.mulDiv(
             10_000,
-            amount0Current,
-            amount0Current + FullMath.mulDiv(amount1Current, Q96, cache.priceX96)
+            cache.priceX96 > priceAtLastRecenter
+                ? cache.priceX96 - priceAtLastRecenter
+                : priceAtLastRecenter - cache.priceX96,
+            priceAtLastRecenter
         );
-        if (ratio < 4900) {
-            // Attempt to sell token1 for token0. Choose limit order bounds below the market price.
-            limit.upper = TickMath.floor(cache.tick, TICK_SPACING);
-            limit.lower = limit.upper - TICK_SPACING;
-            // Choose amount1 such that ratio will be 50/50 once the limit order is pushed through (division by 2
-            // is a good approximation for small tickSpacing). 
-            uint256 amount1 = (amount1Current - FullMath.mulDiv(amount0Current, cache.priceX96, Q96)) >> 1;
-            // If contract balance is insufficient, burn liquidity from primary. 
-            unchecked {
-                uint256 balance1 = token1.balanceOf(address(this)) - managerBalance1 - SSBalance1;
-                if (balance1 < amount1) {
-                    (, uint256 burned1) = primary.pool.burn(
-                        primary.lower, 
-                        primary.upper, 
-                        primary.liquidityForAmount1(amount1 - balance1)
-                    );
-                    amount1 = balance1 + burned1;
-                } 
-            }
-            // Place a new limit order
-            limit.deposit(limit.liquidityForAmount1(amount1));
-            recentering = true;
-        } else if (ratio > 5100) {
-            // Attempt to sell token0 for token1. Choose limit order bounds above the market price.
-            limit.lower = TickMath.ceil(cache.tick, TICK_SPACING);
-            limit.upper = limit.lower + TICK_SPACING;
-            // Choose amount0 such that ratio will be 50/50 once the limit order is pushed through (division by 2
-            // is a good approximation for small tickSpacing).
-            uint256 amount0 = (amount0Current - FullMath.mulDiv(amount1Current, Q96, cache.priceX96)) >> 1;
-            // If contract balance is insufficient, burn liquidity from primary. 
-            unchecked {
-                uint256 balance0 = token0.balanceOf(address(this)) - managerBalance0 - SSBalance0;
-                if (balance0 < amount0) {
-                    (uint256 burned0, ) = primary.pool.burn(
-                        primary.lower, 
-                        primary.upper, 
-                        primary.liquidityForAmount0(amount0 - balance0)
-                    );
-                    amount0 = balance0 + burned0;
-                } 
-            }
-            // Place a new limit order
-            limit.deposit(limit.liquidityForAmount0(amount0));
-            recentering = true;
-        } else {
-            step = Limit.Closed;
-            // Zero-out the limit struct to indicate that it's inactive
-            delete limit;
-            primary = _recenter(cache.tick, cache.sqrtRatioX96, primary, d.primaryLiquidity);
-        }
-        emit Recenter(primary.lower, primary.upper, step);
-        packedSlot = PackedSlot(
-            primary.lower,
-            primary.upper,
-            limit.lower,
-            limit.upper
+
+        // no rebalance if the price change <= rebalanceThreshold
+        require(
+            ratio <= recenterThresholdBPS,
+            "price change threshold not reached"
         );
+
+        _executeAuction(
+            auctionTimestamp,
+            amount0Min,
+            amount1Min,
+            cache
+        );
+
     }
 
-    /**
-     * @notice Recenters the primary Uniswap position around the current tick.
-     * @dev This function assumes that the limit order has no liquidity (never existed or already exited)
-     * @param tick The current pool tick
-     * @param sqrtRatioX96 The current pool sqrtPriceX96
-     * @param primary The existing primary Uniswap position
-     * @param primaryLiquidity The amount of liquidity currently in `primary`
-     * @return Uniswap.Position memory `primary` updated with new lower and upper tick bounds
-     */
-    function _recenter(
-        int24 tick,
-        uint160 sqrtRatioX96,
-        Uniswap.Position memory primary,
-        uint128 primaryLiquidity
-    ) private returns (Uniswap.Position memory) {
+    function _executeAuction(
+        uint256 auctionTimestamp,
+        uint256 amount0Min,
+        uint256 amount1Min,
+        RecenterCache memory cache
+    ) internal {
 
-        (, , uint256 feesEarned0, uint256 feesEarned1) = primary.withdraw(primaryLiquidity);
+        (Uniswap.Position memory primary, Uniswap.Position memory limit) = _loadPackedSlot();
+        packedSlot.locked = true;
+
+        // Withdraw all the liqudity and collect fees
+        if (limit.lower != limit.upper) {
+            (uint128 liquidityL, , , , ) = limit.info();
+            limit.withdraw(liquidityL);
+        }
+
+        (uint128 liquidity, , , , ) = primary.info();
+
+        (, , uint256 feesEarned0, uint256 feesEarned1) = primary.withdraw(
+            liquidity
+        );
         _applyFees(feesEarned0, feesEarned1);
         (feesEarned0, feesEarned1) = _subtractAdminFees(
             feesEarned0,
@@ -458,37 +393,159 @@ contract SSUniVault is
         );
         emit FeesEarned(feesEarned0, feesEarned1);
 
-        uint256 amount0 = token0.balanceOf(address(this)) - managerBalance0 - SSBalance0;
-        uint256 amount1 = token1.balanceOf(address(this)) - managerBalance1 - SSBalance1;
-
         // Decide primary position width...
-        int24 w =_computeNextPositionWidth(volatilityOracle.estimate24H(pool));
+        int24 w = _computeNextPositionWidth(volatilityOracle.estimate24H(pool));
         w = w >> 1;
 
         // Update primary position's ticks
         unchecked {
-            primary.lower = TickMath.floor(tick - w, TICK_SPACING);
-            primary.upper = TickMath.ceil(tick + w, TICK_SPACING);
+            primary.lower = TickMath.floor(cache.tick - w, TICK_SPACING);
+            primary.upper = TickMath.ceil(cache.tick + w, TICK_SPACING);
             if (primary.lower < MIN_TICK) primary.lower = MIN_TICK;
             if (primary.upper > MAX_TICK) primary.upper = MAX_TICK;
         }
 
-        // Place some liquidity in Uniswap
-        (amount0, amount1) = primary.deposit(primary.liquidityForAmounts(sqrtRatioX96, amount0, amount1));
+        (uint256 amount0, uint256 amount1, bool zeroForOne) = _getAuctionParams(primary, cache, auctionTimestamp);
 
-        return primary;
+        if(zeroForOne) {
+            require(amount0 >= amount0Min, "amount0Min not reached");
+            token0.safeTransfer(msg.sender, amount0);
+            token1.safeTransferFrom(msg.sender, address(this), amount1);
+        } else {
+            require(amount1 >= amount1Min, "amount1Min not reached");
+            token1.safeTransfer(msg.sender, amount1);
+            token0.safeTransferFrom(msg.sender, address(this), amount0);
+        }
+
+        // Place new primary position 
+        primary.deposit(
+            primary.liquidityForAmounts(
+                cache.sqrtPriceX96, 
+                token0.balanceOf(address(this)) - managerBalance0,
+                token1.balanceOf(address(this)) - managerBalance1
+            )
+        );
+
+        // Place new positions
+        emit Recenter(
+            AuctionType.TIME,
+            auctionTimestamp,
+            primary.lower, 
+            primary.upper,
+            amount0,
+            amount1,
+            zeroForOne
+        );
+
+        packedSlot = PackedSlot(
+            primary.lower,
+            primary.upper,
+            limit.lower,
+            limit.upper,
+            false
+        );
+    }
+
+    /// @dev calculate auction parameters
+    /// @param cache memory cache
+    /// @return amount0 to be exchanged with keeper
+    /// @return amount1 to be exchanged with keeper
+    /// @return zeroForOne true if token0 is the auctioned token sent to keeper, false otherwise
+    function _getAuctionParams(
+        Uniswap.Position memory primary,
+        RecenterCache memory cache,
+        uint256 auctionTimestamp
+    )
+        private
+        view
+        returns (
+            uint256 amount0,
+            uint256 amount1,
+            bool zeroForOne
+        )
+    {
+        // get current amounts
+        uint256 amount0Current = token0.balanceOf(address(this)) -
+            managerBalance0;
+        uint256 amount1Current = token1.balanceOf(address(this)) -
+            managerBalance1;
+
+        // compute total maximum deposit at new ticks
+        (uint128 liquidity, bool limitedBy0) = primary.liquidityForAmountsCheck(
+            cache.sqrtPriceX96,
+            amount0Current,
+            amount1Current
+        );
+        (amount0, amount1) = primary.amountsForLiquidity(
+            cache.sqrtPriceX96,
+            liquidity
+        );
+
+        // compute the auction price multiplier
+        uint16 priceMultiplier = block.timestamp - auctionTimestamp >=
+            AUCTION_TIME
+            ? MAX_PRICE_MULTIPLIER_BPS
+            : MAX_PRICE_MULTIPLIER_BPS -
+                uint16(
+                    FullMath.mulDiv(
+                        block.timestamp - auctionTimestamp,
+                        (MAX_PRICE_MULTIPLIER_BPS - MIN_PRICE_MULTIPLIER_BPS),
+                        AUCTION_TIME
+                    )
+                );
+
+        uint256 discountedPrice;
+        uint256 ratio;
+        if (limitedBy0) {
+            // Discount the price of token1.
+            // Presumably the keeper waits until priceMultiplier < 10000 to achieve an arb profit.
+            discountedPrice = FullMath.mulDiv(cache.priceX96, 10_000, priceMultiplier);
+            // compute proportion of token0 total value in the position
+            ratio = FullMath.mulDiv(
+                10_000,
+                amount0,
+                amount0 +
+                    FullMath.mulDiv(
+                        amount1,
+                        Q96,
+                        discountedPrice // Discount the price of excess token
+                    )
+            );
+            // compute the amount of token1 to be swapped with keeper
+            amount1 = FullMath.mulDiv(amount1Current - amount1, ratio, 10_000);
+            amount0 = FullMath.mulDiv(amount1, Q96, discountedPrice);
+        } else {
+            zeroForOne = true;
+            // Discount the price of token0.
+            // Presumably the keeper waits until priceMultiplier < 10000 to achieve an arb profit.
+            discountedPrice = FullMath.mulDiv(cache.priceX96, priceMultiplier, 10_000);
+            // compute proportion of token1 total value in the position
+            ratio = FullMath.mulDiv(
+                10_000,
+                amount1,
+                amount1 +
+                    FullMath.mulDiv(
+                        amount0,
+                        discountedPrice, // Discount the price of excess token
+                        Q96
+                    )
+            );
+            // compute the amount of token0 to be swapped with keeper
+            amount0 = FullMath.mulDiv(amount0Current - amount0, ratio, 10_000);
+            amount1 = FullMath.mulDiv(amount0, discountedPrice, Q96);
+        }
     }
 
     /// @dev Computes position width based on volatility. Doesn't revert
     /// @dev ExpectedMove = P0 * IV * sqrt(T)
     function _computeNextPositionWidth(uint256 _sigma)
         internal
-        pure
+        view
         returns (int24)
     {
-        if (_sigma <= 3.760435956e15) return MIN_WIDTH; // \frac{1e18}{B} (1 - \frac{1}{1.0001^(MIN_WIDTH / 2*sqrt(7))})
-        if (_sigma >= 1.417383935e17) return MAX_WIDTH; // \frac{1e18}{B} (1 - \frac{1}{1.0001^(MAX_WIDTH / 2*sqrt(7))})
-        _sigma = FullMath.mulDiv(_sigma, B, 10_000); 
+        if (_sigma <= A) return MIN_WIDTH; // \frac{1e18}{B} (1 - \frac{1}{1.0001^(MIN_WIDTH / 2*sqrt(7))})
+        if (_sigma >= C) return MAX_WIDTH; // \frac{1e18}{B} (1 - \frac{1}{1.0001^(MAX_WIDTH / 2*sqrt(7))})
+        _sigma *= B;
         unchecked {
             uint160 ratio = uint160((Q96 * 1e18) / (1e18 - _sigma));
             return TickMath.getTickAtSqrtRatio(ratio);
@@ -512,23 +569,6 @@ contract SSUniVault is
         }
     }
 
-    /// @notice withdraw SS fees accrued
-    function withdrawSwapSweepBalance() external {
-        uint256 amount0 = SSBalance0;
-        uint256 amount1 = SSBalance1;
-
-        SSBalance0 = 0;
-        SSBalance1 = 0;
-
-        if (amount0 > 0) {
-            token0.safeTransfer(SSTreasury, amount0);
-        }
-
-        if (amount1 > 0) {
-            token1.safeTransfer(SSTreasury, amount1);
-        }
-    }
-
     // View functions
 
     /// @notice compute maximum SS-UNI tokens that can be minted from `amount0Max` and `amount1Max`
@@ -545,7 +585,6 @@ contract SSUniVault is
             uint256 mintAmount
         )
     {
-        (Uniswap.Position memory primary, ) = _loadPackedSlot();
         uint256 totalSupply = totalSupply();
         if (totalSupply > 0) {
             (amount0, amount1, mintAmount) = _computeMintAmounts(
@@ -554,14 +593,20 @@ contract SSUniVault is
                 amount1Max
             );
         } else {
+            (Uniswap.Position memory primary, ) = _loadPackedSlot();
             (uint160 sqrtRatioX96, , , , , , ) = pool.slot0();
-            uint128 newLiquidity = primary.liquidityForAmounts(sqrtRatioX96, amount0Max, amount1Max);
+            uint128 newLiquidity = primary.liquidityForAmounts(
+                sqrtRatioX96,
+                amount0Max,
+                amount1Max
+            );
             mintAmount = uint256(newLiquidity);
-            (amount0, amount1) = primary.amountsForLiquidity(sqrtRatioX96, newLiquidity);
+            (amount0, amount1) = primary.amountsForLiquidity(
+                sqrtRatioX96,
+                newLiquidity
+            );
         }
     }
-
-
 
     /// @notice compute total underlying holdings of the SS-UNI token supply
     /// includes current liquidity invested in uniswap position, current fees earned, limit order
@@ -570,25 +615,33 @@ contract SSUniVault is
     /// @return amount1Current current total underlying balance of token1
     function getUnderlyingBalances()
         public
-        returns (
-            uint256 amount0Current,
-            uint256 amount1Current
-        )
+        returns (uint256 amount0Current, uint256 amount1Current)
     {
-        (Uniswap.Position memory primary, Uniswap.Position memory limit) = _loadPackedSlot();
+        (
+            Uniswap.Position memory primary,
+            Uniswap.Position memory limit
+        ) = _loadPackedSlot();
         (uint160 sqrtRatioX96, , , , , , ) = pool.slot0();
-        (amount0Current, amount1Current,)= _getUnderlyingBalances(primary, limit, sqrtRatioX96);
+        (amount0Current, amount1Current, ) = _getUnderlyingBalances(
+            primary,
+            limit,
+            sqrtRatioX96
+        );
     }
 
     function getUnderlyingBalancesAtPrice(uint160 sqrtRatioX96)
         external
-        returns (
-            uint256 amount0Current,
-            uint256 amount1Current
-        )
+        returns (uint256 amount0Current, uint256 amount1Current)
     {
-        (Uniswap.Position memory primary, Uniswap.Position memory limit) = _loadPackedSlot();
-        (amount0Current, amount1Current,)= _getUnderlyingBalances(primary, limit, sqrtRatioX96);
+        (
+            Uniswap.Position memory primary,
+            Uniswap.Position memory limit
+        ) = _loadPackedSlot();
+        (amount0Current, amount1Current, ) = _getUnderlyingBalances(
+            primary,
+            limit,
+            sqrtRatioX96
+        );
     }
 
     // solhint-disable-next-line function-max-lines
@@ -642,14 +695,14 @@ contract SSUniVault is
         if (_limit.upper != _limit.lower) {
             uint128 tokensOwed0L;
             uint128 tokensOwed1L;
-            ( d.limitLiquidity, , , tokensOwed0L, tokensOwed1L) = _limit.info();
+            (d.limitLiquidity, , , tokensOwed0L, tokensOwed1L) = _limit.info();
             (d.amount0Limit, d.amount1Limit) = _limit.amountsForLiquidity(
                 _sqrtPriceX96,
-                 d.limitLiquidity
+                d.limitLiquidity
             );
             amount0Current += d.amount0Limit + tokensOwed0L;
             amount1Current += d.amount1Limit + tokensOwed1L;
-        } 
+        }
         // compute current fees earned from primary position
         uint256 fee0 = uint256(tokensOwed0);
         uint256 fee1 = uint256(tokensOwed1);
@@ -660,15 +713,12 @@ contract SSUniVault is
         amount0Current +=
             fee0 +
             token0.balanceOf(address(this)) -
-            managerBalance0 -
-            SSBalance0;
+            managerBalance0;
         amount1Current +=
             fee1 +
             token1.balanceOf(address(this)) -
-            managerBalance1 -
-            SSBalance1;
+            managerBalance1;
     }
-
 
     // solhint-disable-next-line function-max-lines
     function _reinvest(
@@ -678,8 +728,9 @@ contract SSUniVault is
         uint256 leftover0,
         uint256 leftover1
     ) private {
-
-        (, , uint256 feesEarned0, uint256 feesEarned1) = primary.withdraw(primaryLiquidity);
+        (, , uint256 feesEarned0, uint256 feesEarned1) = primary.withdraw(
+            primaryLiquidity
+        );
         _applyFees(feesEarned0, feesEarned1);
         (feesEarned0, feesEarned1) = _subtractAdminFees(
             feesEarned0,
@@ -689,74 +740,73 @@ contract SSUniVault is
         feesEarned0 += leftover0;
         feesEarned1 += leftover1;
 
-        (uint256 fee, address feeToken) = IOps(ops).getFeeDetails();
+        token0.safeTransfer(msg.sender, (feesEarned0 * reinvestBPS) / 10000);
+        token1.safeTransfer(msg.sender, (feesEarned1 * reinvestBPS) / 10000);
 
-        _transfer(fee, feeToken);
+        leftover0 = token0.balanceOf(address(this)) - managerBalance0;
+        leftover1 = token1.balanceOf(address(this)) - managerBalance1;
 
-        feeToken == address(token0) ?
-        require((feesEarned0 * gelatoRebalanceBPS) / 10000 >= fee, "high fee") : 
-        (feeToken == address(token1)) ?
-        require((feesEarned1 * gelatoRebalanceBPS) / 10000 >= fee, "high fee") :
-        revert("wrong token");
+        (uint160 sqrtRatioX96, int24 tick, , , , , ) = pool.slot0();
 
-        leftover0 = token0.balanceOf(address(this)) - managerBalance0 - SSBalance0;
-        leftover1 = token1.balanceOf(address(this)) - managerBalance1 - SSBalance1;
-
-        _deposit(
-            primary,
-            leftover0,
-            leftover1
-        );
+        _deposit(primary, limit, leftover0, leftover1, sqrtRatioX96, tick);
     }
 
     function _loadPackedSlot()
         private
         view
-        returns (
-            Uniswap.Position memory,
-            Uniswap.Position memory
-        )
+        returns (Uniswap.Position memory, Uniswap.Position memory)
     {
         PackedSlot memory _packedSlot = packedSlot;
+        require(!_packedSlot.locked);
         return (
-            Uniswap.Position(pool, _packedSlot.primaryLower, _packedSlot.primaryUpper),
-            Uniswap.Position(pool, _packedSlot.limitLower, _packedSlot.limitUpper)
+            Uniswap.Position(
+                pool,
+                _packedSlot.primaryLower,
+                _packedSlot.primaryUpper
+            ),
+            Uniswap.Position(
+                pool,
+                _packedSlot.limitLower,
+                _packedSlot.limitUpper
+            )
         );
     }
 
     // solhint-disable-next-line function-max-lines
     function _deposit(
         Uniswap.Position memory primary,
+        Uniswap.Position memory limit,
         uint256 amount0,
-        uint256 amount1
+        uint256 amount1,
+        uint160 sqrtRatioX96,
+        int24 tick
     ) private {
-        (uint160 sqrtRatioX96, int24 tick, , , , , ) = pool.slot0();
         // First, deposit as much as we can
-        uint128 baseLiquidity = primary.liquidityForAmounts(
-            sqrtRatioX96,
-            amount0,
-            amount1
-        );
-        if (baseLiquidity > 0) {
-            (uint256 amountDeposited0, uint256 amountDeposited1) = primary.deposit(baseLiquidity);
+        (uint128 baseLiquidity, bool limitedBy0) = primary
+            .liquidityForAmountsCheck(sqrtRatioX96, amount0, amount1);
+
+        if (baseLiquidity != 0) {
+            (uint256 amountDeposited0, uint256 amountDeposited1) = primary
+                .deposit(baseLiquidity);
 
             amount0 -= amountDeposited0;
             amount1 -= amountDeposited1;
         }
-        // Put left over token into limit order. One of the token amounts
-        // should equal zero (or be very close to zero)
-        if(amount1 > amount0) {
-            // Choose limit order bounds below the market price.
-            limit.upper = TickMath.floor(tick, TICK_SPACING);
-            limit.lower = limit.upper - TICK_SPACING;
-            // place a new limit order
-            limit.deposit(limit.liquidityForAmount1(amount1));
-        } else {
+
+        bool zeroForOne = baseLiquidity != 0 ? !limitedBy0 : amount0 > amount1;
+        // Put left over token into limit order.
+        if (zeroForOne) {
             // Choose limit order bounds above the market price.
             limit.lower = TickMath.ceil(tick, TICK_SPACING);
             limit.upper = limit.lower + TICK_SPACING;
             // place a new limit order
             limit.deposit(limit.liquidityForAmount0(amount0));
+        } else {
+            // Choose limit order bounds below the market price.
+            limit.upper = TickMath.floor(tick, TICK_SPACING);
+            limit.lower = limit.upper - TICK_SPACING;
+            // place a new limit order
+            limit.deposit(limit.liquidityForAmount1(amount1));
         }
         packedSlot.limitLower = limit.lower;
         packedSlot.limitUpper = limit.upper;
@@ -825,13 +875,9 @@ contract SSUniVault is
         );
     }
 
-
     function _applyFees(uint256 _fee0, uint256 _fee1) private {
         managerBalance0 += (_fee0 * managerFeeBPS) / 10000;
         managerBalance1 += (_fee1 * managerFeeBPS) / 10000;
-        SSBalance0 += (_fee0 * SSFeeBPS) / 10000;
-        SSBalance1 += (_fee1 * SSFeeBPS) / 10000;
-
     }
 
     function _subtractAdminFees(uint256 rawFee0, uint256 rawFee1)
@@ -839,8 +885,8 @@ contract SSUniVault is
         view
         returns (uint256 fee0, uint256 fee1)
     {
-        uint256 deduct0 = (rawFee0 * (managerFeeBPS + SSFeeBPS)) / 10000;
-        uint256 deduct1 = (rawFee1 * (managerFeeBPS + SSFeeBPS)) / 10000;
+        uint256 deduct0 = (rawFee0 * (managerFeeBPS)) / 10000;
+        uint256 deduct1 = (rawFee1 * (managerFeeBPS)) / 10000;
         fee0 = rawFee0 - deduct0;
         fee1 = rawFee1 - deduct1;
     }

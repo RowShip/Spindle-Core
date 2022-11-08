@@ -3,7 +3,19 @@ pragma solidity ^0.8.10;
 
 import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
 
-interface IVolatilityOracle {
+interface ISpindleOracle {
+    /**
+     * @notice get twap for a specific period of time
+     * @dev wrapper around `Oracle.consultAtHistoricTime`
+     * @param secondsAgoToStartOfTwap amount of seconds in the past to start calculating time-weighted average
+     * @param secondsAgoToEndOfTwap amount of seconds in the past to end calculating time-weighted average
+     */
+    function getHistoricalTwap(
+        IUniswapV3Pool pool,
+        uint32 secondsAgoToStartOfTwap,
+        uint32 secondsAgoToEndOfTwap
+    ) external view returns (int24 twapTick);
+
     /**
      * @notice Accesses the most recently stored metadata for a given Uniswap pool
      * @dev These values may or may not have been initialized and may or may not be

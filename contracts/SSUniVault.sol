@@ -41,7 +41,11 @@ contract SSUniVault is IUniswapV3MintCallback, SSUniVaultStorage {
         uint128 liquidityAfter
     );
 
-    enum AuctionType {TIME, PRICE, IV}
+    enum AuctionType {
+        TIME,
+        PRICE,
+        IV
+    }
 
     event Recenter(
         AuctionType auctionType,
@@ -321,48 +325,101 @@ contract SSUniVault is IUniswapV3MintCallback, SSUniVaultStorage {
         uint160 sqrtPriceX96;
         uint224 priceX96;
         int24 tick;
+        uint256 iv;
     }
 
     /// @notice Strategy recentering based on time threshold
     /// @param amount0Min minimum amount of token0 to receive
     /// @param amount1Min minimum amount of token1 to receive
     function timeRecenter(uint256 amount0Min, uint256 amount1Min) external {
-        // check if rebalancing based on time threshold is allowed
-        uint256 auctionTimestamp = timeAtLastRecenter + recenterTimeThreshold;
+        // check if recentering based on time threshold is allowed
+        uint256 auctionTimestamp = timeAtLastRecenter + timeThreshold;
 
         require(
             block.timestamp >= auctionTimestamp,
             "time threshold not reached"
         );
-        RecenterCache memory cache;
-        (cache.sqrtPriceX96, cache.tick, , , , , ) = pool.slot0();
 
-        // get current price
-        cache.priceX96 = uint224(
-            FullMath.mulDiv(cache.sqrtPriceX96, cache.sqrtPriceX96, Q96)
+        RecenterCache memory cache = _populateRecenterCache(pool);
+
+        require(
+            getAbsDiff(cache.tick, tickAtLastRecenter) <=
+                int24(minTickThreshold),
+            "tickDelta <= minTickThreshold"
         );
+
+        _executeAuction(auctionTimestamp, amount0Min, amount1Min, cache);
+    }
+
+    /// @notice Strategy recentering based on tick threshold
+    /// @param auctionTriggerTime time when tick threshold was triggered
+    /// @param amount0Min minimum amount of token0 to receive
+    /// @param amount1Min minimum amount of token1 to receive
+    function tickRecenter(
+        uint256 auctionTriggerTime,
+        uint256 amount0Min,
+        uint256 amount1Min
+    ) external {
+        require(
+            auctionTriggerTime > block.timestamp,
+            "auctionTriggerTime > timeAtLastRebalance"
+        );
+        uint32 secondsToTrigger = uint32(block.timestamp - auctionTriggerTime);
+
+        int24 tickAtTrigger = SpindleOracle.getHistoricalTwap(
+            pool,
+            secondsToTrigger + TWAP_PERIOD,
+            secondsToTrigger
+        );
+
+        RecenterCache memory cache = _populateRecenterCache(pool);
+
+        require(
+            getAbsDiff(cache.tick, tickAtTrigger) >= int24(tickThreshold),
+            "tickDelta >= tickThreshold"
+        );
+
+        _executeAuction(auctionTriggerTime, amount0Min, amount1Min, cache);
+    }
+
+    /// @notice Strategy recentering based on iv threshold
+    /// @param amount0Min minimum amount of token0 to receive
+    /// @param amount1Min minimum amount of token1 to receive
+    function ivRecenter(uint256 amount0Min, uint256 amount1Min) external {
+        require(
+            block.timestamp >= (timeAtLastRecenter + timeThreshold),
+            "time threshold not reached"
+        );
+
+        RecenterCache memory cache = _populateRecenterCache(pool);
 
         uint256 ratio = FullMath.mulDiv(
             10_000,
-            cache.priceX96 > priceAtLastRecenter
-                ? cache.priceX96 - priceAtLastRecenter
-                : priceAtLastRecenter - cache.priceX96,
-            priceAtLastRecenter
+            cache.iv > ivAtLastRecenter ? cache.iv - ivAtLastRecenter : ivAtLastRecenter - cache.iv,
+            ivAtLastRecenter
         );
 
-        // no rebalance if the price change <= rebalanceThreshold
-        require(
-            ratio <= recenterThresholdBPS,
-            "price change threshold not reached"
-        );
+        require(ratio >= ivThresholdBPS, "ivDelta >= ivThreshold");
 
         _executeAuction(
-            auctionTimestamp,
+            block.timestamp + AUCTION_TIME, // skip to the end of auction for IV recentering
             amount0Min,
             amount1Min,
             cache
         );
+    }
 
+    /// @notice Populates recenter cache with price related pool data
+    /// @return cache contains data needed for recenter computations
+    function _populateRecenterCache(IUniswapV3Pool pool)
+        internal
+        returns (RecenterCache memory cache)
+    {
+        (cache.sqrtPriceX96, cache.tick, , , , , ) = pool.slot0();
+        cache.priceX96 = uint224(
+            FullMath.mulDiv(cache.sqrtPriceX96, cache.sqrtPriceX96, Q96)
+        );
+        cache.iv = SpindleOracle.estimate24H(pool);
     }
 
     function _executeAuction(
@@ -371,8 +428,10 @@ contract SSUniVault is IUniswapV3MintCallback, SSUniVaultStorage {
         uint256 amount1Min,
         RecenterCache memory cache
     ) internal {
-
-        (Uniswap.Position memory primary, Uniswap.Position memory limit) = _loadPackedSlot();
+        (
+            Uniswap.Position memory primary,
+            Uniswap.Position memory limit
+        ) = _loadPackedSlot();
         packedSlot.locked = true;
 
         // Withdraw all the liqudity and collect fees
@@ -393,8 +452,8 @@ contract SSUniVault is IUniswapV3MintCallback, SSUniVaultStorage {
         );
         emit FeesEarned(feesEarned0, feesEarned1);
 
-        // Decide primary position width...
-        int24 w = _computeNextPositionWidth(volatilityOracle.estimate24H(pool));
+        // Decide primary position width based on IV
+        int24 w = _computeNextPositionWidth(cache.iv);
         w = w >> 1;
 
         // Update primary position's ticks
@@ -405,9 +464,13 @@ contract SSUniVault is IUniswapV3MintCallback, SSUniVaultStorage {
             if (primary.upper > MAX_TICK) primary.upper = MAX_TICK;
         }
 
-        (uint256 amount0, uint256 amount1, bool zeroForOne) = _getAuctionParams(primary, cache, auctionTimestamp);
+        (uint256 amount0, uint256 amount1, bool zeroForOne) = _getAuctionParams(
+            primary,
+            cache,
+            auctionTimestamp
+        );
 
-        if(zeroForOne) {
+        if (zeroForOne) {
             require(amount0 >= amount0Min, "amount0Min not reached");
             token0.safeTransfer(msg.sender, amount0);
             token1.safeTransferFrom(msg.sender, address(this), amount1);
@@ -417,20 +480,19 @@ contract SSUniVault is IUniswapV3MintCallback, SSUniVaultStorage {
             token0.safeTransferFrom(msg.sender, address(this), amount0);
         }
 
-        // Place new primary position 
+        // Place new primary position
         primary.deposit(
             primary.liquidityForAmounts(
-                cache.sqrtPriceX96, 
+                cache.sqrtPriceX96,
                 token0.balanceOf(address(this)) - managerBalance0,
                 token1.balanceOf(address(this)) - managerBalance1
             )
         );
 
-        // Place new positions
         emit Recenter(
             AuctionType.TIME,
             auctionTimestamp,
-            primary.lower, 
+            primary.lower,
             primary.upper,
             amount0,
             amount1,
@@ -499,7 +561,11 @@ contract SSUniVault is IUniswapV3MintCallback, SSUniVaultStorage {
         if (limitedBy0) {
             // Discount the price of token1.
             // Presumably the keeper waits until priceMultiplier < 10000 to achieve an arb profit.
-            discountedPrice = FullMath.mulDiv(cache.priceX96, 10_000, priceMultiplier);
+            discountedPrice = FullMath.mulDiv(
+                cache.priceX96,
+                10_000,
+                priceMultiplier
+            );
             // compute proportion of token0 total value in the position
             ratio = FullMath.mulDiv(
                 10_000,
@@ -518,7 +584,11 @@ contract SSUniVault is IUniswapV3MintCallback, SSUniVaultStorage {
             zeroForOne = true;
             // Discount the price of token0.
             // Presumably the keeper waits until priceMultiplier < 10000 to achieve an arb profit.
-            discountedPrice = FullMath.mulDiv(cache.priceX96, priceMultiplier, 10_000);
+            discountedPrice = FullMath.mulDiv(
+                cache.priceX96,
+                priceMultiplier,
+                10_000
+            );
             // compute proportion of token1 total value in the position
             ratio = FullMath.mulDiv(
                 10_000,
@@ -570,6 +640,12 @@ contract SSUniVault is IUniswapV3MintCallback, SSUniVaultStorage {
     }
 
     // View functions
+
+    /// @notice Computes |a - b|
+    /// @return the absolute difference between a and b
+    function getAbsDiff(int256 a, int256 b) internal pure returns (int256) {
+        return a > b ? a - b : b - a;
+    }
 
     /// @notice compute maximum SS-UNI tokens that can be minted from `amount0Max` and `amount1Max`
     /// @param amount0Max The maximum amount of token0 to forward on mint

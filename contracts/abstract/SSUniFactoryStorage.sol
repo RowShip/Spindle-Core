@@ -9,7 +9,7 @@ import {
     EnumerableSet
 } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
-import {IVolatilityOracle} from "../interfaces/IVolatilityOracle.sol";
+import {ISpindleOracle} from "../interfaces/ISpindleOracle.sol";
 
 // solhint-disable-next-line max-states-count
 contract SSUniFactoryStorage is
@@ -25,7 +25,7 @@ contract SSUniFactoryStorage is
     address public poolImplementation;
     EnumerableSet.AddressSet internal _deployers;
     mapping(address => EnumerableSet.AddressSet) internal _pools;
-    IVolatilityOracle public immutable volatilityOracle;
+    ISpindleOracle public immutable SpindleOracle;
     uint256 public index;
     // APPPEND ADDITIONAL STATE VARS BELOW:
     // XXXXXXXX DO NOT MODIFY ORDERING XXXXXXXX
@@ -36,9 +36,9 @@ contract SSUniFactoryStorage is
     );
 
 
-    constructor(address _uniswapV3Factory, IVolatilityOracle _volatilityOracle) {
+    constructor(address _uniswapV3Factory, ISpindleOracle _SpindleOracle) {
         factory = _uniswapV3Factory;
-        volatilityOracle = _volatilityOracle;
+        SpindleOracle = _SpindleOracle;
     }
 
     function initialize(

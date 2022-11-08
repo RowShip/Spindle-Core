@@ -125,11 +125,11 @@ describe("SSUniVault", () => {
 
     const sSUniFactoryFactory = await ethers.getContractFactory("SSUniFactory");
 
-    const volatilityOracle = await (await ethers.getContractFactory("VolatilityOracle")).deploy();
+    const SpindleOracle = await (await ethers.getContractFactory("SpindleOracle")).deploy();
 
     sSUniFactory = (await sSUniFactoryFactory.deploy(
       uniswapFactory.address,
-      volatilityOracle.address
+      SpindleOracle.address
     )) as SSUniFactory;
 
     await sSUniFactory.initialize(

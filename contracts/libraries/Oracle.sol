@@ -9,33 +9,39 @@ import "./TickMath.sol";
 /// @title Oracle
 /// @notice Provides functions to integrate with V3 pool oracle
 library Oracle {
-    /**
-     * @notice Calculates time-weighted means of tick and liquidity for a given Uniswap V3 pool
-     * @param pool Address of the pool that we want to observe
-     * @param secondsAgo Number of seconds in the past from which to calculate the time-weighted means
-     * @return arithmeticMeanTick The arithmetic mean tick from (block.timestamp - secondsAgo) to block.timestamp
-     * @return secondsPerLiquidityX128 The change in seconds per liquidity from (block.timestamp - secondsAgo)
-     * to block.timestamp
-     */
-    function consult(IUniswapV3Pool pool, uint32 secondsAgo)
-        internal
-        view
-        returns (int24 arithmeticMeanTick, uint160 secondsPerLiquidityX128)
-    {
-        require(secondsAgo != 0, "BP");
+    
+    /// @notice fetches time-weighted average tick using uniswap v3 oracle
+    /// @dev written by opyn team
+    /// @param pool Address of uniswap v3 pool that we want to observe
+    /// @param _secondsAgoToStartOfTwap number of seconds to start of TWAP period
+    /// @param _secondsAgoToEndOfTwap number of seconds to end of TWAP period
+    /// @return arithmeticMeanTick The arithmetic mean tick from (block.timestamp - secondsAgo) to block.timestamp
+    /// @return secondsPerLiquidityX128 The change in seconds per liquidity from (block.timestamp - secondsAgo)
+    /// to block.timestamp
 
-        uint32[] memory secondsAgos = new uint32[](2);
-        secondsAgos[0] = secondsAgo;
-        secondsAgos[1] = 0;
+    function consultAtHistoricTime(
+        IUniswapV3Pool pool,
+        uint32 _secondsAgoToStartOfTwap,
+        uint32 _secondsAgoToEndOfTwap
+    ) internal view returns (int24 arithmeticMeanTick, uint160 secondsPerLiquidityX128)
+    {
+        require(_secondsAgoToStartOfTwap > _secondsAgoToEndOfTwap, "BP");
+        uint32[] memory secondAgos = new uint32[](2);
+
+        uint32 twapDuration = _secondsAgoToStartOfTwap - _secondsAgoToEndOfTwap;
+
+        // get TWAP from (now - _secondsAgoToStartOfTwap) -> (now - _secondsAgoToEndOfTwap)
+        secondAgos[0] = _secondsAgoToStartOfTwap;
+        secondAgos[1] = _secondsAgoToEndOfTwap;
 
         (int56[] memory tickCumulatives, uint160[] memory secondsPerLiquidityCumulativeX128s) = pool.observe(
-            secondsAgos
+            secondAgos
         );
 
         int56 tickCumulativesDelta = tickCumulatives[1] - tickCumulatives[0];
-        arithmeticMeanTick = int24(tickCumulativesDelta / int32(secondsAgo));
+        arithmeticMeanTick = int24(tickCumulativesDelta / int32(twapDuration));
         // Always round to negative infinity
-        if (tickCumulativesDelta < 0 && (tickCumulativesDelta % int32(secondsAgo) != 0)) arithmeticMeanTick--;
+        if (tickCumulativesDelta < 0 && (tickCumulativesDelta % int32(twapDuration) != 0)) arithmeticMeanTick--;
 
         secondsPerLiquidityX128 = secondsPerLiquidityCumulativeX128s[1] - secondsPerLiquidityCumulativeX128s[0];
     }

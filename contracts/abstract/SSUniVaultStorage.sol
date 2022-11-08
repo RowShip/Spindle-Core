@@ -14,7 +14,7 @@ import {
 } from "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 
 import { SSUniFactoryStorage } from "./SSUniFactoryStorage.sol";
-import {IVolatilityOracle} from "../interfaces/IVolatilityOracle.sol";
+import {ISpindleOracle} from "../interfaces/ISpindleOracle.sol";
 import {TickMath} from "../libraries/TickMath.sol";
 
 import "@rari-capital/solmate/src/utils/FixedPointMathLib.sol";
@@ -39,12 +39,12 @@ abstract contract SSUniVaultStorage is
     // XXXXXXXX DO NOT MODIFY ORDERING XXXXXXXX
 
     uint16 public reinvestBPS; /// @dev percent of fees sent to caller of reinvest()
-    uint16 public recenterThresholdBPS; /// @dev min price percentage change for initiating recenter 
-    uint16 public recenterPriceThresholdBPS; /// @dev price percentage change to trigger a recenter
-    uint16 public recenterIVThresholdBPS; /// @dev implied volatility percentage change to trigger a recenter
-    uint32 public recenterTimeThreshold; /// @dev time difference to trigger a recenter
+    uint24 public minTickThreshold; /// @dev min tick delta for initiating recenter 
+    uint24 public tickThreshold; /// @dev tick delta to trigger a recenter
+    uint16 public ivThresholdBPS; /// @dev implied volatility percentage change to trigger a recenter
+    uint32 public timeThreshold; /// @dev time difference to trigger a recenter
    
-    uint224 public priceAtLastRecenter; /// @dev price when last recenter executed
+    int24 public tickAtLastRecenter; /// @dev tick when last recenter executed
     uint256 public ivAtLastRecenter; /// @dev implied volatility when last recenter executed
     uint256 public timeAtLastRecenter; /// @dev timestamp when last recenter executed
 
@@ -64,9 +64,10 @@ abstract contract SSUniVaultStorage is
     int24 public MIN_TICK;
     int24 public MAX_TICK;
 
-    uint16 public MAX_PRICE_MULTIPLIER_BPS = 10500; /// @dev Price multiplier of 1.05 at the start of recenter dutch auction
-    uint16 public MIN_PRICE_MULTIPLIER_BPS = 9500; /// @dev Price multiplier of 0.95 at the end of recenter dutch auction
-    uint16 public AUCTION_TIME = 600; /// @dev 10 minute duration for recenter dutch auctions.
+    uint16 public constant MAX_PRICE_MULTIPLIER_BPS = 10500; /// @dev Price multiplier of 1.05 at the start of recenter dutch auction
+    uint16 public constant MIN_PRICE_MULTIPLIER_BPS = 9500; /// @dev Price multiplier of 0.95 at the end of recenter dutch auction
+    uint16 public constant AUCTION_TIME = 600; /// @dev 10 minute duration for recenter dutch auctions.
+    uint32 public constant TWAP_PERIOD = 180 seconds; /// @dev twap period to use for price based recenter calculations
 
     /// @dev \frac{1e18}{B} (1 - \frac{1}{1.0001^(MIN_WIDTH / 2})
     uint64 public A;
@@ -77,7 +78,7 @@ abstract contract SSUniVaultStorage is
     /// @dev \frac{1e18}{B} (1 - \frac{1}{1.0001^(MAX_WIDTH / 2})
     uint64 public C;
 
-    IVolatilityOracle public volatilityOracle;
+    ISpindleOracle public SpindleOracle;
 
     struct PackedSlot {
         // The primary position's lower tick bound
@@ -101,10 +102,10 @@ abstract contract SSUniVaultStorage is
         uint16 managerFeeBPS,
         address managerTreasury,
         uint16 reinvestBPS,
-        uint16 recenterThresholdBPS,
-        uint16 recenterPriceThresholdBPS,
-        uint16 recenterIVThresholdBPS,
-        uint32 recenterTimeThreshold,
+        uint24 minTickThreshold,
+        uint24 tickThreshold,
+        uint16 ivThresholdBPS,
+        uint32 timeThreshold,
         uint16 stdBPS
     );
 
@@ -133,7 +134,7 @@ abstract contract SSUniVaultStorage is
         TICK_SPACING = pool.tickSpacing();
         MIN_TICK = TickMath.ceil(TickMath.MIN_TICK, TICK_SPACING);
         MAX_TICK = TickMath.floor(TickMath.MAX_TICK, TICK_SPACING);
-        volatilityOracle = SSUniFactoryStorage(msg.sender).volatilityOracle();
+        SpindleOracle = SSUniFactoryStorage(msg.sender).SpindleOracle();
         // these variables can be udpated by the manager
         reinvestBPS = 200; // default: only rebalance if tx fee is lt 2% reinvested
         managerFeeBPS = _managerFeeBPS;
@@ -152,8 +153,8 @@ abstract contract SSUniVaultStorage is
         int16 newManagerFeeBPS,
         address newManagerTreasury,
         int16 newReinvestBPS,
-        int16 newThresholdBPS,
-        int16 newPriceThresholdBPS,
+        int24 newMinTickThreshold,
+        int24 newTickThreshold,
         int16 newIVThresholdBPS,
         int32 newTimeThreshold,
         int16 newStdBPS /// @dev standard deviations of trading activity primary liquidity positions should cover over recenterTimeThreshold
@@ -164,11 +165,11 @@ abstract contract SSUniVaultStorage is
         if (address(0) != newManagerTreasury)
             managerTreasury = newManagerTreasury;
         if (newReinvestBPS >= 0) reinvestBPS = uint16(newReinvestBPS);
-        if (newThresholdBPS >= 0)
-            recenterTimeThreshold = uint16(newThresholdBPS);
-        if (newPriceThresholdBPS >= 0) recenterPriceThresholdBPS = uint16(newPriceThresholdBPS);
-        if (newIVThresholdBPS >= 0) recenterIVThresholdBPS = uint16(newIVThresholdBPS);
-        if (newTimeThreshold >= 0) recenterTimeThreshold = uint32(newTimeThreshold);
+        if (newMinTickThreshold >= 0)
+            minTickThreshold = uint24(newMinTickThreshold);
+        if (newTickThreshold >= 0) tickThreshold = uint24(newTickThreshold);
+        if (newIVThresholdBPS >= 0) ivThresholdBPS = uint16(newIVThresholdBPS);
+        if (newTimeThreshold >= 0) timeThreshold = uint32(newTimeThreshold);
         if (newStdBPS >= 0 && newTimeThreshold >= 0) {
             B = uint16(
                 (uint16(newStdBPS)*
@@ -186,10 +187,10 @@ abstract contract SSUniVaultStorage is
             managerFeeBPS,
             managerTreasury,
             reinvestBPS,
-            recenterThresholdBPS,
-            recenterPriceThresholdBPS,
-            recenterIVThresholdBPS,
-            recenterTimeThreshold,
+            minTickThreshold,
+            tickThreshold,
+            ivThresholdBPS,
+            timeThreshold,
             uint16(newStdBPS)
         );
     }

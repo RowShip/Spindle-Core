@@ -17,13 +17,13 @@ import {
     EnumerableSet
 } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
-import {IVolatilityOracle} from "./interfaces/IVolatilityOracle.sol";
+import {ISpindleOracle} from "./interfaces/ISpindleOracle.sol";
 
 contract SSUniFactory is SSUniFactoryStorage, ISSUniFactory {
     using EnumerableSet for EnumerableSet.AddressSet;
 
-    constructor(address _uniswapV3Factory, IVolatilityOracle _volatilityOracle)
-        SSUniFactoryStorage(_uniswapV3Factory, _volatilityOracle)
+    constructor(address _uniswapV3Factory, ISpindleOracle _SpindleOracle)
+        SSUniFactoryStorage(_uniswapV3Factory, _SpindleOracle)
     {} // solhint-disable-line no-empty-blocks
 
      /// @notice deployVault creates a new instance of a Vault on a specified

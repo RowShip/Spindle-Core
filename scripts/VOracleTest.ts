@@ -1,5 +1,5 @@
 import { ethers } from "hardhat";
-import { VolatilityOracle } from "../typechain/VolatilityOracle";
+import { SpindleOracle } from "../typechain/SpindleOracle";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 
 const ORACLE_ADDRESS = "0x0000000000f0021d219C5AE2Fd5b261966012Dd7";
@@ -7,7 +7,7 @@ const ORACLE_ADDRESS = "0x0000000000f0021d219C5AE2Fd5b261966012Dd7";
 async function readOracle(poolAddress : string) {
     const [deployer] = await ethers.getSigners();
     console.log(deployer.address);
-    const oracle = (await ethers.getContractFactory("VolatilityOracle")).attach(ORACLE_ADDRESS) as VolatilityOracle;
+    const oracle = (await ethers.getContractFactory("SpindleOracle")).attach(ORACLE_ADDRESS) as SpindleOracle;
     const IV = await oracle.callStatic.estimate24H(poolAddress)
     console.log(IV)
 }

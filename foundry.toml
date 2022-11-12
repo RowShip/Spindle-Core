@@ -2,6 +2,6 @@
 src = 'src'
 out = 'out'
 libs = ['lib']
-remappings = ["ds-test/=lib/ds-test/src/", "@openzeppelin/=lib/openzeppelin-contracts/", "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts", "@uniswap/v3-core/=lib/v3-core/", "rari-capital/solmate/=lib/solmate/"]
+remappings = ["ds-test/=lib/ds-test/src/", "@openzeppelin/contracts=lib/openzeppelin-contracts/contracts", "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts", "@uniswap/v3-core/=lib/v3-core/", "rari-capital/solmate/=lib/solmate/"]
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config

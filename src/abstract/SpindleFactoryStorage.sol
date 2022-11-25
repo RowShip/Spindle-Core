@@ -12,7 +12,7 @@ import {
 import {ISpindleOracle} from "../interfaces/ISpindleOracle.sol";
 
 // solhint-disable-next-line max-states-count
-contract SSUniFactoryStorage is
+contract SpindleFactoryStorage is
     OwnableUninitialized, /* XXXX DONT MODIFY ORDERING XXXX */
     Initializable
     // APPEND ADDITIONAL BASE WITH STATE VARS BELOW:

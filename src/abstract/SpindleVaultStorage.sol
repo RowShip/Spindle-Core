@@ -13,7 +13,7 @@ import {
     ERC20Upgradeable
 } from "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 
-import { SSUniFactoryStorage } from "./SSUniFactoryStorage.sol";
+import { SpindleFactoryStorage } from "./SpindleFactoryStorage.sol";
 import {ISpindleOracle} from "../interfaces/ISpindleOracle.sol";
 import {TickMath} from "../libraries/TickMath.sol";
 
@@ -26,7 +26,7 @@ import "@rari-capital/solmate/src/utils/FixedPointMathLib.sol";
 /// @dev Add all inherited contracts with state vars here: APPEND ONLY
 /// @dev ERC20Upgradable Includes Initialize
 // solhint-disable-next-line max-states-count
-abstract contract SSUniVaultStorage is
+abstract contract SpindleVaultStorage is
     ERC20Upgradeable, /* XXXX DONT MODIFY ORDERING XXXX */
     OwnableUninitialized
     // APPEND ADDITIONAL BASE WITH STATE VARS BELOW:
@@ -134,7 +134,7 @@ abstract contract SSUniVaultStorage is
         TICK_SPACING = pool.tickSpacing();
         MIN_TICK = TickMath.ceil(TickMath.MIN_TICK, TICK_SPACING);
         MAX_TICK = TickMath.floor(TickMath.MAX_TICK, TICK_SPACING);
-        SpindleOracle = SSUniFactoryStorage(msg.sender).SpindleOracle();
+        SpindleOracle = SpindleFactoryStorage(msg.sender).SpindleOracle();
         // these variables can be udpated by the manager
         reinvestBPS = 200; // default: only rebalance if tx fee is lt 2% reinvested
         managerFeeBPS = _managerFeeBPS;

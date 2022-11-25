@@ -5,9 +5,9 @@ import {
     IUniswapV3Factory
 } from "@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol";
 import {IUniswapV3TickSpacing} from "./interfaces/IUniswapV3TickSpacing.sol";
-import {ISSUniFactory} from "./interfaces/ISSUniFactory.sol";
-import {ISSUniVaultStorage} from "./interfaces/ISSUniVaultStorage.sol";
-import {SSUniFactoryStorage} from "./abstract/SSUniFactoryStorage.sol";
+import {ISpindleVault} from "./interfaces/ISpindleVault.sol";
+import {ISpindleVaultStorage} from "./interfaces/ISpindleVaultStorage.sol";
+import {SpindleFactoryStorage} from "./abstract/SpindleFactoryStorage.sol";
 import {EIP173Proxy} from "./proxy/EIP173Proxy.sol";
 import {IEIP173Proxy} from "./interfaces/IEIP173Proxy.sol";
 import {
@@ -19,11 +19,11 @@ import {
 
 import {ISpindleOracle} from "./interfaces/ISpindleOracle.sol";
 
-contract SSUniFactory is SSUniFactoryStorage, ISSUniFactory {
+contract SpindleFactory is SpindleFactoryStorage, ISpindleVault {
     using EnumerableSet for EnumerableSet.AddressSet;
 
     constructor(address _uniswapV3Factory, ISpindleOracle _SpindleOracle)
-        SSUniFactoryStorage(_uniswapV3Factory, _SpindleOracle)
+        SpindleFactoryStorage(_uniswapV3Factory, _SpindleOracle)
     {} // solhint-disable-line no-empty-blocks
 
      /// @notice deployVault creates a new instance of a Vault on a specified
@@ -77,7 +77,7 @@ contract SSUniFactory is SSUniFactoryStorage, ISSUniFactory {
             upperTick
         );
 
-        ISSUniVaultStorage(pool).initialize(
+        ISpindleVaultStorage(pool).initialize(
             name,
             string(abi.encodePacked("SS-UNI ", _uint2str(index + 1))),
             uniPool,

@@ -2,7 +2,7 @@
 pragma solidity 0.8.10;
 import {IUniswapV3MintCallback} from "@uniswap/v3-core/contracts/interfaces/callback/IUniswapV3MintCallback.sol";
 import {IUniswapV3SwapCallback} from "@uniswap/v3-core/contracts/interfaces/callback/IUniswapV3SwapCallback.sol";
-import {SSUniVaultStorage} from "./abstract/SSUniVaultStorage.sol";
+import {SpindleVaultStorage} from "./abstract/SpindleVaultStorage.sol";
 import {IUniswapV3Pool} from "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
 import {TickMath} from "./libraries/TickMath.sol";
 import {IERC20, SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
@@ -13,7 +13,7 @@ import {Uniswap} from "./libraries/Uniswap.sol";
 
 uint256 constant Q96 = 2**96;
 
-contract SSUniVault is IUniswapV3MintCallback, SSUniVaultStorage {
+contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
     using SafeERC20 for IERC20;
     using TickMath for int24;
     using Uniswap for Uniswap.Position;

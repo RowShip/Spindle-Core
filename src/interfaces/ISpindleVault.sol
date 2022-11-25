@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.10;
 
-interface ISSUniFactory {
+interface ISpindleVault {
     event PoolCreated(
         address indexed uniPool,
         address indexed manager,

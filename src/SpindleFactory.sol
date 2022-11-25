@@ -79,7 +79,7 @@ contract SpindleFactory is SpindleFactoryStorage, ISpindleVault {
 
         ISpindleVaultStorage(pool).initialize(
             name,
-            string(abi.encodePacked("SS-UNI ", _uint2str(index + 1))),
+            string(abi.encodePacked("SPV ", _uint2str(index + 1))),
             uniPool,
             managerFee,
             lowerTick,
@@ -110,7 +110,7 @@ contract SpindleFactory is SpindleFactoryStorage, ISpindleVault {
 
         pool = address(new EIP173Proxy(poolImplementation, address(this), ""));
 
-        name = "Swap Sweep Vault";
+        name = "Spindle Vault";
         try this.getTokenName(token0, token1) returns (string memory result) {
             name = result;
         } catch {} // solhint-disable-line no-empty-blocks
@@ -143,7 +143,7 @@ contract SpindleFactory is SpindleFactoryStorage, ISpindleVault {
         string memory symbol0 = IERC20Metadata(token0).symbol();
         string memory symbol1 = IERC20Metadata(token1).symbol();
 
-        return _append("SwapSweep Vault V1 ", symbol0, "/", symbol1);
+        return _append("Spindle Vault V1 ", symbol0, "/", symbol1);
     }
 
     function upgradePools(address[] memory pools) external onlyManager {

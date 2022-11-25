@@ -10,6 +10,7 @@ import "../src/mocks/MockERC20.sol";
 import "../src/mocks/SwapTest.sol";
 import "../src/libraries/TickMath.sol";
 import "./UniFactoryByteCode.sol";
+import "./Utils.t.sol";
 
 contract SpindleVaultTest is Test {
     MockERC20 public token0;
@@ -19,8 +20,13 @@ contract SpindleVaultTest is Test {
     SpindleOracle public spindleOracle;
     SpindleVault public spindleVault;
     SpindleFactory public spindleFactory;
+    Utils internal utils;
+    address payable[] internal users;
     
     function setUp() public {
+        // deploy utils contract and create users
+        utils = new Utils();
+        users = utils.createUsers(5);
         // deploy mock erc20 and swap test
         token0 = new MockERC20();
         token1 = new MockERC20();
@@ -79,20 +85,37 @@ contract SpindleVaultTest is Test {
     function test_deposit() public {
         token0.approve(
             address(spindleVault),
-            1000000e18
+            1000000 ether
         );
         token1.approve(
             address(spindleVault),
-            1000000e18
+            1000000 ether
         );
-        _mint(1e18, 1e18);
+        _mint(1 ether, 1 ether);
         assertGt(token0.balanceOf(address(uniPool)), 0);
         assertGt(token1.balanceOf(address(uniPool)), 0);
-        (uint128 liquidity, , , , ) = uniPool.positions(
+
+        uint128 liquidity;
+        (liquidity, , , , ) = uniPool.positions(
             _getPositionID(address(spindleVault), -887220, 887220)
         );
         assertGt(liquidity, 0);
-        assertGt(spindleVault.balanceOf(address(this)), 0);
+        assertGt(spindleVault.totalSupply(), 0);
+        _mint(0.5 ether, 1 ether);
+        uint128 liquidity2;
+        (liquidity2, , , , ) = uniPool.positions(
+            _getPositionID(address(spindleVault), -887220, 887220)
+        );
+        assertGt(liquidity2, liquidity);
 
+        spindleVault.transfer(users[0], 1 ether);
+        vm.prank(users[0]);
+        spindleVault.approve(address(this), 1 ether);
+        vm.prank(address(this));
+        spindleVault.transferFrom(users[0], address(this), 1 ether);
+
+        assertEq(spindleVault.decimals(), 18);
+        assertEq(spindleVault.symbol(), "SPV 1");
+        assertEq(spindleVault.name(), "Spindle Vault V1 TOKEN/TOKEN");
     }
 }

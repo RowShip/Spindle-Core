@@ -1,0 +1,1679 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_uniswapV3Factory",
+          "type": "address"
+        },
+        {
+          "internalType": "contract ISpindleOracle",
+          "name": "_SpindleOracle",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint8",
+          "name": "version",
+          "type": "uint8"
+        }
+      ],
+      "name": "Initialized",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousManager",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newManager",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "previousImplementation",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "newImplementation",
+          "type": "address"
+        }
+      ],
+      "name": "UpdatePoolImplementation",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "SpindleOracle",
+      "outputs": [
+        {
+          "internalType": "contract ISpindleOracle",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "factory",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "index",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_implementation",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_manager_",
+          "type": "address"
+        }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "manager",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "poolImplementation",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "nextImplementation",
+          "type": "address"
+        }
+      ],
+      "name": "setPoolImplementation",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "version",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x60c060405234801561001057600080fd5b5060405161072f38038061072f83398101604081905261002f9161005e565b6001600160a01b039182166080521660a052610098565b6001600160a01b038116811461005b57600080fd5b50565b6000806040838503121561007157600080fd5b825161007c81610046565b602084015190925061008d81610046565b809150509250929050565b60805160a0516106726100bd60003960006101370152600061015e01526106726000f3fe608060405234801561001057600080fd5b506004361061009e5760003560e01c80637da3e463116100665780637da3e46314610132578063c45a015514610159578063cefa779914610180578063d6f7489814610193578063f2fde38b146101a657600080fd5b80632986c0e5146100a3578063481c6a75146100bf578063485cc955146100e457806354fd4d50146100f9578063715018a61461012a575b600080fd5b6100ac60055481565b6040519081526020015b60405180910390f35b6000546001600160a01b03165b6040516001600160a01b0390911681526020016100b6565b6100f76100f2366004610550565b6101b9565b005b61011d604051806040016040528060058152602001640312e302e360dc1b81525081565b6040516100b69190610583565b6100f7610314565b6100cc7f000000000000000000000000000000000000000000000000000000000000000081565b6100cc7f000000000000000000000000000000000000000000000000000000000000000081565b6001546100cc906001600160a01b031681565b6100f76101a13660046105d8565b610397565b6100f76101b43660046105d8565b610439565b600054600160a81b900460ff16158080156101e157506000546001600160a01b90910460ff16105b806102025750303b1580156102025750600054600160a01b900460ff166001145b61026a5760405162461bcd60e51b815260206004820152602e60248201527f496e697469616c697a61626c653a20636f6e747261637420697320616c72656160448201526d191e481a5b9a5d1a585b1a5e995960921b60648201526084015b60405180910390fd5b6000805460ff60a01b1916600160a01b1790558015610297576000805460ff60a81b1916600160a81b1790555b600180546001600160a01b038086166001600160a01b0319928316179092556000805492851692909116919091179055801561030f576000805460ff60a81b19169055604051600181527f7f26b83ff96e1f2b6a682f133852f6798a09c465da95921460cefb38474024989060200160405180910390a15b505050565b336103276000546001600160a01b031690565b6001600160a01b03161461034d5760405162461bcd60e51b8152600401610261906105fa565b600080546040516001600160a01b03909116907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908390a3600080546001600160a01b0319169055565b336103aa6000546001600160a01b031690565b6001600160a01b0316146103d05760405162461bcd60e51b8152600401610261906105fa565b600154604080516001600160a01b03928316815291831660208301527f0617fd31aa5ab95ec80eefc1eb61a2c477aa419d1d761b4e46f5f077e47852aa910160405180910390a1600180546001600160a01b0319166001600160a01b0392909216919091179055565b3361044c6000546001600160a01b031690565b6001600160a01b0316146104725760405162461bcd60e51b8152600401610261906105fa565b6001600160a01b0381166104d95760405162461bcd60e51b815260206004820152602860248201527f4f776e61626c653a206e6577206d616e6167657220697320746865207a65726f604482015267206164647265737360c01b6064820152608401610261565b600080546040516001600160a01b03808516939216917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a3600080546001600160a01b0319166001600160a01b0392909216919091179055565b80356001600160a01b038116811461054b57600080fd5b919050565b6000806040838503121561056357600080fd5b61056c83610534565b915061057a60208401610534565b90509250929050565b600060208083528351808285015260005b818110156105b057858101830151858201604001528201610594565b818111156105c2576000604083870101525b50601f01601f1916929092016040019392505050565b6000602082840312156105ea57600080fd5b6105f382610534565b9392505050565b60208082526022908201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206d616e616760408201526132b960f11b60608201526080019056fea2646970667358221220c2eb4c84cb3cf0491ef23e41aeee9727b80d64dd3fced6e6a77536bc49fc07c464736f6c634300080a0033",
+    "sourceMap": "431:1434:26:-:0;;;1271:154;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;-1:-1:-1;;;;;1351:27:26;;;;;1388:30;;;431:1434;;14:131:34;-1:-1:-1;;;;;89:31:34;;79:42;;69:70;;135:1;132;125:12;69:70;14:131;:::o;150:408::-;252:6;260;313:2;301:9;292:7;288:23;284:32;281:52;;;329:1;326;319:12;281:52;361:9;355:16;380:31;405:5;380:31;:::i;:::-;480:2;465:18;;459:25;430:5;;-1:-1:-1;493:33:34;459:25;493:33;:::i;:::-;545:7;535:17;;;150:408;;;;;:::o;:::-;431:1434:26;;;;;;;;;;;;;;;;;;",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x608060405234801561001057600080fd5b506004361061009e5760003560e01c80637da3e463116100665780637da3e46314610132578063c45a015514610159578063cefa779914610180578063d6f7489814610193578063f2fde38b146101a657600080fd5b80632986c0e5146100a3578063481c6a75146100bf578063485cc955146100e457806354fd4d50146100f9578063715018a61461012a575b600080fd5b6100ac60055481565b6040519081526020015b60405180910390f35b6000546001600160a01b03165b6040516001600160a01b0390911681526020016100b6565b6100f76100f2366004610550565b6101b9565b005b61011d604051806040016040528060058152602001640312e302e360dc1b81525081565b6040516100b69190610583565b6100f7610314565b6100cc7f000000000000000000000000000000000000000000000000000000000000000081565b6100cc7f000000000000000000000000000000000000000000000000000000000000000081565b6001546100cc906001600160a01b031681565b6100f76101a13660046105d8565b610397565b6100f76101b43660046105d8565b610439565b600054600160a81b900460ff16158080156101e157506000546001600160a01b90910460ff16105b806102025750303b1580156102025750600054600160a01b900460ff166001145b61026a5760405162461bcd60e51b815260206004820152602e60248201527f496e697469616c697a61626c653a20636f6e747261637420697320616c72656160448201526d191e481a5b9a5d1a585b1a5e995960921b60648201526084015b60405180910390fd5b6000805460ff60a01b1916600160a01b1790558015610297576000805460ff60a81b1916600160a81b1790555b600180546001600160a01b038086166001600160a01b0319928316179092556000805492851692909116919091179055801561030f576000805460ff60a81b19169055604051600181527f7f26b83ff96e1f2b6a682f133852f6798a09c465da95921460cefb38474024989060200160405180910390a15b505050565b336103276000546001600160a01b031690565b6001600160a01b03161461034d5760405162461bcd60e51b8152600401610261906105fa565b600080546040516001600160a01b03909116907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908390a3600080546001600160a01b0319169055565b336103aa6000546001600160a01b031690565b6001600160a01b0316146103d05760405162461bcd60e51b8152600401610261906105fa565b600154604080516001600160a01b03928316815291831660208301527f0617fd31aa5ab95ec80eefc1eb61a2c477aa419d1d761b4e46f5f077e47852aa910160405180910390a1600180546001600160a01b0319166001600160a01b0392909216919091179055565b3361044c6000546001600160a01b031690565b6001600160a01b0316146104725760405162461bcd60e51b8152600401610261906105fa565b6001600160a01b0381166104d95760405162461bcd60e51b815260206004820152602860248201527f4f776e61626c653a206e6577206d616e6167657220697320746865207a65726f604482015267206164647265737360c01b6064820152608401610261565b600080546040516001600160a01b03808516939216917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a3600080546001600160a01b0319166001600160a01b0392909216919091179055565b80356001600160a01b038116811461054b57600080fd5b919050565b6000806040838503121561056357600080fd5b61056c83610534565b915061057a60208401610534565b90509250929050565b600060208083528351808285015260005b818110156105b057858101830151858201604001528201610594565b818111156105c2576000604083870101525b50601f01601f1916929092016040019392505050565b6000602082840312156105ea57600080fd5b6105f382610534565b9392505050565b60208082526022908201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206d616e616760408201526132b960f11b60608201526080019056fea2646970667358221220c2eb4c84cb3cf0491ef23e41aeee9727b80d64dd3fced6e6a77536bc49fc07c464736f6c634300080a0033",
+    "sourceMap": "431:1434:26:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1033:20;;;;;;;;;160:25:34;;;148:2;133:18;1033:20:26;;;;;;;;998:89:25;1046:7;1072:8;-1:-1:-1;;;;;1072:8:25;998:89;;;-1:-1:-1;;;;;360:32:34;;;342:51;;330:2;315:18;998:89:25;196:203:34;1431:190:26;;;;;;:::i;:::-;;:::i;:::-;;743:40;;;;;;;;;;;;;;;-1:-1:-1;;;743:40:26;;;;;;;;;;;;:::i;1650:151:25:-;;;:::i;982:45:26:-;;;;;789:32;;;;;827:33;;;;;-1:-1:-1;;;;;827:33:26;;;1627:235;;;;;;:::i;:::-;;:::i;1952:282:25:-;;;;;;:::i;:::-;;:::i;1431:190:26:-;3268:19:0;3291:13;-1:-1:-1;;;3291:13:0;;;;3290:14;;3336:34;;;;-1:-1:-1;3354:12:0;;3369:1;-1:-1:-1;;;3354:12:0;;;;;:16;3336:34;3335:108;;;-1:-1:-1;3415:4:0;1476:19:5;:23;;;3376:66:0;;-1:-1:-1;3425:12:0;;-1:-1:-1;;;3425:12:0;;;;3441:1;3425:17;3376:66;3314:201;;;;-1:-1:-1;;;3314:201:0;;2073:2:34;3314:201:0;;;2055:21:34;2112:2;2092:18;;;2085:30;2151:34;2131:18;;;2124:62;-1:-1:-1;;;2202:18:34;;;2195:44;2256:19;;3314:201:0;;;;;;;;;3525:12;:16;;-1:-1:-1;;;;3525:16:0;-1:-1:-1;;;3525:16:0;;;3551:65;;;;3585:13;:20;;-1:-1:-1;;;;3585:20:0;-1:-1:-1;;;3585:20:0;;;3551:65;1548:18:26::1;:36:::0;;-1:-1:-1;;;;;1548:36:26;;::::1;-1:-1:-1::0;;;;;;1548:36:26;;::::1;;::::0;;;:18:::1;1594:20:::0;;;;::::1;::::0;;;::::1;::::0;;;::::1;::::0;;3636:99:0;;;;3686:5;3670:21;;-1:-1:-1;;;;3670:21:0;;;3710:14;;-1:-1:-1;2438:36:34;;3710:14:0;;2426:2:34;2411:18;3710:14:0;;;;;;;3636:99;3258:483;1431:190:26;;:::o;1650:151:25:-;1231:10;1218:9;1046:7;1072:8;-1:-1:-1;;;;;1072:8:25;;998:89;1218:9;-1:-1:-1;;;;;1218:23:25;;1210:70;;;;-1:-1:-1;;;1210:70:25;;;;;;;:::i;:::-;1760:1:::1;1742:8:::0;;1721:42:::1;::::0;-1:-1:-1;;;;;1742:8:25;;::::1;::::0;1721:42:::1;::::0;1760:1;;1721:42:::1;1792:1;1773:21:::0;;-1:-1:-1;;;;;;1773:21:25::1;::::0;;1650:151::o;1627:235:26:-;1231:10:25;1218:9;1046:7;1072:8;-1:-1:-1;;;;;1072:8:25;;998:89;1218:9;-1:-1:-1;;;;;1218:23:25;;1210:70;;;;-1:-1:-1;;;1210:70:25;;;;;;;:::i;:::-;1767:18:26::1;::::0;1742:64:::1;::::0;;-1:-1:-1;;;;;1767:18:26;;::::1;3100:34:34::0;;3170:15;;;3165:2;3150:18;;3143:43;1742:64:26::1;::::0;3035:18:34;1742:64:26::1;;;;;;;1816:18;:39:::0;;-1:-1:-1;;;;;;1816:39:26::1;-1:-1:-1::0;;;;;1816:39:26;;;::::1;::::0;;;::::1;::::0;;1627:235::o;1952:282:25:-;1231:10;1218:9;1046:7;1072:8;-1:-1:-1;;;;;1072:8:25;;998:89;1218:9;-1:-1:-1;;;;;1218:23:25;;1210:70;;;;-1:-1:-1;;;1210:70:25;;;;;;;:::i;:::-;-1:-1:-1;;;;;2055:22:25;::::1;2034:109;;;::::0;-1:-1:-1;;;2034:109:25;;3399:2:34;2034:109:25::1;::::0;::::1;3381:21:34::0;3438:2;3418:18;;;3411:30;3477:34;3457:18;;;3450:62;-1:-1:-1;;;3528:18:34;;;3521:38;3576:19;;2034:109:25::1;3197:404:34::0;2034:109:25::1;2179:8;::::0;;2158:40:::1;::::0;-1:-1:-1;;;;;2158:40:25;;::::1;::::0;2179:8;::::1;::::0;2158:40:::1;::::0;::::1;2208:8;:19:::0;;-1:-1:-1;;;;;;2208:19:25::1;-1:-1:-1::0;;;;;2208:19:25;;;::::1;::::0;;;::::1;::::0;;1952:282::o;404:173:34:-;472:20;;-1:-1:-1;;;;;521:31:34;;511:42;;501:70;;567:1;564;557:12;501:70;404:173;;;:::o;582:260::-;650:6;658;711:2;699:9;690:7;686:23;682:32;679:52;;;727:1;724;717:12;679:52;750:29;769:9;750:29;:::i;:::-;740:39;;798:38;832:2;821:9;817:18;798:38;:::i;:::-;788:48;;582:260;;;;;:::o;847:597::-;959:4;988:2;1017;1006:9;999:21;1049:6;1043:13;1092:6;1087:2;1076:9;1072:18;1065:34;1117:1;1127:140;1141:6;1138:1;1135:13;1127:140;;;1236:14;;;1232:23;;1226:30;1202:17;;;1221:2;1198:26;1191:66;1156:10;;1127:140;;;1285:6;1282:1;1279:13;1276:91;;;1355:1;1350:2;1341:6;1330:9;1326:22;1322:31;1315:42;1276:91;-1:-1:-1;1428:2:34;1407:15;-1:-1:-1;;1403:29:34;1388:45;;;;1435:2;1384:54;;847:597;-1:-1:-1;;;847:597:34:o;1680:186::-;1739:6;1792:2;1780:9;1771:7;1767:23;1763:32;1760:52;;;1808:1;1805;1798:12;1760:52;1831:29;1850:9;1831:29;:::i;:::-;1821:39;1680:186;-1:-1:-1;;;1680:186:34:o;2485:398::-;2687:2;2669:21;;;2726:2;2706:18;;;2699:30;2765:34;2760:2;2745:18;;2738:62;-1:-1:-1;;;2831:2:34;2816:18;;2809:32;2873:3;2858:19;;2485:398::o",
+    "linkReferences": {},
+    "immutableReferences": {
+      "7817": [
+        {
+          "start": 350,
+          "length": 32
+        }
+      ],
+      "7830": [
+        {
+          "start": 311,
+          "length": 32
+        }
+      ]
+    }
+  },
+  "methodIdentifiers": {
+    "SpindleOracle()": "7da3e463",
+    "factory()": "c45a0155",
+    "index()": "2986c0e5",
+    "initialize(address,address)": "485cc955",
+    "manager()": "481c6a75",
+    "poolImplementation()": "cefa7799",
+    "renounceOwnership()": "715018a6",
+    "setPoolImplementation(address)": "d6f74898",
+    "transferOwnership(address)": "f2fde38b",
+    "version()": "54fd4d50"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.10+commit.fc410830\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_uniswapV3Factory\",\"type\":\"address\"},{\"internalType\":\"contract ISpindleOracle\",\"name\":\"_SpindleOracle\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint8\",\"name\":\"version\",\"type\":\"uint8\"}],\"name\":\"Initialized\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousManager\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newManager\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"previousImplementation\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"}],\"name\":\"UpdatePoolImplementation\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"SpindleOracle\",\"outputs\":[{\"internalType\":\"contract ISpindleOracle\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"factory\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"index\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_implementation\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_manager_\",\"type\":\"address\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"manager\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolImplementation\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"nextImplementation\",\"type\":\"address\"}],\"name\":\"setPoolImplementation\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"version\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"manager()\":{\"details\":\"Returns the address of the current manager.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without manager. It will not be possible to call `onlyManager` functions anymore. Can only be called by the current manager. NOTE: Renouncing ownership will leave the contract without an manager, thereby removing any functionality that is only available to the manager.\"},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current manager.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/abstract/SSUniFactoryStorage.sol\":\"SSUniFactoryStorage\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":@rari-capital/solmate/=lib/solmate/\",\":@uniswap/v3-core/=lib/v3-core/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/\",\":solmate/=lib/solmate/src/\",\":v3-core/=lib/v3-core/\"]},\"sources\":{\"lib/openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol\":{\"keccak256\":\"0xedc5eaa54866c6d0e8960d9fe8ea6f9052ba28686907f6886f83dfba41fa1549\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://0b296244e62d13e87d8272c574fb58c22af02b262d74d7a8f642753522351bb0\",\"dweb:/ipfs/Qmcd3MfBWRE8EQt67AqgGGHviNum5aQ7JE7manH5nNtx4o\"]},\"lib/openzeppelin-contracts-upgradeable/contracts/utils/AddressUpgradeable.sol\":{\"keccak256\":\"0x0a3b4afc301241e2629ad192fa02e0f8626e3cf38ab6f45342bfd7afbde16ee0\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b189423f1102ff4487e9c59a65ec400b98cc4aeef478dac8272b482e9f5ad7de\",\"dweb:/ipfs/QmdpYHrzD8wPe5DMuEiWkXiVLsTkqD7C4tbBjWwkBQwJi2\"]},\"lib/openzeppelin-contracts/contracts/utils/structs/EnumerableSet.sol\":{\"keccak256\":\"0xc3ff3f5c4584e1d9a483ad7ced51ab64523201f4e3d3c65293e4ca8aeb77a961\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d7d3dd6067a994690471b5fc71b6f81fac3847798b37d404f74db00b4d3c3d0e\",\"dweb:/ipfs/QmRHF1RarifjNi93RttouNPkYZGyu6CD926PgRDzD5iL35\"]},\"lib/v3-core/contracts/interfaces/IUniswapV3Pool.sol\":{\"keccak256\":\"0xfe6113d518466cd6652c85b111e01f33eb62157f49ae5ed7d5a3947a2044adb1\",\"license\":\"GPL-2.0-or-later\",\"urls\":[\"bzz-raw://1c42b9e6f5902ac38dd43e25750939baa7e0c1425dc75afd717c4412731065d5\",\"dweb:/ipfs/QmWaoacnzsucTvBME2o7YgZBZMhaHv7fkj83htHMVWJKWh\"]},\"lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolActions.sol\":{\"keccak256\":\"0x9453dd0e7442188667d01d9b65de3f1e14e9511ff3e303179a15f6fc267f7634\",\"license\":\"GPL-2.0-or-later\",\"urls\":[\"bzz-raw://982f4328f956c3e60e67501e759eb292ac487f76460c774c50e9ae4fcc92aae5\",\"dweb:/ipfs/QmRnzEDsaqtd9PJEVcgQi7p5aV5pMSvRUoGZJAdwFUJxgZ\"]},\"lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolDerivedState.sol\":{\"keccak256\":\"0xe603ac5b17ecdee73ba2b27efdf386c257a19c14206e87eee77e2017b742d9e5\",\"license\":\"GPL-2.0-or-later\",\"urls\":[\"bzz-raw://8febc9bdb399a4d94bb89f5377732652e2400e4a8dee808201ade6848f9004e7\",\"dweb:/ipfs/QmaKDqYYFU4d2W2iN77aDHptfbFmYZRrMYXHeGpJmM8C1c\"]},\"lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolEvents.sol\":{\"keccak256\":\"0x8071514d0fe5d17d6fbd31c191cdfb703031c24e0ece3621d88ab10e871375cd\",\"license\":\"GPL-2.0-or-later\",\"urls\":[\"bzz-raw://d0b571930cc7488b1d546a7e9cea7c52d8b3c4e207da657ed0e0db7343b8cd03\",\"dweb:/ipfs/QmaGK6vVwB95QSTR1XMYvrh7ivYAYZxi3fD7v6VMA4jZ39\"]},\"lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolImmutables.sol\":{\"keccak256\":\"0xf6e5d2cd1139c4c276bdbc8e1d2b256e456c866a91f1b868da265c6d2685c3f7\",\"license\":\"GPL-2.0-or-later\",\"urls\":[\"bzz-raw://b99c8c9ae8e27ee6559e5866bea82cbc9ffc8247f8d15b7422a4deb287d4d047\",\"dweb:/ipfs/QmfL8gaqt3ffAnm6nVj5ksuNpLygXuL3xq5VBqrkwC2JJ3\"]},\"lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolOwnerActions.sol\":{\"keccak256\":\"0x759b78a2918af9e99e246dc3af084f654e48ef32bb4e4cb8a966aa3dcaece235\",\"license\":\"GPL-2.0-or-later\",\"urls\":[\"bzz-raw://64144fb96e1c7fdba87305acadb98a198d26a3d46c097cb3a666e567f6f29735\",\"dweb:/ipfs/QmUnWVwN9FKB9uV5Pr8YfLpWZnYM2DENnRMaadZ492JS9u\"]},\"lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol\":{\"keccak256\":\"0x852dc1f5df7dcf7f11e7bb3eed79f0cea72ad4b25f6a9d2c35aafb48925fd49f\",\"license\":\"GPL-2.0-or-later\",\"urls\":[\"bzz-raw://ed63907c38ff36b0e22bc9ffc53e791ea74f0d4f0e7c257fdfb5aaf8825b1f0f\",\"dweb:/ipfs/QmSQrckghEjs6HVsA5GVgpNpZWvTXMY5eQLF7cN6deFeEg\"]},\"src/abstract/OwnableUninitialized.sol\":{\"keccak256\":\"0x9ab875243e7324afb4bc673ca1cd283d2a254fb18a1ac360b364e352b1a0c7fd\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://11e52381ad93c11d622b5f8fc4bf0092c630d630c3faaf596be42adf67f3e479\",\"dweb:/ipfs/QmTGwUpbZiHkqK6sy9eKDJuedsquoNR8rUR7aifNdx6TxR\"]},\"src/abstract/SSUniFactoryStorage.sol\":{\"keccak256\":\"0x4aefad71973bc18f382fc4e4cf427b7ede6306c4f60dcc59a76d6141f1f807b3\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://cab09a87c0061cc17ab2ec8f1f80e164fdab5816018e4bea06e712567540b86f\",\"dweb:/ipfs/QmfQ1yQjL6W4H6UPcHes8RjEaik71AC98KknwRQA1ZgTGx\"]},\"src/interfaces/ISpindleOracle.sol\":{\"keccak256\":\"0xe15cd7e9b1cf728965bc52352e8b263d46d69d7015854f2c90fe8b4392028b71\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9814076c8809e325dc91154a469ea7b15acc4dc1534e933b92cbb6a75b00e044\",\"dweb:/ipfs/QmZTPm2DDFbbPCcXx7VyWM9TMieQuXmB4e7SZaXhHCo9PU\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.10+commit.fc410830"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_uniswapV3Factory",
+              "type": "address"
+            },
+            {
+              "internalType": "contract ISpindleOracle",
+              "name": "_SpindleOracle",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint8",
+              "name": "version",
+              "type": "uint8",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "Initialized",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "previousManager",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "newManager",
+              "type": "address",
+              "indexed": true
+            }
+          ],
+          "type": "event",
+          "name": "OwnershipTransferred",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "previousImplementation",
+              "type": "address",
+              "indexed": false
+            },
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "UpdatePoolImplementation",
+          "anonymous": false
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "SpindleOracle",
+          "outputs": [
+            {
+              "internalType": "contract ISpindleOracle",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "factory",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "index",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_implementation",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_manager_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "initialize"
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "manager",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "poolImplementation",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "renounceOwnership"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "nextImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "setPoolImplementation"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "transferOwnership"
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "version",
+          "outputs": [
+            {
+              "internalType": "string",
+              "name": "",
+              "type": "string"
+            }
+          ]
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "manager()": {
+            "details": "Returns the address of the current manager."
+          },
+          "renounceOwnership()": {
+            "details": "Leaves the contract without manager. It will not be possible to call `onlyManager` functions anymore. Can only be called by the current manager. NOTE: Renouncing ownership will leave the contract without an manager, thereby removing any functionality that is only available to the manager."
+          },
+          "transferOwnership(address)": {
+            "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current manager."
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        ":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+        ":@rari-capital/solmate/=lib/solmate/",
+        ":@uniswap/v3-core/=lib/v3-core/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+        ":forge-std/=lib/forge-std/src/",
+        ":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        ":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/",
+        ":solmate/=lib/solmate/src/",
+        ":v3-core/=lib/v3-core/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/abstract/SSUniFactoryStorage.sol": "SSUniFactoryStorage"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "lib/openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol": {
+        "keccak256": "0xedc5eaa54866c6d0e8960d9fe8ea6f9052ba28686907f6886f83dfba41fa1549",
+        "urls": [
+          "bzz-raw://0b296244e62d13e87d8272c574fb58c22af02b262d74d7a8f642753522351bb0",
+          "dweb:/ipfs/Qmcd3MfBWRE8EQt67AqgGGHviNum5aQ7JE7manH5nNtx4o"
+        ],
+        "license": "MIT"
+      },
+      "lib/openzeppelin-contracts-upgradeable/contracts/utils/AddressUpgradeable.sol": {
+        "keccak256": "0x0a3b4afc301241e2629ad192fa02e0f8626e3cf38ab6f45342bfd7afbde16ee0",
+        "urls": [
+          "bzz-raw://b189423f1102ff4487e9c59a65ec400b98cc4aeef478dac8272b482e9f5ad7de",
+          "dweb:/ipfs/QmdpYHrzD8wPe5DMuEiWkXiVLsTkqD7C4tbBjWwkBQwJi2"
+        ],
+        "license": "MIT"
+      },
+      "lib/openzeppelin-contracts/contracts/utils/structs/EnumerableSet.sol": {
+        "keccak256": "0xc3ff3f5c4584e1d9a483ad7ced51ab64523201f4e3d3c65293e4ca8aeb77a961",
+        "urls": [
+          "bzz-raw://d7d3dd6067a994690471b5fc71b6f81fac3847798b37d404f74db00b4d3c3d0e",
+          "dweb:/ipfs/QmRHF1RarifjNi93RttouNPkYZGyu6CD926PgRDzD5iL35"
+        ],
+        "license": "MIT"
+      },
+      "lib/v3-core/contracts/interfaces/IUniswapV3Pool.sol": {
+        "keccak256": "0xfe6113d518466cd6652c85b111e01f33eb62157f49ae5ed7d5a3947a2044adb1",
+        "urls": [
+          "bzz-raw://1c42b9e6f5902ac38dd43e25750939baa7e0c1425dc75afd717c4412731065d5",
+          "dweb:/ipfs/QmWaoacnzsucTvBME2o7YgZBZMhaHv7fkj83htHMVWJKWh"
+        ],
+        "license": "GPL-2.0-or-later"
+      },
+      "lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolActions.sol": {
+        "keccak256": "0x9453dd0e7442188667d01d9b65de3f1e14e9511ff3e303179a15f6fc267f7634",
+        "urls": [
+          "bzz-raw://982f4328f956c3e60e67501e759eb292ac487f76460c774c50e9ae4fcc92aae5",
+          "dweb:/ipfs/QmRnzEDsaqtd9PJEVcgQi7p5aV5pMSvRUoGZJAdwFUJxgZ"
+        ],
+        "license": "GPL-2.0-or-later"
+      },
+      "lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolDerivedState.sol": {
+        "keccak256": "0xe603ac5b17ecdee73ba2b27efdf386c257a19c14206e87eee77e2017b742d9e5",
+        "urls": [
+          "bzz-raw://8febc9bdb399a4d94bb89f5377732652e2400e4a8dee808201ade6848f9004e7",
+          "dweb:/ipfs/QmaKDqYYFU4d2W2iN77aDHptfbFmYZRrMYXHeGpJmM8C1c"
+        ],
+        "license": "GPL-2.0-or-later"
+      },
+      "lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolEvents.sol": {
+        "keccak256": "0x8071514d0fe5d17d6fbd31c191cdfb703031c24e0ece3621d88ab10e871375cd",
+        "urls": [
+          "bzz-raw://d0b571930cc7488b1d546a7e9cea7c52d8b3c4e207da657ed0e0db7343b8cd03",
+          "dweb:/ipfs/QmaGK6vVwB95QSTR1XMYvrh7ivYAYZxi3fD7v6VMA4jZ39"
+        ],
+        "license": "GPL-2.0-or-later"
+      },
+      "lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolImmutables.sol": {
+        "keccak256": "0xf6e5d2cd1139c4c276bdbc8e1d2b256e456c866a91f1b868da265c6d2685c3f7",
+        "urls": [
+          "bzz-raw://b99c8c9ae8e27ee6559e5866bea82cbc9ffc8247f8d15b7422a4deb287d4d047",
+          "dweb:/ipfs/QmfL8gaqt3ffAnm6nVj5ksuNpLygXuL3xq5VBqrkwC2JJ3"
+        ],
+        "license": "GPL-2.0-or-later"
+      },
+      "lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolOwnerActions.sol": {
+        "keccak256": "0x759b78a2918af9e99e246dc3af084f654e48ef32bb4e4cb8a966aa3dcaece235",
+        "urls": [
+          "bzz-raw://64144fb96e1c7fdba87305acadb98a198d26a3d46c097cb3a666e567f6f29735",
+          "dweb:/ipfs/QmUnWVwN9FKB9uV5Pr8YfLpWZnYM2DENnRMaadZ492JS9u"
+        ],
+        "license": "GPL-2.0-or-later"
+      },
+      "lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol": {
+        "keccak256": "0x852dc1f5df7dcf7f11e7bb3eed79f0cea72ad4b25f6a9d2c35aafb48925fd49f",
+        "urls": [
+          "bzz-raw://ed63907c38ff36b0e22bc9ffc53e791ea74f0d4f0e7c257fdfb5aaf8825b1f0f",
+          "dweb:/ipfs/QmSQrckghEjs6HVsA5GVgpNpZWvTXMY5eQLF7cN6deFeEg"
+        ],
+        "license": "GPL-2.0-or-later"
+      },
+      "src/abstract/OwnableUninitialized.sol": {
+        "keccak256": "0x9ab875243e7324afb4bc673ca1cd283d2a254fb18a1ac360b364e352b1a0c7fd",
+        "urls": [
+          "bzz-raw://11e52381ad93c11d622b5f8fc4bf0092c630d630c3faaf596be42adf67f3e479",
+          "dweb:/ipfs/QmTGwUpbZiHkqK6sy9eKDJuedsquoNR8rUR7aifNdx6TxR"
+        ],
+        "license": "GPL-3.0"
+      },
+      "src/abstract/SSUniFactoryStorage.sol": {
+        "keccak256": "0x4aefad71973bc18f382fc4e4cf427b7ede6306c4f60dcc59a76d6141f1f807b3",
+        "urls": [
+          "bzz-raw://cab09a87c0061cc17ab2ec8f1f80e164fdab5816018e4bea06e712567540b86f",
+          "dweb:/ipfs/QmfQ1yQjL6W4H6UPcHes8RjEaik71AC98KknwRQA1ZgTGx"
+        ],
+        "license": "MIT"
+      },
+      "src/interfaces/ISpindleOracle.sol": {
+        "keccak256": "0xe15cd7e9b1cf728965bc52352e8b263d46d69d7015854f2c90fe8b4392028b71",
+        "urls": [
+          "bzz-raw://9814076c8809e325dc91154a469ea7b15acc4dc1534e933b92cbb6a75b00e044",
+          "dweb:/ipfs/QmZTPm2DDFbbPCcXx7VyWM9TMieQuXmB4e7SZaXhHCo9PU"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/abstract/SSUniFactoryStorage.sol",
+    "id": 7892,
+    "exportedSymbols": {
+      "EnumerableSet": [
+        9265
+      ],
+      "ISpindleOracle": [
+        7976
+      ],
+      "Initializable": [
+        8507
+      ],
+      "OwnableUninitialized": [
+        7798
+      ],
+      "SSUniFactoryStorage": [
+        7891
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "31:1835:26",
+    "nodes": [
+      {
+        "id": 7800,
+        "nodeType": "PragmaDirective",
+        "src": "31:24:26",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".10"
+        ]
+      },
+      {
+        "id": 7802,
+        "nodeType": "ImportDirective",
+        "src": "57:64:26",
+        "nodes": [],
+        "absolutePath": "src/abstract/OwnableUninitialized.sol",
+        "file": "./OwnableUninitialized.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 7892,
+        "sourceUnit": 7799,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 7801,
+              "name": "OwnableUninitialized",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "src": "65:20:26",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 7804,
+        "nodeType": "ImportDirective",
+        "src": "122:102:26",
+        "nodes": [],
+        "absolutePath": "lib/openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol",
+        "file": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 7892,
+        "sourceUnit": 8508,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 7803,
+              "name": "Initializable",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "src": "135:13:26",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 7806,
+        "nodeType": "ImportDirective",
+        "src": "225:92:26",
+        "nodes": [],
+        "absolutePath": "lib/openzeppelin-contracts/contracts/utils/structs/EnumerableSet.sol",
+        "file": "@openzeppelin/contracts/utils/structs/EnumerableSet.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 7892,
+        "sourceUnit": 9266,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 7805,
+              "name": "EnumerableSet",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "src": "238:13:26",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 7808,
+        "nodeType": "ImportDirective",
+        "src": "319:64:26",
+        "nodes": [],
+        "absolutePath": "src/interfaces/ISpindleOracle.sol",
+        "file": "../interfaces/ISpindleOracle.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 7892,
+        "sourceUnit": 7977,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 7807,
+              "name": "ISpindleOracle",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "src": "327:14:26",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 7891,
+        "nodeType": "ContractDefinition",
+        "src": "431:1434:26",
+        "nodes": [
+          {
+            "id": 7815,
+            "nodeType": "VariableDeclaration",
+            "src": "743:40:26",
+            "nodes": [],
+            "constant": true,
+            "functionSelector": "54fd4d50",
+            "mutability": "constant",
+            "name": "version",
+            "nameLocation": "766:7:26",
+            "scope": 7891,
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_string_memory_ptr",
+              "typeString": "string"
+            },
+            "typeName": {
+              "id": 7813,
+              "name": "string",
+              "nodeType": "ElementaryTypeName",
+              "src": "743:6:26",
+              "typeDescriptions": {
+                "typeIdentifier": "t_string_storage_ptr",
+                "typeString": "string"
+              }
+            },
+            "value": {
+              "hexValue": "312e302e30",
+              "id": 7814,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "string",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "776:7:26",
+              "typeDescriptions": {
+                "typeIdentifier": "t_stringliteral_06c015bd22b4c69690933c1058878ebdfef31f9aaae40bbe86d8a09fe1b2972c",
+                "typeString": "literal_string \"1.0.0\""
+              },
+              "value": "1.0.0"
+            },
+            "visibility": "public"
+          },
+          {
+            "id": 7817,
+            "nodeType": "VariableDeclaration",
+            "src": "789:32:26",
+            "nodes": [],
+            "constant": false,
+            "functionSelector": "c45a0155",
+            "mutability": "immutable",
+            "name": "factory",
+            "nameLocation": "814:7:26",
+            "scope": 7891,
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_address",
+              "typeString": "address"
+            },
+            "typeName": {
+              "id": 7816,
+              "name": "address",
+              "nodeType": "ElementaryTypeName",
+              "src": "789:7:26",
+              "stateMutability": "nonpayable",
+              "typeDescriptions": {
+                "typeIdentifier": "t_address",
+                "typeString": "address"
+              }
+            },
+            "visibility": "public"
+          },
+          {
+            "id": 7819,
+            "nodeType": "VariableDeclaration",
+            "src": "827:33:26",
+            "nodes": [],
+            "constant": false,
+            "functionSelector": "cefa7799",
+            "mutability": "mutable",
+            "name": "poolImplementation",
+            "nameLocation": "842:18:26",
+            "scope": 7891,
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_address",
+              "typeString": "address"
+            },
+            "typeName": {
+              "id": 7818,
+              "name": "address",
+              "nodeType": "ElementaryTypeName",
+              "src": "827:7:26",
+              "stateMutability": "nonpayable",
+              "typeDescriptions": {
+                "typeIdentifier": "t_address",
+                "typeString": "address"
+              }
+            },
+            "visibility": "public"
+          },
+          {
+            "id": 7822,
+            "nodeType": "VariableDeclaration",
+            "src": "866:44:26",
+            "nodes": [],
+            "constant": false,
+            "mutability": "mutable",
+            "name": "_deployers",
+            "nameLocation": "900:10:26",
+            "scope": 7891,
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_struct$_AddressSet_$8978_storage",
+              "typeString": "struct EnumerableSet.AddressSet"
+            },
+            "typeName": {
+              "id": 7821,
+              "nodeType": "UserDefinedTypeName",
+              "pathNode": {
+                "id": 7820,
+                "name": "EnumerableSet.AddressSet",
+                "nodeType": "IdentifierPath",
+                "referencedDeclaration": 8978,
+                "src": "866:24:26"
+              },
+              "referencedDeclaration": 8978,
+              "src": "866:24:26",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_AddressSet_$8978_storage_ptr",
+                "typeString": "struct EnumerableSet.AddressSet"
+              }
+            },
+            "visibility": "internal"
+          },
+          {
+            "id": 7827,
+            "nodeType": "VariableDeclaration",
+            "src": "916:60:26",
+            "nodes": [],
+            "constant": false,
+            "mutability": "mutable",
+            "name": "_pools",
+            "nameLocation": "970:6:26",
+            "scope": 7891,
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_AddressSet_$8978_storage_$",
+              "typeString": "mapping(address => struct EnumerableSet.AddressSet)"
+            },
+            "typeName": {
+              "id": 7826,
+              "keyType": {
+                "id": 7823,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "924:7:26",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "916:44:26",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_AddressSet_$8978_storage_$",
+                "typeString": "mapping(address => struct EnumerableSet.AddressSet)"
+              },
+              "valueType": {
+                "id": 7825,
+                "nodeType": "UserDefinedTypeName",
+                "pathNode": {
+                  "id": 7824,
+                  "name": "EnumerableSet.AddressSet",
+                  "nodeType": "IdentifierPath",
+                  "referencedDeclaration": 8978,
+                  "src": "935:24:26"
+                },
+                "referencedDeclaration": 8978,
+                "src": "935:24:26",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_AddressSet_$8978_storage_ptr",
+                  "typeString": "struct EnumerableSet.AddressSet"
+                }
+              }
+            },
+            "visibility": "internal"
+          },
+          {
+            "id": 7830,
+            "nodeType": "VariableDeclaration",
+            "src": "982:45:26",
+            "nodes": [],
+            "constant": false,
+            "functionSelector": "7da3e463",
+            "mutability": "immutable",
+            "name": "SpindleOracle",
+            "nameLocation": "1014:13:26",
+            "scope": 7891,
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_ISpindleOracle_$7976",
+              "typeString": "contract ISpindleOracle"
+            },
+            "typeName": {
+              "id": 7829,
+              "nodeType": "UserDefinedTypeName",
+              "pathNode": {
+                "id": 7828,
+                "name": "ISpindleOracle",
+                "nodeType": "IdentifierPath",
+                "referencedDeclaration": 7976,
+                "src": "982:14:26"
+              },
+              "referencedDeclaration": 7976,
+              "src": "982:14:26",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_ISpindleOracle_$7976",
+                "typeString": "contract ISpindleOracle"
+              }
+            },
+            "visibility": "public"
+          },
+          {
+            "id": 7832,
+            "nodeType": "VariableDeclaration",
+            "src": "1033:20:26",
+            "nodes": [],
+            "constant": false,
+            "functionSelector": "2986c0e5",
+            "mutability": "mutable",
+            "name": "index",
+            "nameLocation": "1048:5:26",
+            "scope": 7891,
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 7831,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "1033:7:26",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "visibility": "public"
+          },
+          {
+            "id": 7838,
+            "nodeType": "EventDefinition",
+            "src": "1152:112:26",
+            "nodes": [],
+            "anonymous": false,
+            "name": "UpdatePoolImplementation",
+            "nameLocation": "1158:24:26",
+            "parameters": {
+              "id": 7837,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 7834,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "previousImplementation",
+                  "nameLocation": "1200:22:26",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 7838,
+                  "src": "1192:30:26",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 7833,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1192:7:26",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 7836,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "newImplementation",
+                  "nameLocation": "1240:17:26",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 7838,
+                  "src": "1232:25:26",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 7835,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1232:7:26",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1182:81:26"
+            }
+          },
+          {
+            "id": 7855,
+            "nodeType": "FunctionDefinition",
+            "src": "1271:154:26",
+            "nodes": [],
+            "body": {
+              "id": 7854,
+              "nodeType": "Block",
+              "src": "1341:84:26",
+              "nodes": [],
+              "statements": [
+                {
+                  "expression": {
+                    "id": 7848,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 7846,
+                      "name": "factory",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7817,
+                      "src": "1351:7:26",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 7847,
+                      "name": "_uniswapV3Factory",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7840,
+                      "src": "1361:17:26",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "1351:27:26",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 7849,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1351:27:26"
+                },
+                {
+                  "expression": {
+                    "id": 7852,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 7850,
+                      "name": "SpindleOracle",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7830,
+                      "src": "1388:13:26",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_ISpindleOracle_$7976",
+                        "typeString": "contract ISpindleOracle"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 7851,
+                      "name": "_SpindleOracle",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7843,
+                      "src": "1404:14:26",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_ISpindleOracle_$7976",
+                        "typeString": "contract ISpindleOracle"
+                      }
+                    },
+                    "src": "1388:30:26",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_ISpindleOracle_$7976",
+                      "typeString": "contract ISpindleOracle"
+                    }
+                  },
+                  "id": 7853,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1388:30:26"
+                }
+              ]
+            },
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nameLocation": "-1:-1:-1",
+            "parameters": {
+              "id": 7844,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 7840,
+                  "mutability": "mutable",
+                  "name": "_uniswapV3Factory",
+                  "nameLocation": "1291:17:26",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 7855,
+                  "src": "1283:25:26",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 7839,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1283:7:26",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 7843,
+                  "mutability": "mutable",
+                  "name": "_SpindleOracle",
+                  "nameLocation": "1325:14:26",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 7855,
+                  "src": "1310:29:26",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_ISpindleOracle_$7976",
+                    "typeString": "contract ISpindleOracle"
+                  },
+                  "typeName": {
+                    "id": 7842,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 7841,
+                      "name": "ISpindleOracle",
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 7976,
+                      "src": "1310:14:26"
+                    },
+                    "referencedDeclaration": 7976,
+                    "src": "1310:14:26",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_ISpindleOracle_$7976",
+                      "typeString": "contract ISpindleOracle"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1282:58:26"
+            },
+            "returnParameters": {
+              "id": 7845,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1341:0:26"
+            },
+            "scope": 7891,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "id": 7873,
+            "nodeType": "FunctionDefinition",
+            "src": "1431:190:26",
+            "nodes": [],
+            "body": {
+              "id": 7872,
+              "nodeType": "Block",
+              "src": "1538:83:26",
+              "nodes": [],
+              "statements": [
+                {
+                  "expression": {
+                    "id": 7866,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 7864,
+                      "name": "poolImplementation",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7819,
+                      "src": "1548:18:26",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 7865,
+                      "name": "_implementation",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7857,
+                      "src": "1569:15:26",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "1548:36:26",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 7867,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1548:36:26"
+                },
+                {
+                  "expression": {
+                    "id": 7870,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 7868,
+                      "name": "_manager",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7718,
+                      "src": "1594:8:26",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 7869,
+                      "name": "_manager_",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7859,
+                      "src": "1605:9:26",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "1594:20:26",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 7871,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1594:20:26"
+                }
+              ]
+            },
+            "functionSelector": "485cc955",
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "id": 7862,
+                "kind": "modifierInvocation",
+                "modifierName": {
+                  "id": 7861,
+                  "name": "initializer",
+                  "nodeType": "IdentifierPath",
+                  "referencedDeclaration": 8409,
+                  "src": "1526:11:26"
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1526:11:26"
+              }
+            ],
+            "name": "initialize",
+            "nameLocation": "1440:10:26",
+            "parameters": {
+              "id": 7860,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 7857,
+                  "mutability": "mutable",
+                  "name": "_implementation",
+                  "nameLocation": "1468:15:26",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 7873,
+                  "src": "1460:23:26",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 7856,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1460:7:26",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 7859,
+                  "mutability": "mutable",
+                  "name": "_manager_",
+                  "nameLocation": "1501:9:26",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 7873,
+                  "src": "1493:17:26",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 7858,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1493:7:26",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1450:66:26"
+            },
+            "returnParameters": {
+              "id": 7863,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1538:0:26"
+            },
+            "scope": 7891,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 7890,
+            "nodeType": "FunctionDefinition",
+            "src": "1627:235:26",
+            "nodes": [],
+            "body": {
+              "id": 7889,
+              "nodeType": "Block",
+              "src": "1727:135:26",
+              "nodes": [],
+              "statements": [
+                {
+                  "eventCall": {
+                    "arguments": [
+                      {
+                        "id": 7881,
+                        "name": "poolImplementation",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7819,
+                        "src": "1767:18:26",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "id": 7882,
+                        "name": "nextImplementation",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 7875,
+                        "src": "1787:18:26",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 7880,
+                      "name": "UpdatePoolImplementation",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7838,
+                      "src": "1742:24:26",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_address_$returns$__$",
+                        "typeString": "function (address,address)"
+                      }
+                    },
+                    "id": 7883,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1742:64:26",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 7884,
+                  "nodeType": "EmitStatement",
+                  "src": "1737:69:26"
+                },
+                {
+                  "expression": {
+                    "id": 7887,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 7885,
+                      "name": "poolImplementation",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7819,
+                      "src": "1816:18:26",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 7886,
+                      "name": "nextImplementation",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7875,
+                      "src": "1837:18:26",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "1816:39:26",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 7888,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1816:39:26"
+                }
+              ]
+            },
+            "functionSelector": "d6f74898",
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "id": 7878,
+                "kind": "modifierInvocation",
+                "modifierName": {
+                  "id": 7877,
+                  "name": "onlyManager",
+                  "nodeType": "IdentifierPath",
+                  "referencedDeclaration": 7747,
+                  "src": "1711:11:26"
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1711:11:26"
+              }
+            ],
+            "name": "setPoolImplementation",
+            "nameLocation": "1636:21:26",
+            "parameters": {
+              "id": 7876,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 7875,
+                  "mutability": "mutable",
+                  "name": "nextImplementation",
+                  "nameLocation": "1666:18:26",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 7890,
+                  "src": "1658:26:26",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 7874,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1658:7:26",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1657:28:26"
+            },
+            "returnParameters": {
+              "id": 7879,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1727:0:26"
+            },
+            "scope": 7891,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 7809,
+              "name": "OwnableUninitialized",
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 7798,
+              "src": "467:20:26"
+            },
+            "id": 7810,
+            "nodeType": "InheritanceSpecifier",
+            "src": "467:20:26"
+          },
+          {
+            "baseName": {
+              "id": 7811,
+              "name": "Initializable",
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 8507,
+              "src": "530:13:26"
+            },
+            "id": 7812,
+            "nodeType": "InheritanceSpecifier",
+            "src": "530:13:26"
+          }
+        ],
+        "canonicalName": "SSUniFactoryStorage",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "linearizedBaseContracts": [
+          7891,
+          8507,
+          7798
+        ],
+        "name": "SSUniFactoryStorage",
+        "nameLocation": "440:19:26",
+        "scope": 7892,
+        "usedErrors": []
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 26
+}

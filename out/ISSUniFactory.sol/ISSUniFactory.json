@@ -1,0 +1,624 @@
+{
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "uniPool",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "manager",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "pool",
+          "type": "address"
+        }
+      ],
+      "name": "PoolCreated",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "tokenA",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "tokenB",
+          "type": "address"
+        },
+        {
+          "internalType": "uint24",
+          "name": "uniFee",
+          "type": "uint24"
+        },
+        {
+          "internalType": "address",
+          "name": "manager",
+          "type": "address"
+        },
+        {
+          "internalType": "uint16",
+          "name": "managerFee",
+          "type": "uint16"
+        },
+        {
+          "internalType": "int24",
+          "name": "lowerTick",
+          "type": "int24"
+        },
+        {
+          "internalType": "int24",
+          "name": "upperTick",
+          "type": "int24"
+        }
+      ],
+      "name": "deployVault",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "pool",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "deployVault(address,address,uint24,address,uint16,int24,int24)": "fef46b28"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"uniPool\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"manager\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"pool\",\"type\":\"address\"}],\"name\":\"PoolCreated\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"tokenA\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"tokenB\",\"type\":\"address\"},{\"internalType\":\"uint24\",\"name\":\"uniFee\",\"type\":\"uint24\"},{\"internalType\":\"address\",\"name\":\"manager\",\"type\":\"address\"},{\"internalType\":\"uint16\",\"name\":\"managerFee\",\"type\":\"uint16\"},{\"internalType\":\"int24\",\"name\":\"lowerTick\",\"type\":\"int24\"},{\"internalType\":\"int24\",\"name\":\"upperTick\",\"type\":\"int24\"}],\"name\":\"deployVault\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"pool\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/interfaces/ISSUniFactory.sol\":\"ISSUniFactory\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":@rari-capital/solmate/=lib/solmate/\",\":@uniswap/v3-core/=lib/v3-core/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/\",\":solmate/=lib/solmate/src/\",\":v3-core/=lib/v3-core/\"]},\"sources\":{\"src/interfaces/ISSUniFactory.sol\":{\"keccak256\":\"0x6cdc34ca3410426ad0c9411ff4544baeb729e281215bd1df98c1fd30ede2ca2d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://da8201289e9825628476aeb7bfd10e7dbd8bbaea78a0d21110baa06d2838d489\",\"dweb:/ipfs/QmT9E9tGxTDbHhZXskeRA976SSVwTUzEy95hsrjYUGxN6m\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.17+commit.8df45f5f"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "uniPool",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "manager",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "pool",
+              "type": "address",
+              "indexed": true
+            }
+          ],
+          "type": "event",
+          "name": "PoolCreated",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "tokenA",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenB",
+              "type": "address"
+            },
+            {
+              "internalType": "uint24",
+              "name": "uniFee",
+              "type": "uint24"
+            },
+            {
+              "internalType": "address",
+              "name": "manager",
+              "type": "address"
+            },
+            {
+              "internalType": "uint16",
+              "name": "managerFee",
+              "type": "uint16"
+            },
+            {
+              "internalType": "int24",
+              "name": "lowerTick",
+              "type": "int24"
+            },
+            {
+              "internalType": "int24",
+              "name": "upperTick",
+              "type": "int24"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "deployVault",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "pool",
+              "type": "address"
+            }
+          ]
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {},
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        ":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+        ":@rari-capital/solmate/=lib/solmate/",
+        ":@uniswap/v3-core/=lib/v3-core/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+        ":forge-std/=lib/forge-std/src/",
+        ":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        ":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/",
+        ":solmate/=lib/solmate/src/",
+        ":v3-core/=lib/v3-core/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/interfaces/ISSUniFactory.sol": "ISSUniFactory"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "src/interfaces/ISSUniFactory.sol": {
+        "keccak256": "0x6cdc34ca3410426ad0c9411ff4544baeb729e281215bd1df98c1fd30ede2ca2d",
+        "urls": [
+          "bzz-raw://da8201289e9825628476aeb7bfd10e7dbd8bbaea78a0d21110baa06d2838d489",
+          "dweb:/ipfs/QmT9E9tGxTDbHhZXskeRA976SSVwTUzEy95hsrjYUGxN6m"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/interfaces/ISSUniFactory.sol",
+    "id": 29272,
+    "exportedSymbols": {
+      "ISSUniFactory": [
+        29271
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "31:417:44",
+    "nodes": [
+      {
+        "id": 29243,
+        "nodeType": "PragmaDirective",
+        "src": "31:24:44",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".10"
+        ]
+      },
+      {
+        "id": 29271,
+        "nodeType": "ContractDefinition",
+        "src": "57:390:44",
+        "nodes": [
+          {
+            "id": 29251,
+            "nodeType": "EventDefinition",
+            "src": "87:120:44",
+            "nodes": [],
+            "anonymous": false,
+            "eventSelector": "9c5d829b9b23efc461f9aeef91979ec04bb903feb3bee4f26d22114abfc7335b",
+            "name": "PoolCreated",
+            "nameLocation": "93:11:44",
+            "parameters": {
+              "id": 29250,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 29245,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "uniPool",
+                  "nameLocation": "130:7:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29251,
+                  "src": "114:23:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 29244,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "114:7:44",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 29247,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "manager",
+                  "nameLocation": "163:7:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29251,
+                  "src": "147:23:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 29246,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "147:7:44",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 29249,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "pool",
+                  "nameLocation": "196:4:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29251,
+                  "src": "180:20:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 29248,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "180:7:44",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "104:102:44"
+            }
+          },
+          {
+            "id": 29270,
+            "nodeType": "FunctionDefinition",
+            "src": "213:232:44",
+            "nodes": [],
+            "functionSelector": "fef46b28",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "deployVault",
+            "nameLocation": "222:11:44",
+            "parameters": {
+              "id": 29266,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 29253,
+                  "mutability": "mutable",
+                  "name": "tokenA",
+                  "nameLocation": "251:6:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29270,
+                  "src": "243:14:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 29252,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "243:7:44",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 29255,
+                  "mutability": "mutable",
+                  "name": "tokenB",
+                  "nameLocation": "275:6:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29270,
+                  "src": "267:14:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 29254,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "267:7:44",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 29257,
+                  "mutability": "mutable",
+                  "name": "uniFee",
+                  "nameLocation": "298:6:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29270,
+                  "src": "291:13:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint24",
+                    "typeString": "uint24"
+                  },
+                  "typeName": {
+                    "id": 29256,
+                    "name": "uint24",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "291:6:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint24",
+                      "typeString": "uint24"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 29259,
+                  "mutability": "mutable",
+                  "name": "manager",
+                  "nameLocation": "322:7:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29270,
+                  "src": "314:15:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 29258,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "314:7:44",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 29261,
+                  "mutability": "mutable",
+                  "name": "managerFee",
+                  "nameLocation": "346:10:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29270,
+                  "src": "339:17:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  },
+                  "typeName": {
+                    "id": 29260,
+                    "name": "uint16",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "339:6:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint16",
+                      "typeString": "uint16"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 29263,
+                  "mutability": "mutable",
+                  "name": "lowerTick",
+                  "nameLocation": "372:9:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29270,
+                  "src": "366:15:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_int24",
+                    "typeString": "int24"
+                  },
+                  "typeName": {
+                    "id": 29262,
+                    "name": "int24",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "366:5:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_int24",
+                      "typeString": "int24"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 29265,
+                  "mutability": "mutable",
+                  "name": "upperTick",
+                  "nameLocation": "397:9:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29270,
+                  "src": "391:15:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_int24",
+                    "typeString": "int24"
+                  },
+                  "typeName": {
+                    "id": 29264,
+                    "name": "int24",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "391:5:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_int24",
+                      "typeString": "int24"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "233:179:44"
+            },
+            "returnParameters": {
+              "id": 29269,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 29268,
+                  "mutability": "mutable",
+                  "name": "pool",
+                  "nameLocation": "439:4:44",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29270,
+                  "src": "431:12:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 29267,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "431:7:44",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "430:14:44"
+            },
+            "scope": 29271,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "ISSUniFactory",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          29271
+        ],
+        "name": "ISSUniFactory",
+        "nameLocation": "67:13:44",
+        "scope": 29272,
+        "usedErrors": []
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 44
+}

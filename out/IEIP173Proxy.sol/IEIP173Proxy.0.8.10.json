@@ -1,0 +1,491 @@
+{
+  "abi": [
+    {
+      "inputs": [],
+      "name": "proxyAdmin",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newAdmin",
+          "type": "address"
+        }
+      ],
+      "name": "transferProxyAdmin",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newImplementation",
+          "type": "address"
+        }
+      ],
+      "name": "upgradeTo",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newImplementation",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "name": "upgradeToAndCall",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "proxyAdmin()": "3e47158c",
+    "transferProxyAdmin(address)": "8356ca4f",
+    "upgradeTo(address)": "3659cfe6",
+    "upgradeToAndCall(address,bytes)": "4f1ef286"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.10+commit.fc410830\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"proxyAdmin\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newAdmin\",\"type\":\"address\"}],\"name\":\"transferProxyAdmin\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"}],\"name\":\"upgradeTo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"upgradeToAndCall\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/interfaces/IEIP173Proxy.sol\":\"IEIP173Proxy\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":@rari-capital/solmate/=lib/solmate/\",\":@uniswap/v3-core/=lib/v3-core/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/\",\":solmate/=lib/solmate/src/\",\":v3-core/=lib/v3-core/\"]},\"sources\":{\"src/interfaces/IEIP173Proxy.sol\":{\"keccak256\":\"0x86444bd652129c667c4f484a9c0ab18e99e37c87f385f7d86f8447fc346b5218\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://e6b987c585219d540ebbed691d61f69fb4b4db5ae5063f72d8822db6da267d11\",\"dweb:/ipfs/QmbLtNT3LqzUvKdqzqtGGUHJS8bd9k4Fs6JxK5NehUEZF7\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.10+commit.fc410830"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "proxyAdmin",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "transferProxyAdmin"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "upgradeTo"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable",
+          "type": "function",
+          "name": "upgradeToAndCall"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {},
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        ":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+        ":@rari-capital/solmate/=lib/solmate/",
+        ":@uniswap/v3-core/=lib/v3-core/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+        ":forge-std/=lib/forge-std/src/",
+        ":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        ":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/",
+        ":solmate/=lib/solmate/src/",
+        ":v3-core/=lib/v3-core/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/interfaces/IEIP173Proxy.sol": "IEIP173Proxy"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "src/interfaces/IEIP173Proxy.sol": {
+        "keccak256": "0x86444bd652129c667c4f484a9c0ab18e99e37c87f385f7d86f8447fc346b5218",
+        "urls": [
+          "bzz-raw://e6b987c585219d540ebbed691d61f69fb4b4db5ae5063f72d8822db6da267d11",
+          "dweb:/ipfs/QmbLtNT3LqzUvKdqzqtGGUHJS8bd9k4Fs6JxK5NehUEZF7"
+        ],
+        "license": "GPL-3.0"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/interfaces/IEIP173Proxy.sol",
+    "id": 14023,
+    "exportedSymbols": {
+      "IEIP173Proxy": [
+        14022
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "36:347:46",
+    "nodes": [
+      {
+        "id": 13999,
+        "nodeType": "PragmaDirective",
+        "src": "36:24:46",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".10"
+        ]
+      },
+      {
+        "id": 14022,
+        "nodeType": "ContractDefinition",
+        "src": "62:320:46",
+        "nodes": [
+          {
+            "id": 14004,
+            "nodeType": "FunctionDefinition",
+            "src": "91:54:46",
+            "nodes": [],
+            "functionSelector": "3e47158c",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "proxyAdmin",
+            "nameLocation": "100:10:46",
+            "parameters": {
+              "id": 14000,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "110:2:46"
+            },
+            "returnParameters": {
+              "id": 14003,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 14002,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 14004,
+                  "src": "136:7:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 14001,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "136:7:46",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "135:9:46"
+            },
+            "scope": 14022,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 14009,
+            "nodeType": "FunctionDefinition",
+            "src": "151:55:46",
+            "nodes": [],
+            "functionSelector": "8356ca4f",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "transferProxyAdmin",
+            "nameLocation": "160:18:46",
+            "parameters": {
+              "id": 14007,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 14006,
+                  "mutability": "mutable",
+                  "name": "newAdmin",
+                  "nameLocation": "187:8:46",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 14009,
+                  "src": "179:16:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 14005,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "179:7:46",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "178:18:46"
+            },
+            "returnParameters": {
+              "id": 14008,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "205:0:46"
+            },
+            "scope": 14022,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 14014,
+            "nodeType": "FunctionDefinition",
+            "src": "212:55:46",
+            "nodes": [],
+            "functionSelector": "3659cfe6",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "upgradeTo",
+            "nameLocation": "221:9:46",
+            "parameters": {
+              "id": 14012,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 14011,
+                  "mutability": "mutable",
+                  "name": "newImplementation",
+                  "nameLocation": "239:17:46",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 14014,
+                  "src": "231:25:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 14010,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "231:7:46",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "230:27:46"
+            },
+            "returnParameters": {
+              "id": 14013,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "266:0:46"
+            },
+            "scope": 14022,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 14021,
+            "nodeType": "FunctionDefinition",
+            "src": "273:107:46",
+            "nodes": [],
+            "functionSelector": "4f1ef286",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "upgradeToAndCall",
+            "nameLocation": "282:16:46",
+            "parameters": {
+              "id": 14019,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 14016,
+                  "mutability": "mutable",
+                  "name": "newImplementation",
+                  "nameLocation": "307:17:46",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 14021,
+                  "src": "299:25:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 14015,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "299:7:46",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 14018,
+                  "mutability": "mutable",
+                  "name": "data",
+                  "nameLocation": "341:4:46",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 14021,
+                  "src": "326:19:46",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_calldata_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 14017,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "326:5:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "298:48:46"
+            },
+            "returnParameters": {
+              "id": 14020,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "379:0:46"
+            },
+            "scope": 14022,
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IEIP173Proxy",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          14022
+        ],
+        "name": "IEIP173Proxy",
+        "nameLocation": "72:12:46",
+        "scope": 14023,
+        "usedErrors": []
+      }
+    ],
+    "license": "GPL-3.0"
+  },
+  "id": 46
+}

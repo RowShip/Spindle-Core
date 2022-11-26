@@ -1,0 +1,1565 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "contract IUniswapV3Pool",
+          "name": "pool",
+          "type": "address"
+        }
+      ],
+      "name": "cacheMetadataFor",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IUniswapV3Pool",
+          "name": "pool",
+          "type": "address"
+        }
+      ],
+      "name": "cachedPoolMetadata",
+      "outputs": [
+        {
+          "internalType": "uint32",
+          "name": "maxSecondsAgo",
+          "type": "uint32"
+        },
+        {
+          "internalType": "uint24",
+          "name": "gamma0",
+          "type": "uint24"
+        },
+        {
+          "internalType": "uint24",
+          "name": "gamma1",
+          "type": "uint24"
+        },
+        {
+          "internalType": "int24",
+          "name": "tickSpacing",
+          "type": "int24"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IUniswapV3Pool",
+          "name": "pool",
+          "type": "address"
+        }
+      ],
+      "name": "estimate24H",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "IV",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IUniswapV3Pool",
+          "name": "pool",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "idx",
+          "type": "uint256"
+        }
+      ],
+      "name": "feeGrowthGlobals",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "feeGrowthGlobal0X128",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "feeGrowthGlobal1X128",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint32",
+          "name": "timestamp",
+          "type": "uint32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IUniswapV3Pool",
+          "name": "pool",
+          "type": "address"
+        }
+      ],
+      "name": "feeGrowthGlobalsIndices",
+      "outputs": [
+        {
+          "internalType": "uint8",
+          "name": "read",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "write",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IUniswapV3Pool",
+          "name": "pool",
+          "type": "address"
+        },
+        {
+          "internalType": "uint32",
+          "name": "secondsAgoToStartOfTwap",
+          "type": "uint32"
+        },
+        {
+          "internalType": "uint32",
+          "name": "secondsAgoToEndOfTwap",
+          "type": "uint32"
+        }
+      ],
+      "name": "getHistoricalTwap",
+      "outputs": [
+        {
+          "internalType": "int24",
+          "name": "twapTick",
+          "type": "int24"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IUniswapV3Pool",
+          "name": "pool",
+          "type": "address"
+        }
+      ],
+      "name": "lens",
+      "outputs": [
+        {
+          "internalType": "uint256[25]",
+          "name": "IV",
+          "type": "uint256[25]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "cacheMetadataFor(address)": "be3438e9",
+    "cachedPoolMetadata(address)": "7cf1a14f",
+    "estimate24H(address)": "b168197d",
+    "feeGrowthGlobals(address,uint256)": "38c89978",
+    "feeGrowthGlobalsIndices(address)": "a93f2497",
+    "getHistoricalTwap(address,uint32,uint32)": "53918336",
+    "lens(address)": "ff8a34f4"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.10+commit.fc410830\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"contract IUniswapV3Pool\",\"name\":\"pool\",\"type\":\"address\"}],\"name\":\"cacheMetadataFor\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IUniswapV3Pool\",\"name\":\"pool\",\"type\":\"address\"}],\"name\":\"cachedPoolMetadata\",\"outputs\":[{\"internalType\":\"uint32\",\"name\":\"maxSecondsAgo\",\"type\":\"uint32\"},{\"internalType\":\"uint24\",\"name\":\"gamma0\",\"type\":\"uint24\"},{\"internalType\":\"uint24\",\"name\":\"gamma1\",\"type\":\"uint24\"},{\"internalType\":\"int24\",\"name\":\"tickSpacing\",\"type\":\"int24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IUniswapV3Pool\",\"name\":\"pool\",\"type\":\"address\"}],\"name\":\"estimate24H\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"IV\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IUniswapV3Pool\",\"name\":\"pool\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"idx\",\"type\":\"uint256\"}],\"name\":\"feeGrowthGlobals\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"feeGrowthGlobal0X128\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"feeGrowthGlobal1X128\",\"type\":\"uint256\"},{\"internalType\":\"uint32\",\"name\":\"timestamp\",\"type\":\"uint32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IUniswapV3Pool\",\"name\":\"pool\",\"type\":\"address\"}],\"name\":\"feeGrowthGlobalsIndices\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"read\",\"type\":\"uint8\"},{\"internalType\":\"uint8\",\"name\":\"write\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IUniswapV3Pool\",\"name\":\"pool\",\"type\":\"address\"},{\"internalType\":\"uint32\",\"name\":\"secondsAgoToStartOfTwap\",\"type\":\"uint32\"},{\"internalType\":\"uint32\",\"name\":\"secondsAgoToEndOfTwap\",\"type\":\"uint32\"}],\"name\":\"getHistoricalTwap\",\"outputs\":[{\"internalType\":\"int24\",\"name\":\"twapTick\",\"type\":\"int24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IUniswapV3Pool\",\"name\":\"pool\",\"type\":\"address\"}],\"name\":\"lens\",\"outputs\":[{\"internalType\":\"uint256[25]\",\"name\":\"IV\",\"type\":\"uint256[25]\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"cacheMetadataFor(address)\":{\"params\":{\"pool\":\"The Uniswap pool to poke\"}},\"cachedPoolMetadata(address)\":{\"details\":\"These values may or may not have been initialized and may or may not be up to date. `tickSpacing` will be non-zero if they've been initialized.\",\"params\":{\"pool\":\"The Uniswap pool for which metadata should be retrieved\"},\"returns\":{\"gamma0\":\"The pool fee minus the protocol fee on token0, scaled by 1e6\",\"gamma1\":\"The pool fee minus the protocol fee on token1, scaled by 1e6\",\"maxSecondsAgo\":\"The age of the oldest observation in the pool's oracle\",\"tickSpacing\":\"The pool's tick spacing\"}},\"estimate24H(address)\":{\"params\":{\"pool\":\"The pool to use for volatility estimate\"},\"returns\":{\"IV\":\"The estimated volatility, scaled by 1e18\"}},\"feeGrowthGlobals(address,uint256)\":{\"details\":\"The full array (idx=0,1,2...24) has data that spans *at least* 24 hours\",\"params\":{\"idx\":\"The index into the storage array\",\"pool\":\"The Uniswap pool for which fee growth should be retrieved\"},\"returns\":{\"feeGrowthGlobal0X128\":\"Total pool revenue in token0, as of timestamp\",\"feeGrowthGlobal1X128\":\"Total pool revenue in token1, as of timestamp\",\"timestamp\":\"The time at which snapshot was taken and stored\"}},\"feeGrowthGlobalsIndices(address)\":{\"params\":{\"pool\":\"The Uniswap pool for which array indices should be fetched\"},\"returns\":{\"read\":\"The index that was closest to 24 hours old last time `estimate24H` was called\",\"write\":\"The index that was written to last time `estimate24H` was called\"}},\"getHistoricalTwap(address,uint32,uint32)\":{\"details\":\"wrapper around `Oracle.consultAtHistoricTime`\",\"params\":{\"secondsAgoToEndOfTwap\":\"amount of seconds in the past to end calculating time-weighted average\",\"secondsAgoToStartOfTwap\":\"amount of seconds in the past to start calculating time-weighted average\"}},\"lens(address)\":{\"details\":\"This is not meant to be used on-chain, and it doesn't contribute to the oracle's knowledge. Please use `estimate24H` instead.\",\"params\":{\"pool\":\"The pool to use for volatility estimate\"},\"returns\":{\"IV\":\"The array of volatility estimates, scaled by 1e18\"}}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"cacheMetadataFor(address)\":{\"notice\":\"Updates cached metadata for a Uniswap pool. Must be called at least once in order for volatility to be determined. Should also be called whenever protocol fee changes\"},\"cachedPoolMetadata(address)\":{\"notice\":\"Accesses the most recently stored metadata for a given Uniswap pool\"},\"estimate24H(address)\":{\"notice\":\"Estimates 24-hour implied volatility for a Uniswap pool.\"},\"feeGrowthGlobals(address,uint256)\":{\"notice\":\"Accesses any of the 25 most recently stored fee growth structs\"},\"feeGrowthGlobalsIndices(address)\":{\"notice\":\"Returns indices that the contract will use to access `feeGrowthGlobals`\"},\"getHistoricalTwap(address,uint32,uint32)\":{\"notice\":\"get twap for a specific period of time\"},\"lens(address)\":{\"notice\":\"Provides multiple estimates of IV using all stored `feeGrowthGlobals` entries for `pool`\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/interfaces/ISpindleOracle.sol\":\"ISpindleOracle\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":@rari-capital/solmate/=lib/solmate/\",\":@uniswap/v3-core/=lib/v3-core/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/\",\":solmate/=lib/solmate/src/\",\":v3-core/=lib/v3-core/\"]},\"sources\":{\"lib/v3-core/contracts/interfaces/IUniswapV3Pool.sol\":{\"keccak256\":\"0xfe6113d518466cd6652c85b111e01f33eb62157f49ae5ed7d5a3947a2044adb1\",\"license\":\"GPL-2.0-or-later\",\"urls\":[\"bzz-raw://1c42b9e6f5902ac38dd43e25750939baa7e0c1425dc75afd717c4412731065d5\",\"dweb:/ipfs/QmWaoacnzsucTvBME2o7YgZBZMhaHv7fkj83htHMVWJKWh\"]},\"lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolActions.sol\":{\"keccak256\":\"0x9453dd0e7442188667d01d9b65de3f1e14e9511ff3e303179a15f6fc267f7634\",\"license\":\"GPL-2.0-or-later\",\"urls\":[\"bzz-raw://982f4328f956c3e60e67501e759eb292ac487f76460c774c50e9ae4fcc92aae5\",\"dweb:/ipfs/QmRnzEDsaqtd9PJEVcgQi7p5aV5pMSvRUoGZJAdwFUJxgZ\"]},\"lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolDerivedState.sol\":{\"keccak256\":\"0xe603ac5b17ecdee73ba2b27efdf386c257a19c14206e87eee77e2017b742d9e5\",\"license\":\"GPL-2.0-or-later\",\"urls\":[\"bzz-raw://8febc9bdb399a4d94bb89f5377732652e2400e4a8dee808201ade6848f9004e7\",\"dweb:/ipfs/QmaKDqYYFU4d2W2iN77aDHptfbFmYZRrMYXHeGpJmM8C1c\"]},\"lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolEvents.sol\":{\"keccak256\":\"0x8071514d0fe5d17d6fbd31c191cdfb703031c24e0ece3621d88ab10e871375cd\",\"license\":\"GPL-2.0-or-later\",\"urls\":[\"bzz-raw://d0b571930cc7488b1d546a7e9cea7c52d8b3c4e207da657ed0e0db7343b8cd03\",\"dweb:/ipfs/QmaGK6vVwB95QSTR1XMYvrh7ivYAYZxi3fD7v6VMA4jZ39\"]},\"lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolImmutables.sol\":{\"keccak256\":\"0xf6e5d2cd1139c4c276bdbc8e1d2b256e456c866a91f1b868da265c6d2685c3f7\",\"license\":\"GPL-2.0-or-later\",\"urls\":[\"bzz-raw://b99c8c9ae8e27ee6559e5866bea82cbc9ffc8247f8d15b7422a4deb287d4d047\",\"dweb:/ipfs/QmfL8gaqt3ffAnm6nVj5ksuNpLygXuL3xq5VBqrkwC2JJ3\"]},\"lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolOwnerActions.sol\":{\"keccak256\":\"0x759b78a2918af9e99e246dc3af084f654e48ef32bb4e4cb8a966aa3dcaece235\",\"license\":\"GPL-2.0-or-later\",\"urls\":[\"bzz-raw://64144fb96e1c7fdba87305acadb98a198d26a3d46c097cb3a666e567f6f29735\",\"dweb:/ipfs/QmUnWVwN9FKB9uV5Pr8YfLpWZnYM2DENnRMaadZ492JS9u\"]},\"lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol\":{\"keccak256\":\"0x852dc1f5df7dcf7f11e7bb3eed79f0cea72ad4b25f6a9d2c35aafb48925fd49f\",\"license\":\"GPL-2.0-or-later\",\"urls\":[\"bzz-raw://ed63907c38ff36b0e22bc9ffc53e791ea74f0d4f0e7c257fdfb5aaf8825b1f0f\",\"dweb:/ipfs/QmSQrckghEjs6HVsA5GVgpNpZWvTXMY5eQLF7cN6deFeEg\"]},\"src/interfaces/ISpindleOracle.sol\":{\"keccak256\":\"0xe15cd7e9b1cf728965bc52352e8b263d46d69d7015854f2c90fe8b4392028b71\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9814076c8809e325dc91154a469ea7b15acc4dc1534e933b92cbb6a75b00e044\",\"dweb:/ipfs/QmZTPm2DDFbbPCcXx7VyWM9TMieQuXmB4e7SZaXhHCo9PU\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.10+commit.fc410830"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "contract IUniswapV3Pool",
+              "name": "pool",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "cacheMetadataFor"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "contract IUniswapV3Pool",
+              "name": "pool",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "cachedPoolMetadata",
+          "outputs": [
+            {
+              "internalType": "uint32",
+              "name": "maxSecondsAgo",
+              "type": "uint32"
+            },
+            {
+              "internalType": "uint24",
+              "name": "gamma0",
+              "type": "uint24"
+            },
+            {
+              "internalType": "uint24",
+              "name": "gamma1",
+              "type": "uint24"
+            },
+            {
+              "internalType": "int24",
+              "name": "tickSpacing",
+              "type": "int24"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "contract IUniswapV3Pool",
+              "name": "pool",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "estimate24H",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "IV",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "contract IUniswapV3Pool",
+              "name": "pool",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "idx",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "feeGrowthGlobals",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "feeGrowthGlobal0X128",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "feeGrowthGlobal1X128",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint32",
+              "name": "timestamp",
+              "type": "uint32"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "contract IUniswapV3Pool",
+              "name": "pool",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "feeGrowthGlobalsIndices",
+          "outputs": [
+            {
+              "internalType": "uint8",
+              "name": "read",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "write",
+              "type": "uint8"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "contract IUniswapV3Pool",
+              "name": "pool",
+              "type": "address"
+            },
+            {
+              "internalType": "uint32",
+              "name": "secondsAgoToStartOfTwap",
+              "type": "uint32"
+            },
+            {
+              "internalType": "uint32",
+              "name": "secondsAgoToEndOfTwap",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getHistoricalTwap",
+          "outputs": [
+            {
+              "internalType": "int24",
+              "name": "twapTick",
+              "type": "int24"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "contract IUniswapV3Pool",
+              "name": "pool",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "lens",
+          "outputs": [
+            {
+              "internalType": "uint256[25]",
+              "name": "IV",
+              "type": "uint256[25]"
+            }
+          ]
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "cacheMetadataFor(address)": {
+            "params": {
+              "pool": "The Uniswap pool to poke"
+            }
+          },
+          "cachedPoolMetadata(address)": {
+            "details": "These values may or may not have been initialized and may or may not be up to date. `tickSpacing` will be non-zero if they've been initialized.",
+            "params": {
+              "pool": "The Uniswap pool for which metadata should be retrieved"
+            },
+            "returns": {
+              "gamma0": "The pool fee minus the protocol fee on token0, scaled by 1e6",
+              "gamma1": "The pool fee minus the protocol fee on token1, scaled by 1e6",
+              "maxSecondsAgo": "The age of the oldest observation in the pool's oracle",
+              "tickSpacing": "The pool's tick spacing"
+            }
+          },
+          "estimate24H(address)": {
+            "params": {
+              "pool": "The pool to use for volatility estimate"
+            },
+            "returns": {
+              "IV": "The estimated volatility, scaled by 1e18"
+            }
+          },
+          "feeGrowthGlobals(address,uint256)": {
+            "details": "The full array (idx=0,1,2...24) has data that spans *at least* 24 hours",
+            "params": {
+              "idx": "The index into the storage array",
+              "pool": "The Uniswap pool for which fee growth should be retrieved"
+            },
+            "returns": {
+              "feeGrowthGlobal0X128": "Total pool revenue in token0, as of timestamp",
+              "feeGrowthGlobal1X128": "Total pool revenue in token1, as of timestamp",
+              "timestamp": "The time at which snapshot was taken and stored"
+            }
+          },
+          "feeGrowthGlobalsIndices(address)": {
+            "params": {
+              "pool": "The Uniswap pool for which array indices should be fetched"
+            },
+            "returns": {
+              "read": "The index that was closest to 24 hours old last time `estimate24H` was called",
+              "write": "The index that was written to last time `estimate24H` was called"
+            }
+          },
+          "getHistoricalTwap(address,uint32,uint32)": {
+            "details": "wrapper around `Oracle.consultAtHistoricTime`",
+            "params": {
+              "secondsAgoToEndOfTwap": "amount of seconds in the past to end calculating time-weighted average",
+              "secondsAgoToStartOfTwap": "amount of seconds in the past to start calculating time-weighted average"
+            }
+          },
+          "lens(address)": {
+            "details": "This is not meant to be used on-chain, and it doesn't contribute to the oracle's knowledge. Please use `estimate24H` instead.",
+            "params": {
+              "pool": "The pool to use for volatility estimate"
+            },
+            "returns": {
+              "IV": "The array of volatility estimates, scaled by 1e18"
+            }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "cacheMetadataFor(address)": {
+            "notice": "Updates cached metadata for a Uniswap pool. Must be called at least once in order for volatility to be determined. Should also be called whenever protocol fee changes"
+          },
+          "cachedPoolMetadata(address)": {
+            "notice": "Accesses the most recently stored metadata for a given Uniswap pool"
+          },
+          "estimate24H(address)": {
+            "notice": "Estimates 24-hour implied volatility for a Uniswap pool."
+          },
+          "feeGrowthGlobals(address,uint256)": {
+            "notice": "Accesses any of the 25 most recently stored fee growth structs"
+          },
+          "feeGrowthGlobalsIndices(address)": {
+            "notice": "Returns indices that the contract will use to access `feeGrowthGlobals`"
+          },
+          "getHistoricalTwap(address,uint32,uint32)": {
+            "notice": "get twap for a specific period of time"
+          },
+          "lens(address)": {
+            "notice": "Provides multiple estimates of IV using all stored `feeGrowthGlobals` entries for `pool`"
+          }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        ":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+        ":@rari-capital/solmate/=lib/solmate/",
+        ":@uniswap/v3-core/=lib/v3-core/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+        ":forge-std/=lib/forge-std/src/",
+        ":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        ":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/",
+        ":solmate/=lib/solmate/src/",
+        ":v3-core/=lib/v3-core/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/interfaces/ISpindleOracle.sol": "ISpindleOracle"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "lib/v3-core/contracts/interfaces/IUniswapV3Pool.sol": {
+        "keccak256": "0xfe6113d518466cd6652c85b111e01f33eb62157f49ae5ed7d5a3947a2044adb1",
+        "urls": [
+          "bzz-raw://1c42b9e6f5902ac38dd43e25750939baa7e0c1425dc75afd717c4412731065d5",
+          "dweb:/ipfs/QmWaoacnzsucTvBME2o7YgZBZMhaHv7fkj83htHMVWJKWh"
+        ],
+        "license": "GPL-2.0-or-later"
+      },
+      "lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolActions.sol": {
+        "keccak256": "0x9453dd0e7442188667d01d9b65de3f1e14e9511ff3e303179a15f6fc267f7634",
+        "urls": [
+          "bzz-raw://982f4328f956c3e60e67501e759eb292ac487f76460c774c50e9ae4fcc92aae5",
+          "dweb:/ipfs/QmRnzEDsaqtd9PJEVcgQi7p5aV5pMSvRUoGZJAdwFUJxgZ"
+        ],
+        "license": "GPL-2.0-or-later"
+      },
+      "lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolDerivedState.sol": {
+        "keccak256": "0xe603ac5b17ecdee73ba2b27efdf386c257a19c14206e87eee77e2017b742d9e5",
+        "urls": [
+          "bzz-raw://8febc9bdb399a4d94bb89f5377732652e2400e4a8dee808201ade6848f9004e7",
+          "dweb:/ipfs/QmaKDqYYFU4d2W2iN77aDHptfbFmYZRrMYXHeGpJmM8C1c"
+        ],
+        "license": "GPL-2.0-or-later"
+      },
+      "lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolEvents.sol": {
+        "keccak256": "0x8071514d0fe5d17d6fbd31c191cdfb703031c24e0ece3621d88ab10e871375cd",
+        "urls": [
+          "bzz-raw://d0b571930cc7488b1d546a7e9cea7c52d8b3c4e207da657ed0e0db7343b8cd03",
+          "dweb:/ipfs/QmaGK6vVwB95QSTR1XMYvrh7ivYAYZxi3fD7v6VMA4jZ39"
+        ],
+        "license": "GPL-2.0-or-later"
+      },
+      "lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolImmutables.sol": {
+        "keccak256": "0xf6e5d2cd1139c4c276bdbc8e1d2b256e456c866a91f1b868da265c6d2685c3f7",
+        "urls": [
+          "bzz-raw://b99c8c9ae8e27ee6559e5866bea82cbc9ffc8247f8d15b7422a4deb287d4d047",
+          "dweb:/ipfs/QmfL8gaqt3ffAnm6nVj5ksuNpLygXuL3xq5VBqrkwC2JJ3"
+        ],
+        "license": "GPL-2.0-or-later"
+      },
+      "lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolOwnerActions.sol": {
+        "keccak256": "0x759b78a2918af9e99e246dc3af084f654e48ef32bb4e4cb8a966aa3dcaece235",
+        "urls": [
+          "bzz-raw://64144fb96e1c7fdba87305acadb98a198d26a3d46c097cb3a666e567f6f29735",
+          "dweb:/ipfs/QmUnWVwN9FKB9uV5Pr8YfLpWZnYM2DENnRMaadZ492JS9u"
+        ],
+        "license": "GPL-2.0-or-later"
+      },
+      "lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol": {
+        "keccak256": "0x852dc1f5df7dcf7f11e7bb3eed79f0cea72ad4b25f6a9d2c35aafb48925fd49f",
+        "urls": [
+          "bzz-raw://ed63907c38ff36b0e22bc9ffc53e791ea74f0d4f0e7c257fdfb5aaf8825b1f0f",
+          "dweb:/ipfs/QmSQrckghEjs6HVsA5GVgpNpZWvTXMY5eQLF7cN6deFeEg"
+        ],
+        "license": "GPL-2.0-or-later"
+      },
+      "src/interfaces/ISpindleOracle.sol": {
+        "keccak256": "0xe15cd7e9b1cf728965bc52352e8b263d46d69d7015854f2c90fe8b4392028b71",
+        "urls": [
+          "bzz-raw://9814076c8809e325dc91154a469ea7b15acc4dc1534e933b92cbb6a75b00e044",
+          "dweb:/ipfs/QmZTPm2DDFbbPCcXx7VyWM9TMieQuXmB4e7SZaXhHCo9PU"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/interfaces/ISpindleOracle.sol",
+    "id": 11126,
+    "exportedSymbols": {
+      "ISpindleOracle": [
+        11125
+      ],
+      "IUniswapV3Pool": [
+        5745
+      ],
+      "IUniswapV3PoolActions": [
+        9683
+      ],
+      "IUniswapV3PoolDerivedState": [
+        9714
+      ],
+      "IUniswapV3PoolEvents": [
+        9833
+      ],
+      "IUniswapV3PoolImmutables": [
+        9873
+      ],
+      "IUniswapV3PoolOwnerActions": [
+        9899
+      ],
+      "IUniswapV3PoolState": [
+        10007
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "32:3856:47",
+    "nodes": [
+      {
+        "id": 11042,
+        "nodeType": "PragmaDirective",
+        "src": "32:24:47",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".10"
+        ]
+      },
+      {
+        "id": 11043,
+        "nodeType": "ImportDirective",
+        "src": "58:66:47",
+        "nodes": [],
+        "absolutePath": "lib/v3-core/contracts/interfaces/IUniswapV3Pool.sol",
+        "file": "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 11126,
+        "sourceUnit": 5746,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 11125,
+        "nodeType": "ContractDefinition",
+        "src": "126:3761:47",
+        "nodes": [
+          {
+            "id": 11056,
+            "nodeType": "FunctionDefinition",
+            "src": "503:179:47",
+            "nodes": [],
+            "documentation": {
+              "id": 11044,
+              "nodeType": "StructuredDocumentation",
+              "src": "157:341:47",
+              "text": " @notice get twap for a specific period of time\n @dev wrapper around `Oracle.consultAtHistoricTime`\n @param secondsAgoToStartOfTwap amount of seconds in the past to start calculating time-weighted average\n @param secondsAgoToEndOfTwap amount of seconds in the past to end calculating time-weighted average"
+            },
+            "functionSelector": "53918336",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getHistoricalTwap",
+            "nameLocation": "512:17:47",
+            "parameters": {
+              "id": 11052,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 11047,
+                  "mutability": "mutable",
+                  "name": "pool",
+                  "nameLocation": "554:4:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11056,
+                  "src": "539:19:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_IUniswapV3Pool_$5745",
+                    "typeString": "contract IUniswapV3Pool"
+                  },
+                  "typeName": {
+                    "id": 11046,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 11045,
+                      "name": "IUniswapV3Pool",
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 5745,
+                      "src": "539:14:47"
+                    },
+                    "referencedDeclaration": 5745,
+                    "src": "539:14:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IUniswapV3Pool_$5745",
+                      "typeString": "contract IUniswapV3Pool"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 11049,
+                  "mutability": "mutable",
+                  "name": "secondsAgoToStartOfTwap",
+                  "nameLocation": "575:23:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11056,
+                  "src": "568:30:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  },
+                  "typeName": {
+                    "id": 11048,
+                    "name": "uint32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "568:6:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 11051,
+                  "mutability": "mutable",
+                  "name": "secondsAgoToEndOfTwap",
+                  "nameLocation": "615:21:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11056,
+                  "src": "608:28:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  },
+                  "typeName": {
+                    "id": 11050,
+                    "name": "uint32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "608:6:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "529:113:47"
+            },
+            "returnParameters": {
+              "id": 11055,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 11054,
+                  "mutability": "mutable",
+                  "name": "twapTick",
+                  "nameLocation": "672:8:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11056,
+                  "src": "666:14:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_int24",
+                    "typeString": "int24"
+                  },
+                  "typeName": {
+                    "id": 11053,
+                    "name": "int24",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "666:5:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_int24",
+                      "typeString": "int24"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "665:16:47"
+            },
+            "scope": 11125,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 11071,
+            "nodeType": "FunctionDefinition",
+            "src": "1326:225:47",
+            "nodes": [],
+            "documentation": {
+              "id": 11057,
+              "nodeType": "StructuredDocumentation",
+              "src": "688:633:47",
+              "text": " @notice Accesses the most recently stored metadata for a given Uniswap pool\n @dev These values may or may not have been initialized and may or may not be\n up to date. `tickSpacing` will be non-zero if they've been initialized.\n @param pool The Uniswap pool for which metadata should be retrieved\n @return maxSecondsAgo The age of the oldest observation in the pool's oracle\n @return gamma0 The pool fee minus the protocol fee on token0, scaled by 1e6\n @return gamma1 The pool fee minus the protocol fee on token1, scaled by 1e6\n @return tickSpacing The pool's tick spacing"
+            },
+            "functionSelector": "7cf1a14f",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "cachedPoolMetadata",
+            "nameLocation": "1335:18:47",
+            "parameters": {
+              "id": 11061,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 11060,
+                  "mutability": "mutable",
+                  "name": "pool",
+                  "nameLocation": "1369:4:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11071,
+                  "src": "1354:19:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_IUniswapV3Pool_$5745",
+                    "typeString": "contract IUniswapV3Pool"
+                  },
+                  "typeName": {
+                    "id": 11059,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 11058,
+                      "name": "IUniswapV3Pool",
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 5745,
+                      "src": "1354:14:47"
+                    },
+                    "referencedDeclaration": 5745,
+                    "src": "1354:14:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IUniswapV3Pool_$5745",
+                      "typeString": "contract IUniswapV3Pool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1353:21:47"
+            },
+            "returnParameters": {
+              "id": 11070,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 11063,
+                  "mutability": "mutable",
+                  "name": "maxSecondsAgo",
+                  "nameLocation": "1442:13:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11071,
+                  "src": "1435:20:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  },
+                  "typeName": {
+                    "id": 11062,
+                    "name": "uint32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1435:6:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 11065,
+                  "mutability": "mutable",
+                  "name": "gamma0",
+                  "nameLocation": "1476:6:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11071,
+                  "src": "1469:13:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint24",
+                    "typeString": "uint24"
+                  },
+                  "typeName": {
+                    "id": 11064,
+                    "name": "uint24",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1469:6:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint24",
+                      "typeString": "uint24"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 11067,
+                  "mutability": "mutable",
+                  "name": "gamma1",
+                  "nameLocation": "1503:6:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11071,
+                  "src": "1496:13:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint24",
+                    "typeString": "uint24"
+                  },
+                  "typeName": {
+                    "id": 11066,
+                    "name": "uint24",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1496:6:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint24",
+                      "typeString": "uint24"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 11069,
+                  "mutability": "mutable",
+                  "name": "tickSpacing",
+                  "nameLocation": "1529:11:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11071,
+                  "src": "1523:17:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_int24",
+                    "typeString": "int24"
+                  },
+                  "typeName": {
+                    "id": 11068,
+                    "name": "int24",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1523:5:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_int24",
+                      "typeString": "int24"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1421:129:47"
+            },
+            "scope": 11125,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 11086,
+            "nodeType": "FunctionDefinition",
+            "src": "2100:231:47",
+            "nodes": [],
+            "documentation": {
+              "id": 11072,
+              "nodeType": "StructuredDocumentation",
+              "src": "1557:538:47",
+              "text": " @notice Accesses any of the 25 most recently stored fee growth structs\n @dev The full array (idx=0,1,2...24) has data that spans *at least* 24 hours\n @param pool The Uniswap pool for which fee growth should be retrieved\n @param idx The index into the storage array\n @return feeGrowthGlobal0X128 Total pool revenue in token0, as of timestamp\n @return feeGrowthGlobal1X128 Total pool revenue in token1, as of timestamp\n @return timestamp The time at which snapshot was taken and stored"
+            },
+            "functionSelector": "38c89978",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "feeGrowthGlobals",
+            "nameLocation": "2109:16:47",
+            "parameters": {
+              "id": 11078,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 11075,
+                  "mutability": "mutable",
+                  "name": "pool",
+                  "nameLocation": "2141:4:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11086,
+                  "src": "2126:19:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_IUniswapV3Pool_$5745",
+                    "typeString": "contract IUniswapV3Pool"
+                  },
+                  "typeName": {
+                    "id": 11074,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 11073,
+                      "name": "IUniswapV3Pool",
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 5745,
+                      "src": "2126:14:47"
+                    },
+                    "referencedDeclaration": 5745,
+                    "src": "2126:14:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IUniswapV3Pool_$5745",
+                      "typeString": "contract IUniswapV3Pool"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 11077,
+                  "mutability": "mutable",
+                  "name": "idx",
+                  "nameLocation": "2155:3:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11086,
+                  "src": "2147:11:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 11076,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2147:7:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2125:34:47"
+            },
+            "returnParameters": {
+              "id": 11085,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 11080,
+                  "mutability": "mutable",
+                  "name": "feeGrowthGlobal0X128",
+                  "nameLocation": "2228:20:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11086,
+                  "src": "2220:28:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 11079,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2220:7:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 11082,
+                  "mutability": "mutable",
+                  "name": "feeGrowthGlobal1X128",
+                  "nameLocation": "2270:20:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11086,
+                  "src": "2262:28:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 11081,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2262:7:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 11084,
+                  "mutability": "mutable",
+                  "name": "timestamp",
+                  "nameLocation": "2311:9:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11086,
+                  "src": "2304:16:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  },
+                  "typeName": {
+                    "id": 11083,
+                    "name": "uint32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2304:6:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2206:124:47"
+            },
+            "scope": 11125,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 11097,
+            "nodeType": "FunctionDefinition",
+            "src": "2702:102:47",
+            "nodes": [],
+            "documentation": {
+              "id": 11087,
+              "nodeType": "StructuredDocumentation",
+              "src": "2337:360:47",
+              "text": " @notice Returns indices that the contract will use to access `feeGrowthGlobals`\n @param pool The Uniswap pool for which array indices should be fetched\n @return read The index that was closest to 24 hours old last time `estimate24H` was called\n @return write The index that was written to last time `estimate24H` was called"
+            },
+            "functionSelector": "a93f2497",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "feeGrowthGlobalsIndices",
+            "nameLocation": "2711:23:47",
+            "parameters": {
+              "id": 11091,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 11090,
+                  "mutability": "mutable",
+                  "name": "pool",
+                  "nameLocation": "2750:4:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11097,
+                  "src": "2735:19:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_IUniswapV3Pool_$5745",
+                    "typeString": "contract IUniswapV3Pool"
+                  },
+                  "typeName": {
+                    "id": 11089,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 11088,
+                      "name": "IUniswapV3Pool",
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 5745,
+                      "src": "2735:14:47"
+                    },
+                    "referencedDeclaration": 5745,
+                    "src": "2735:14:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IUniswapV3Pool_$5745",
+                      "typeString": "contract IUniswapV3Pool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2734:21:47"
+            },
+            "returnParameters": {
+              "id": 11096,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 11093,
+                  "mutability": "mutable",
+                  "name": "read",
+                  "nameLocation": "2785:4:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11097,
+                  "src": "2779:10:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint8",
+                    "typeString": "uint8"
+                  },
+                  "typeName": {
+                    "id": 11092,
+                    "name": "uint8",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2779:5:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint8",
+                      "typeString": "uint8"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 11095,
+                  "mutability": "mutable",
+                  "name": "write",
+                  "nameLocation": "2797:5:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11097,
+                  "src": "2791:11:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint8",
+                    "typeString": "uint8"
+                  },
+                  "typeName": {
+                    "id": 11094,
+                    "name": "uint8",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2791:5:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint8",
+                      "typeString": "uint8"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2778:25:47"
+            },
+            "scope": 11125,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 11104,
+            "nodeType": "FunctionDefinition",
+            "src": "3066:56:47",
+            "nodes": [],
+            "documentation": {
+              "id": 11098,
+              "nodeType": "StructuredDocumentation",
+              "src": "2810:251:47",
+              "text": " @notice Updates cached metadata for a Uniswap pool. Must be called at least once\n in order for volatility to be determined. Should also be called whenever\n protocol fee changes\n @param pool The Uniswap pool to poke"
+            },
+            "functionSelector": "be3438e9",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "cacheMetadataFor",
+            "nameLocation": "3075:16:47",
+            "parameters": {
+              "id": 11102,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 11101,
+                  "mutability": "mutable",
+                  "name": "pool",
+                  "nameLocation": "3107:4:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11104,
+                  "src": "3092:19:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_IUniswapV3Pool_$5745",
+                    "typeString": "contract IUniswapV3Pool"
+                  },
+                  "typeName": {
+                    "id": 11100,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 11099,
+                      "name": "IUniswapV3Pool",
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 5745,
+                      "src": "3092:14:47"
+                    },
+                    "referencedDeclaration": 5745,
+                    "src": "3092:14:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IUniswapV3Pool_$5745",
+                      "typeString": "contract IUniswapV3Pool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3091:21:47"
+            },
+            "returnParameters": {
+              "id": 11103,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "3121:0:47"
+            },
+            "scope": 11125,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 11115,
+            "nodeType": "FunctionDefinition",
+            "src": "3520:81:47",
+            "nodes": [],
+            "documentation": {
+              "id": 11105,
+              "nodeType": "StructuredDocumentation",
+              "src": "3128:387:47",
+              "text": " @notice Provides multiple estimates of IV using all stored `feeGrowthGlobals` entries for `pool`\n @dev This is not meant to be used on-chain, and it doesn't contribute to the oracle's knowledge.\n Please use `estimate24H` instead.\n @param pool The pool to use for volatility estimate\n @return IV The array of volatility estimates, scaled by 1e18"
+            },
+            "functionSelector": "ff8a34f4",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "lens",
+            "nameLocation": "3529:4:47",
+            "parameters": {
+              "id": 11109,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 11108,
+                  "mutability": "mutable",
+                  "name": "pool",
+                  "nameLocation": "3549:4:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11115,
+                  "src": "3534:19:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_IUniswapV3Pool_$5745",
+                    "typeString": "contract IUniswapV3Pool"
+                  },
+                  "typeName": {
+                    "id": 11107,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 11106,
+                      "name": "IUniswapV3Pool",
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 5745,
+                      "src": "3534:14:47"
+                    },
+                    "referencedDeclaration": 5745,
+                    "src": "3534:14:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IUniswapV3Pool_$5745",
+                      "typeString": "contract IUniswapV3Pool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3533:21:47"
+            },
+            "returnParameters": {
+              "id": 11114,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 11113,
+                  "mutability": "mutable",
+                  "name": "IV",
+                  "nameLocation": "3597:2:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11115,
+                  "src": "3578:21:47",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$25_memory_ptr",
+                    "typeString": "uint256[25]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 11110,
+                      "name": "uint256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "3578:7:47",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 11112,
+                    "length": {
+                      "hexValue": "3235",
+                      "id": 11111,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "3586:2:47",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_25_by_1",
+                        "typeString": "int_const 25"
+                      },
+                      "value": "25"
+                    },
+                    "nodeType": "ArrayTypeName",
+                    "src": "3578:11:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$25_storage_ptr",
+                      "typeString": "uint256[25]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3577:23:47"
+            },
+            "scope": 11125,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 11124,
+            "nodeType": "FunctionDefinition",
+            "src": "3813:72:47",
+            "nodes": [],
+            "documentation": {
+              "id": 11116,
+              "nodeType": "StructuredDocumentation",
+              "src": "3607:201:47",
+              "text": " @notice Estimates 24-hour implied volatility for a Uniswap pool.\n @param pool The pool to use for volatility estimate\n @return IV The estimated volatility, scaled by 1e18"
+            },
+            "functionSelector": "b168197d",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "estimate24H",
+            "nameLocation": "3822:11:47",
+            "parameters": {
+              "id": 11120,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 11119,
+                  "mutability": "mutable",
+                  "name": "pool",
+                  "nameLocation": "3849:4:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11124,
+                  "src": "3834:19:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_IUniswapV3Pool_$5745",
+                    "typeString": "contract IUniswapV3Pool"
+                  },
+                  "typeName": {
+                    "id": 11118,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 11117,
+                      "name": "IUniswapV3Pool",
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 5745,
+                      "src": "3834:14:47"
+                    },
+                    "referencedDeclaration": 5745,
+                    "src": "3834:14:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IUniswapV3Pool_$5745",
+                      "typeString": "contract IUniswapV3Pool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3833:21:47"
+            },
+            "returnParameters": {
+              "id": 11123,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 11122,
+                  "mutability": "mutable",
+                  "name": "IV",
+                  "nameLocation": "3881:2:47",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 11124,
+                  "src": "3873:10:47",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 11121,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3873:7:47",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3872:12:47"
+            },
+            "scope": 11125,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "ISpindleOracle",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          11125
+        ],
+        "name": "ISpindleOracle",
+        "nameLocation": "136:14:47",
+        "scope": 11126,
+        "usedErrors": []
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 47
+}

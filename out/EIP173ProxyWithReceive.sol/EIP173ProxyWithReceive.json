@@ -1,0 +1,689 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "implementationAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "ownerAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousAdmin",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newAdmin",
+          "type": "address"
+        }
+      ],
+      "name": "ProxyAdminTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousImplementation",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newImplementation",
+          "type": "address"
+        }
+      ],
+      "name": "ProxyImplementationUpdated",
+      "type": "event"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "fallback"
+    },
+    {
+      "inputs": [],
+      "name": "proxyAdmin",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes4",
+          "name": "id",
+          "type": "bytes4"
+        }
+      ],
+      "name": "supportsInterface",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newAdmin",
+          "type": "address"
+        }
+      ],
+      "name": "transferProxyAdmin",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newImplementation",
+          "type": "address"
+        }
+      ],
+      "name": "upgradeTo",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newImplementation",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "name": "upgradeToAndCall",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    }
+  ],
+  "bytecode": {
+    "object": "0x608060405260405161099d38038061099d833981016040819052610022916101e4565b82828261002f8382610043565b6100388261011f565b5050505050506102d0565b7f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc8054908390556040516001600160a01b0380851691908316907f5570d70a002632a7b0b3c9304cc89efb62d8da9eca0dbd7752c83b737906829690600090a381511561011a576000836001600160a01b0316836040516100c491906102b4565b600060405180830381855af49150503d80600081146100ff576040519150601f19603f3d011682016040523d82523d6000602084013e610104565b606091505b5050905080610118573d806000803e806000fd5b505b505050565b600061013760008051602061097d8339815191525490565b90508160008051602061097d83398151915255816001600160a01b0316816001600160a01b03167fdf435d422321da6b195902d70fc417c06a32f88379c20dd8f2a8da07088cec2960405160405180910390a35050565b80516001600160a01b03811681146101a557600080fd5b919050565b634e487b7160e01b600052604160045260246000fd5b60005b838110156101db5781810151838201526020016101c3565b50506000910152565b6000806000606084860312156101f957600080fd5b6102028461018e565b92506102106020850161018e565b60408501519092506001600160401b038082111561022d57600080fd5b818601915086601f83011261024157600080fd5b815181811115610253576102536101aa565b604051601f8201601f19908116603f0116810190838211818310171561027b5761027b6101aa565b8160405282815289602084870101111561029457600080fd5b6102a58360208301602088016101c0565b80955050505050509250925092565b600082516102c68184602087016101c0565b9190910192915050565b61069e806102df6000396000f3fe60806040526004361061004e5760003560e01c806301ffc9a71461005f5780633659cfe6146100945780633e47158c146100b45780634f1ef286146100e15780638356ca4f146100f457610055565b3661005557005b61005d610114565b005b34801561006b57600080fd5b5061007f61007a3660046104eb565b61015f565b60405190151581526020015b60405180910390f35b3480156100a057600080fd5b5061005d6100af366004610531565b610257565b3480156100c057600080fd5b506100c96102bc565b6040516001600160a01b03909116815260200161008b565b61005d6100ef36600461054c565b6102d9565b34801561010057600080fd5b5061005d61010f366004610531565b61035e565b7f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc5460003681823780813683855af491503d8082833e828015610155578183f35b8183fd5b50505050565b60006301ffc9a760e01b6001600160e01b03198316148061019057506307f5828d60e41b6001600160e01b03198316145b1561019d57506001919050565b6001600160e01b031980831690036101b757506000919050565b7f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc546040516301ffc9a760e01b81526001600160e01b0319841660048201526001600160a01b038216906301ffc9a790602401602060405180830381865afa925050508015610243575060408051601f3d908101601f19168201909252610240918101906105cf565b60015b6102505750600092915050565b9392505050565b600080516020610649833981519152546001600160a01b0316336001600160a01b0316146102a05760405162461bcd60e51b8152600401610297906105f1565b60405180910390fd5b6102b981604051806020016040528060008152506103a7565b50565b60006102d46000805160206106498339815191525490565b905090565b600080516020610649833981519152546001600160a01b0316336001600160a01b0316146103195760405162461bcd60e51b8152600401610297906105f1565b6103598383838080601f0160208091040260200160405190810160405280939291908181526020018383808284376000920191909152506103a792505050565b505050565b600080516020610649833981519152546001600160a01b0316336001600160a01b03161461039e5760405162461bcd60e51b8152600401610297906105f1565b6102b98161047c565b7f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc8054908390556040516001600160a01b0380851691908316907f5570d70a002632a7b0b3c9304cc89efb62d8da9eca0dbd7752c83b737906829690600090a3815115610359576000836001600160a01b0316836040516104289190610619565b600060405180830381855af49150503d8060008114610463576040519150601f19603f3d011682016040523d82523d6000602084013e610468565b606091505b5050905080610159573d806000803e806000fd5b60006104946000805160206106498339815191525490565b90508160008051602061064983398151915255816001600160a01b0316816001600160a01b03167fdf435d422321da6b195902d70fc417c06a32f88379c20dd8f2a8da07088cec2960405160405180910390a35050565b6000602082840312156104fd57600080fd5b81356001600160e01b03198116811461025057600080fd5b80356001600160a01b038116811461052c57600080fd5b919050565b60006020828403121561054357600080fd5b61025082610515565b60008060006040848603121561056157600080fd5b61056a84610515565b9250602084013567ffffffffffffffff8082111561058757600080fd5b818601915086601f83011261059b57600080fd5b8135818111156105aa57600080fd5b8760208285010111156105bc57600080fd5b6020830194508093505050509250925092565b6000602082840312156105e157600080fd5b8151801515811461025057600080fd5b6020808252600e908201526d1393d517d055551213d49256915160921b604082015260600190565b6000825160005b8181101561063a5760208186018101518583015201610620565b50600092019182525091905056feb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103a2646970667358221220be54ef554a46f307237a2c1d2c9af0a14d20ea4fd0faa0da657b8d9d7c9adb1f64736f6c63430008110033b53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+    "sourceMap": "181:278:59:-:0;;;234:179;;;;;;;;;;;;;;;;;;:::i;:::-;368:21;391:12;405:4;751:47:58;368:21:59;405:4;751:18:58;:47::i;:::-;808:28;823:12;808:14;:28::i;:::-;619:224;;;234:179:59;;;181:278;;1591:1190:61;1873:66;1850:103;;2061:139;;;;2225:103;;-1:-1:-1;;;;;2225:103:61;;;;;;;;;;1696:30;;2225:103;2343:11;;:15;2339:436;;2375:12;2393:17;-1:-1:-1;;;;;2393:30:61;2424:4;2393:36;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2374:55;;;2448:7;2443:322;;2614:16;2672:14;2669:1;;2651:36;2718:14;2669:1;2708:25;2443:322;2360:415;2339:436;1686:1095;1591:1190;;:::o;3075:403:58:-;3136:21;3160:13;-1:-1:-1;;;;;;;;;;;2950:103:58;;2768:301;3160:13;3136:37;;3379:8;-1:-1:-1;;;;;;;;;;;3271:130:58;3462:8;-1:-1:-1;;;;;3425:46:58;3447:13;-1:-1:-1;;;;;3425:46:58;;;;;;;;;;;3126:352;3075:403;:::o;14:177:63:-;93:13;;-1:-1:-1;;;;;135:31:63;;125:42;;115:70;;181:1;178;171:12;115:70;14:177;;;:::o;196:127::-;257:10;252:3;248:20;245:1;238:31;288:4;285:1;278:15;312:4;309:1;302:15;328:250;413:1;423:113;437:6;434:1;431:13;423:113;;;513:11;;;507:18;494:11;;;487:39;459:2;452:10;423:113;;;-1:-1:-1;;570:1:63;552:16;;545:27;328:250::o;583:1066::-;680:6;688;696;749:2;737:9;728:7;724:23;720:32;717:52;;;765:1;762;755:12;717:52;788:40;818:9;788:40;:::i;:::-;778:50;;847:49;892:2;881:9;877:18;847:49;:::i;:::-;940:2;925:18;;919:25;837:59;;-1:-1:-1;;;;;;993:14:63;;;990:34;;;1020:1;1017;1010:12;990:34;1058:6;1047:9;1043:22;1033:32;;1103:7;1096:4;1092:2;1088:13;1084:27;1074:55;;1125:1;1122;1115:12;1074:55;1154:2;1148:9;1176:2;1172;1169:10;1166:36;;;1182:18;;:::i;:::-;1257:2;1251:9;1225:2;1311:13;;-1:-1:-1;;1307:22:63;;;1331:2;1303:31;1299:40;1287:53;;;1355:18;;;1375:22;;;1352:46;1349:72;;;1401:18;;:::i;:::-;1441:10;1437:2;1430:22;1476:2;1468:6;1461:18;1516:7;1511:2;1506;1502;1498:11;1494:20;1491:33;1488:53;;;1537:1;1534;1527:12;1488:53;1550:68;1615:2;1610;1602:6;1598:15;1593:2;1589;1585:11;1550:68;:::i;:::-;1637:6;1627:16;;;;;;;583:1066;;;;;:::o;1654:287::-;1783:3;1821:6;1815:13;1837:66;1896:6;1891:3;1884:4;1876:6;1872:17;1837:66;:::i;:::-;1919:16;;;;;1654:287;-1:-1:-1;;1654:287:63:o;:::-;181:278:59;;;;;;",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x60806040526004361061004e5760003560e01c806301ffc9a71461005f5780633659cfe6146100945780633e47158c146100b45780634f1ef286146100e15780638356ca4f146100f457610055565b3661005557005b61005d610114565b005b34801561006b57600080fd5b5061007f61007a3660046104eb565b61015f565b60405190151581526020015b60405180910390f35b3480156100a057600080fd5b5061005d6100af366004610531565b610257565b3480156100c057600080fd5b506100c96102bc565b6040516001600160a01b03909116815260200161008b565b61005d6100ef36600461054c565b6102d9565b34801561010057600080fd5b5061005d61010f366004610531565b61035e565b7f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc5460003681823780813683855af491503d8082833e828015610155578183f35b8183fd5b50505050565b60006301ffc9a760e01b6001600160e01b03198316148061019057506307f5828d60e41b6001600160e01b03198316145b1561019d57506001919050565b6001600160e01b031980831690036101b757506000919050565b7f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc546040516301ffc9a760e01b81526001600160e01b0319841660048201526001600160a01b038216906301ffc9a790602401602060405180830381865afa925050508015610243575060408051601f3d908101601f19168201909252610240918101906105cf565b60015b6102505750600092915050565b9392505050565b600080516020610649833981519152546001600160a01b0316336001600160a01b0316146102a05760405162461bcd60e51b8152600401610297906105f1565b60405180910390fd5b6102b981604051806020016040528060008152506103a7565b50565b60006102d46000805160206106498339815191525490565b905090565b600080516020610649833981519152546001600160a01b0316336001600160a01b0316146103195760405162461bcd60e51b8152600401610297906105f1565b6103598383838080601f0160208091040260200160405190810160405280939291908181526020018383808284376000920191909152506103a792505050565b505050565b600080516020610649833981519152546001600160a01b0316336001600160a01b03161461039e5760405162461bcd60e51b8152600401610297906105f1565b6102b98161047c565b7f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc8054908390556040516001600160a01b0380851691908316907f5570d70a002632a7b0b3c9304cc89efb62d8da9eca0dbd7752c83b737906829690600090a3815115610359576000836001600160a01b0316836040516104289190610619565b600060405180830381855af49150503d8060008114610463576040519150601f19603f3d011682016040523d82523d6000602084013e610468565b606091505b5050905080610159573d806000803e806000fd5b60006104946000805160206106498339815191525490565b90508160008051602061064983398151915255816001600160a01b0316816001600160a01b03167fdf435d422321da6b195902d70fc417c06a32f88379c20dd8f2a8da07088cec2960405160405180910390a35050565b6000602082840312156104fd57600080fd5b81356001600160e01b03198116811461025057600080fd5b80356001600160a01b038116811461052c57600080fd5b919050565b60006020828403121561054357600080fd5b61025082610515565b60008060006040848603121561056157600080fd5b61056a84610515565b9250602084013567ffffffffffffffff8082111561058757600080fd5b818601915086601f83011261059b57600080fd5b8135818111156105aa57600080fd5b8760208285010111156105bc57600080fd5b6020830194508093505050509250925092565b6000602082840312156105e157600080fd5b8151801515811461025057600080fd5b6020808252600e908201526d1393d517d055551213d49256915160921b604082015260600190565b6000825160005b8181101561063a5760208186018101518583015201610620565b50600092019182525091905056feb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103a2646970667358221220be54ef554a46f307237a2c1d2c9af0a14d20ea4fd0faa0da657b8d9d7c9adb1f64736f6c63430008110033",
+    "sourceMap": "181:278:59:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;643:11:61;:9;:11::i;:::-;181:278:59;1061:907:58;;;;;;;;;;-1:-1:-1;1061:907:58;;;;;:::i;:::-;;:::i;:::-;;;470:14:63;;463:22;445:41;;433:2;418:18;1061:907:58;;;;;;;;2091:128;;;;;;;;;;-1:-1:-1;2091:128:58;;;;;:::i;:::-;;:::i;964:91::-;;;;;;;;;;;;;:::i;:::-;;;-1:-1:-1;;;;;1030:32:63;;;1012:51;;1000:2;985:18;964:91:58;866:203:63;2225:194:58;;;;;;:::i;:::-;;:::i;1974:111::-;;;;;;;;;;-1:-1:-1;1974:111:58;;;;;:::i;:::-;;:::i;781:804:61:-;961:66;938:103;1072:3;1077:14;1072:3;;1054:38;1072:3;;1077:14;1072:3;1173:21;1150:5;1120:179;1105:194;;1325:16;1375:5;1072:3;;1354:27;1401:7;1425:63;;;;1545:5;1072:3;1535:16;1425:63;1464:5;1072:3;1454:16;1394:175;;;;;781:804::o;1061:907:58:-;1122:4;-1:-1:-1;;;;;;;;;1142:16:58;;;;:36;;-1:-1:-1;;;;;;;;;;1162:16:58;;;1142:36;1138:78;;;-1:-1:-1;1201:4:58;;1061:907;-1:-1:-1;1061:907:58:o;1138:78::-;-1:-1:-1;;;;;;1229:16:58;;;;;1225:59;;-1:-1:-1;1268:5:58;;1061:907;-1:-1:-1;1061:907:58:o;1225:59::-;1454:66;1431:103;1819:36;;-1:-1:-1;;;1819:36:58;;-1:-1:-1;;;;;;1906:33:63;;1819:36:58;;;1888:52:63;-1:-1:-1;;;;;1819:32:58;;;;;1861:18:63;;1819:36:58;;;;;;;;;;;;;;;;;;-1:-1:-1;1819:36:58;;;;;;;;-1:-1:-1;;1819:36:58;;;;;;;;;;;;:::i;:::-;;;1815:147;;-1:-1:-1;1946:5:58;;1061:907;-1:-1:-1;;1061:907:58:o;1815:147::-;1900:7;1061:907;-1:-1:-1;;;1061:907:58:o;2091:128::-;-1:-1:-1;;;;;;;;;;;2950:103:58;-1:-1:-1;;;;;2584:27:58;:10;-1:-1:-1;;;;;2584:27:58;;2576:54;;;;-1:-1:-1;;;2576:54:58;;;;;;;:::i;:::-;;;;;;;;;2171:41:::1;2190:17;2171:41;;;;;;;;;;;::::0;:18:::1;:41::i;:::-;2091:128:::0;:::o;964:91::-;1009:7;1035:13;-1:-1:-1;;;;;;;;;;;2950:103:58;;2768:301;1035:13;1028:20;;964:91;:::o;2225:194::-;-1:-1:-1;;;;;;;;;;;2950:103:58;-1:-1:-1;;;;;2584:27:58;:10;-1:-1:-1;;;;;2584:27:58;;2576:54;;;;-1:-1:-1;;;2576:54:58;;;;;;;:::i;:::-;2369:43:::1;2388:17;2407:4;;2369:43;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;::::0;::::1;::::0;;;;-1:-1:-1;2369:18:58::1;::::0;-1:-1:-1;;;2369:43:58:i:1;:::-;2225:194:::0;;;:::o;1974:111::-;-1:-1:-1;;;;;;;;;;;2950:103:58;-1:-1:-1;;;;;2584:27:58;:10;-1:-1:-1;;;;;2584:27:58;;2576:54;;;;-1:-1:-1;;;2576:54:58;;;;;;;:::i;:::-;2054:24:::1;2069:8;2054:14;:24::i;1591:1190:61:-:0;1873:66;1850:103;;2061:139;;;;2225:103;;-1:-1:-1;;;;;2225:103:61;;;;;;;;;;1696:30;;2225:103;2343:11;;:15;2339:436;;2375:12;2393:17;-1:-1:-1;;;;;2393:30:61;2424:4;2393:36;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2374:55;;;2448:7;2443:322;;2614:16;2672:14;2669:1;;2651:36;2718:14;2669:1;2708:25;3075:403:58;3136:21;3160:13;-1:-1:-1;;;;;;;;;;;2950:103:58;;2768:301;3160:13;3136:37;;3379:8;-1:-1:-1;;;;;;;;;;;3271:130:58;3462:8;-1:-1:-1;;;;;3425:46:58;3447:13;-1:-1:-1;;;;;3425:46:58;;;;;;;;;;;3126:352;3075:403;:::o;14:286:63:-;72:6;125:2;113:9;104:7;100:23;96:32;93:52;;;141:1;138;131:12;93:52;167:23;;-1:-1:-1;;;;;;219:32:63;;209:43;;199:71;;266:1;263;256:12;497:173;565:20;;-1:-1:-1;;;;;614:31:63;;604:42;;594:70;;660:1;657;650:12;594:70;497:173;;;:::o;675:186::-;734:6;787:2;775:9;766:7;762:23;758:32;755:52;;;803:1;800;793:12;755:52;826:29;845:9;826:29;:::i;1074:665::-;1153:6;1161;1169;1222:2;1210:9;1201:7;1197:23;1193:32;1190:52;;;1238:1;1235;1228:12;1190:52;1261:29;1280:9;1261:29;:::i;:::-;1251:39;;1341:2;1330:9;1326:18;1313:32;1364:18;1405:2;1397:6;1394:14;1391:34;;;1421:1;1418;1411:12;1391:34;1459:6;1448:9;1444:22;1434:32;;1504:7;1497:4;1493:2;1489:13;1485:27;1475:55;;1526:1;1523;1516:12;1475:55;1566:2;1553:16;1592:2;1584:6;1581:14;1578:34;;;1608:1;1605;1598:12;1578:34;1653:7;1648:2;1639:6;1635:2;1631:15;1627:24;1624:37;1621:57;;;1674:1;1671;1664:12;1621:57;1705:2;1701;1697:11;1687:21;;1727:6;1717:16;;;;;1074:665;;;;;:::o;1951:277::-;2018:6;2071:2;2059:9;2050:7;2046:23;2042:32;2039:52;;;2087:1;2084;2077:12;2039:52;2119:9;2113:16;2172:5;2165:13;2158:21;2151:5;2148:32;2138:60;;2194:1;2191;2184:12;2233:338;2435:2;2417:21;;;2474:2;2454:18;;;2447:30;-1:-1:-1;;;2508:2:63;2493:18;;2486:44;2562:2;2547:18;;2233:338::o;2576:412::-;2705:3;2743:6;2737:13;2768:1;2778:129;2792:6;2789:1;2786:13;2778:129;;;2890:4;2874:14;;;2870:25;;2864:32;2851:11;;;2844:53;2807:12;2778:129;;;-1:-1:-1;2962:1:63;2926:16;;2951:13;;;-1:-1:-1;2926:16:63;2576:412;-1:-1:-1;2576:412:63:o",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "proxyAdmin()": "3e47158c",
+    "supportsInterface(bytes4)": "01ffc9a7",
+    "transferProxyAdmin(address)": "8356ca4f",
+    "upgradeTo(address)": "3659cfe6",
+    "upgradeToAndCall(address,bytes)": "4f1ef286"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"implementationAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"ownerAddress\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"stateMutability\":\"payable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousAdmin\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newAdmin\",\"type\":\"address\"}],\"name\":\"ProxyAdminTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousImplementation\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"}],\"name\":\"ProxyImplementationUpdated\",\"type\":\"event\"},{\"stateMutability\":\"payable\",\"type\":\"fallback\"},{\"inputs\":[],\"name\":\"proxyAdmin\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"id\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newAdmin\",\"type\":\"address\"}],\"name\":\"transferProxyAdmin\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"}],\"name\":\"upgradeTo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"upgradeToAndCall\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"stateMutability\":\"payable\",\"type\":\"receive\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"notice\":\"Proxy implementing EIP173 for ownership management that accept ETH via receive\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/proxy/EIP173ProxyWithReceive.sol\":\"EIP173ProxyWithReceive\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":@rari-capital/solmate/=lib/solmate/\",\":@uniswap/v3-core/=lib/v3-core/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/\",\":solmate/=lib/solmate/src/\",\":v3-core/=lib/v3-core/\"]},\"sources\":{\"src/proxy/EIP173Proxy.sol\":{\"keccak256\":\"0xd079c1decb19079344752294e671006a487cf7bc69cdbdcfe333f50f62112a02\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://bb1016e0b9f72824a1d58617c9b26b34e8429d8049feb7aecaa7cc80647a34a8\",\"dweb:/ipfs/QmT33mQ6Ut8o7YQQoFWVLjXCvgJgGoApLfEBDYGUXm7nav\"]},\"src/proxy/EIP173ProxyWithReceive.sol\":{\"keccak256\":\"0xdd9e0f64a85717542f6e0f73e32d2c222602a3130a33ccbb1d582a094b188f26\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://1b400469f44b086b78d13184a142d54ff330970d4d8c9bae8ab6ba4566d8fe60\",\"dweb:/ipfs/QmUhcFR6yzKu91rNCqQEkrteV54tKASAg1bjSLCf7oDSyv\"]},\"src/proxy/Proxy.sol\":{\"keccak256\":\"0x97b57dd4548dba015cb7d6e358ebd5cad965ca9c7df5f83fdbe31c1fc6dcb2a2\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://f36e209f7d7cdb706c71518f8d174eb5e84a974bfe1549db9fcbdc1f55b83fea\",\"dweb:/ipfs/QmPbNYDKhnvA5e7qd47VauSE8gdt1NJqAHWCpFwHizYuy4\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.17+commit.8df45f5f"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "implementationAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "ownerAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "previousAdmin",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "newAdmin",
+              "type": "address",
+              "indexed": true
+            }
+          ],
+          "type": "event",
+          "name": "ProxyAdminTransferred",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "previousImplementation",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address",
+              "indexed": true
+            }
+          ],
+          "type": "event",
+          "name": "ProxyImplementationUpdated",
+          "anonymous": false
+        },
+        {
+          "inputs": [],
+          "stateMutability": "payable",
+          "type": "fallback"
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "proxyAdmin",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "bytes4",
+              "name": "id",
+              "type": "bytes4"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "supportsInterface",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "transferProxyAdmin"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "upgradeTo"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable",
+          "type": "function",
+          "name": "upgradeToAndCall"
+        },
+        {
+          "inputs": [],
+          "stateMutability": "payable",
+          "type": "receive"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {},
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        ":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+        ":@rari-capital/solmate/=lib/solmate/",
+        ":@uniswap/v3-core/=lib/v3-core/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+        ":forge-std/=lib/forge-std/src/",
+        ":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        ":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/",
+        ":solmate/=lib/solmate/src/",
+        ":v3-core/=lib/v3-core/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/proxy/EIP173ProxyWithReceive.sol": "EIP173ProxyWithReceive"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "src/proxy/EIP173Proxy.sol": {
+        "keccak256": "0xd079c1decb19079344752294e671006a487cf7bc69cdbdcfe333f50f62112a02",
+        "urls": [
+          "bzz-raw://bb1016e0b9f72824a1d58617c9b26b34e8429d8049feb7aecaa7cc80647a34a8",
+          "dweb:/ipfs/QmT33mQ6Ut8o7YQQoFWVLjXCvgJgGoApLfEBDYGUXm7nav"
+        ],
+        "license": "GPL-3.0"
+      },
+      "src/proxy/EIP173ProxyWithReceive.sol": {
+        "keccak256": "0xdd9e0f64a85717542f6e0f73e32d2c222602a3130a33ccbb1d582a094b188f26",
+        "urls": [
+          "bzz-raw://1b400469f44b086b78d13184a142d54ff330970d4d8c9bae8ab6ba4566d8fe60",
+          "dweb:/ipfs/QmUhcFR6yzKu91rNCqQEkrteV54tKASAg1bjSLCf7oDSyv"
+        ],
+        "license": "GPL-3.0"
+      },
+      "src/proxy/Proxy.sol": {
+        "keccak256": "0x97b57dd4548dba015cb7d6e358ebd5cad965ca9c7df5f83fdbe31c1fc6dcb2a2",
+        "urls": [
+          "bzz-raw://f36e209f7d7cdb706c71518f8d174eb5e84a974bfe1549db9fcbdc1f55b83fea",
+          "dweb:/ipfs/QmPbNYDKhnvA5e7qd47VauSE8gdt1NJqAHWCpFwHizYuy4"
+        ],
+        "license": "GPL-3.0"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/proxy/EIP173ProxyWithReceive.sol",
+    "id": 32014,
+    "exportedSymbols": {
+      "EIP173Proxy": [
+        31986
+      ],
+      "EIP173ProxyWithReceive": [
+        32013
+      ],
+      "ERC165": [
+        31824
+      ],
+      "Proxy": [
+        32128
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "36:424:59",
+    "nodes": [
+      {
+        "id": 31988,
+        "nodeType": "PragmaDirective",
+        "src": "36:24:59",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".10"
+        ]
+      },
+      {
+        "id": 31989,
+        "nodeType": "ImportDirective",
+        "src": "62:27:59",
+        "nodes": [],
+        "absolutePath": "src/proxy/EIP173Proxy.sol",
+        "file": "./EIP173Proxy.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 32014,
+        "sourceUnit": 31987,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 32013,
+        "nodeType": "ContractDefinition",
+        "src": "181:278:59",
+        "nodes": [
+          {
+            "id": 32007,
+            "nodeType": "FunctionDefinition",
+            "src": "234:179:59",
+            "nodes": [],
+            "body": {
+              "id": 32006,
+              "nodeType": "Block",
+              "src": "411:2:59",
+              "nodes": [],
+              "statements": []
+            },
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [
+              {
+                "arguments": [
+                  {
+                    "id": 32001,
+                    "name": "implementationAddress",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 31994,
+                    "src": "368:21:59",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  {
+                    "id": 32002,
+                    "name": "ownerAddress",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 31996,
+                    "src": "391:12:59",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  {
+                    "id": 32003,
+                    "name": "data",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 31998,
+                    "src": "405:4:59",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_memory_ptr",
+                      "typeString": "bytes memory"
+                    }
+                  }
+                ],
+                "id": 32004,
+                "kind": "baseConstructorSpecifier",
+                "modifierName": {
+                  "id": 32000,
+                  "name": "EIP173Proxy",
+                  "nameLocations": [
+                    "356:11:59"
+                  ],
+                  "nodeType": "IdentifierPath",
+                  "referencedDeclaration": 31986,
+                  "src": "356:11:59"
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "356:54:59"
+              }
+            ],
+            "name": "",
+            "nameLocation": "-1:-1:-1",
+            "parameters": {
+              "id": 31999,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 31994,
+                  "mutability": "mutable",
+                  "name": "implementationAddress",
+                  "nameLocation": "263:21:59",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 32007,
+                  "src": "255:29:59",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 31993,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "255:7:59",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 31996,
+                  "mutability": "mutable",
+                  "name": "ownerAddress",
+                  "nameLocation": "302:12:59",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 32007,
+                  "src": "294:20:59",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 31995,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "294:7:59",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 31998,
+                  "mutability": "mutable",
+                  "name": "data",
+                  "nameLocation": "337:4:59",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 32007,
+                  "src": "324:17:59",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 31997,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "324:5:59",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "245:102:59"
+            },
+            "returnParameters": {
+              "id": 32005,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "411:0:59"
+            },
+            "scope": 32013,
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "id": 32012,
+            "nodeType": "FunctionDefinition",
+            "src": "419:38:59",
+            "nodes": [],
+            "body": {
+              "id": 32011,
+              "nodeType": "Block",
+              "src": "455:2:59",
+              "nodes": [],
+              "statements": []
+            },
+            "baseFunctions": [
+              32079
+            ],
+            "implemented": true,
+            "kind": "receive",
+            "modifiers": [],
+            "name": "",
+            "nameLocation": "-1:-1:-1",
+            "overrides": {
+              "id": 32009,
+              "nodeType": "OverrideSpecifier",
+              "overrides": [],
+              "src": "446:8:59"
+            },
+            "parameters": {
+              "id": 32008,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "426:2:59"
+            },
+            "returnParameters": {
+              "id": 32010,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "455:0:59"
+            },
+            "scope": 32013,
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 31991,
+              "name": "EIP173Proxy",
+              "nameLocations": [
+                "216:11:59"
+              ],
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 31986,
+              "src": "216:11:59"
+            },
+            "id": 31992,
+            "nodeType": "InheritanceSpecifier",
+            "src": "216:11:59"
+          }
+        ],
+        "canonicalName": "EIP173ProxyWithReceive",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": {
+          "id": 31990,
+          "nodeType": "StructuredDocumentation",
+          "src": "91:90:59",
+          "text": "@notice Proxy implementing EIP173 for ownership management that accept ETH via receive"
+        },
+        "fullyImplemented": true,
+        "linearizedBaseContracts": [
+          32013,
+          31986,
+          32128
+        ],
+        "name": "EIP173ProxyWithReceive",
+        "nameLocation": "190:22:59",
+        "scope": 32014,
+        "usedErrors": []
+      }
+    ],
+    "license": "GPL-3.0"
+  },
+  "id": 59
+}

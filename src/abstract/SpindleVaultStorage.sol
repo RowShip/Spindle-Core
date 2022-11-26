@@ -183,6 +183,7 @@ abstract contract SpindleVaultStorage is
             );// \frac{1e18}{B} (1 - \frac{1}{1.0001^(MAX_WIDTH / 2)})
             
         }
+        require(managerFeeBPS + reinvestBPS <= 10000, "BPS");
         emit UpdateManagerParams(
             managerFeeBPS,
             managerTreasury,

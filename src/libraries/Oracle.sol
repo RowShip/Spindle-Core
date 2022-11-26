@@ -3,7 +3,7 @@ pragma solidity ^0.8.10;
 
 import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
 
-import "./FullMath.sol";
+import {FullMath} from "./FullMath.sol";
 import "./TickMath.sol";
 
 /// @title Oracle

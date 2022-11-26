@@ -4,7 +4,7 @@ pragma solidity ^0.8.10;
 import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
 
 import "./FixedPoint128.sol";
-import "./LiquidityAmounts.sol";
+import "./FullMath.sol";
 import "./TickMath.sol";
 
 library Uniswap {

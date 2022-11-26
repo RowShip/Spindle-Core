@@ -4,7 +4,7 @@ pragma solidity ^0.8.10;
 import "@rari-capital/solmate/src/utils/FixedPointMathLib.sol";
 
 import "./FixedPoint96.sol";
-import "./FullMath.sol";
+import { FullMath } from "./FullMath.sol";
 import "./TickMath.sol";
 
 /// @title Volatility

@@ -261,6 +261,15 @@ contract SpindleVaultTest is SpindleVaultTestBase {
             assertEq(upper, TickMath.ceil(tick, uniPool.tickSpacing()) + uniPool.tickSpacing());
         }
     }
-    
 
+    function test_timeRecenter () public {
+        // FAIL CASE
+        vm.expectRevert(abi.encodePacked("time threshold not reached"));
+        spindleVault.timeRecenter(0, 0);
+
+        console.log("Should recenter the liquidity position bounds");
+
+        _washTrades();
+        
+    }
 }

@@ -48,7 +48,7 @@ abstract contract SpindleVaultStorage is
    
     int24 public tickAtLastRecenter; /// @dev tick when last recenter executed
     uint256 public ivAtLastRecenter; /// @dev implied volatility when last recenter executed
-    uint256 public timeAtLastRecenter; /// @dev timestamp when last recenter executed
+    uint48 public timeAtLastRecenter; /// @dev timestamp when last recenter executed
 
     uint16 public managerFeeBPS;
     address public managerTreasury;
@@ -144,6 +144,11 @@ abstract contract SpindleVaultStorage is
         packedSlot.primaryLower = _lowerTick;
         packedSlot.primaryUpper = _upperTick;
         _manager = _manager_;
+
+        (,int24 tick, , , , ,) = pool.slot0();
+        tickAtLastRecenter = tick;
+        ivAtLastRecenter = SpindleOracle.estimate24H(pool);
+        timeAtLastRecenter = uint48(block.timestamp);
 
         // e.g. "Swap Sweep Uniswap V3 USDC/DAI LP" and "SS-UNI"
         __ERC20_init(_name, _symbol);

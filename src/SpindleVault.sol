@@ -343,9 +343,9 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
         RecenterCache memory cache = _populateRecenterCache(pool);
 
         require(
-            getAbsDiff(cache.tick, tickAtLastRecenter) <=
+            getAbsDiff(cache.tick, tickAtLastRecenter) >=
                 int24(minTickThreshold),
-            "tickDelta <= minTickThreshold"
+            "tickDelta >= minTickThreshold"
         );
 
         _executeAuction(auctionTimestamp, amount0Min, amount1Min, cache);
@@ -375,7 +375,7 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
         RecenterCache memory cache = _populateRecenterCache(pool);
 
         require(
-            getAbsDiff(cache.tick, tickAtTrigger) >= int24(tickThreshold),
+            getAbsDiff(tickAtLastRecenter, tickAtTrigger) >= int24(tickThreshold),
             "tickDelta >= tickThreshold"
         );
 
@@ -498,6 +498,10 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
             amount1,
             zeroForOne
         );
+
+        timeAtLastRecenter = uint48(block.timestamp);
+        tickAtLastRecenter = cache.tick;
+        ivAtLastRecenter = cache.iv;
 
         packedSlot = PackedSlot(
             primary.lower,

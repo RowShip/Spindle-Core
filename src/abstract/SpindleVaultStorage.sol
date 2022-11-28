@@ -17,6 +17,8 @@ import { SpindleFactoryStorage } from "./SpindleFactoryStorage.sol";
 import {ISpindleOracle} from "../interfaces/ISpindleOracle.sol";
 import {TickMath} from "../libraries/TickMath.sol";
 
+import {FullMath} from "../libraries/FullMath.sol";
+
 import "@rari-capital/solmate/src/utils/FixedPointMathLib.sol";
 
 // Implement packed slot and load packed slot to store a variety of key parameters used frequently in the vault's code, stored in a single slot to save gas
@@ -72,8 +74,8 @@ abstract contract SpindleVaultStorage is
     /// @dev \frac{1e18}{B} (1 - \frac{1}{1.0001^(MIN_WIDTH / 2})
     uint64 public A;
 
-    /// @dev B = 2*sqrt(7)*10_000 
-    uint16 public B; // Liquidity position should cover 95% (2 std. dev.) of trading activity over a 7 day period
+    /// @dev B = zScore*sqrt(timeThresholdInDays)*10_000 
+    uint32 public B; // Liquidity position should cover 95% (2 std. dev.) of trading activity over a 7 day period
 
     /// @dev \frac{1e18}{B} (1 - \frac{1}{1.0001^(MAX_WIDTH / 2})
     uint64 public C;
@@ -157,7 +159,7 @@ abstract contract SpindleVaultStorage is
         int24 newTickThreshold,
         int16 newIVThresholdBPS,
         int32 newTimeThreshold,
-        int16 newStdBPS /// @dev standard deviations of trading activity primary liquidity positions should cover over recenterTimeThreshold
+        int16 newZScoreBPS /// @dev +-z score probability that the trading activity of the primary liquidity position will end in the money at the end of recenterTimeThreshold
     ) external onlyManager {
         require(newReinvestBPS <= 10000, "BPS");
         require(newManagerFeeBPS <= 10000, "BPS");
@@ -170,17 +172,12 @@ abstract contract SpindleVaultStorage is
         if (newTickThreshold >= 0) tickThreshold = uint24(newTickThreshold);
         if (newIVThresholdBPS >= 0) ivThresholdBPS = uint16(newIVThresholdBPS);
         if (newTimeThreshold >= 0) timeThreshold = uint32(newTimeThreshold);
-        if (newStdBPS >= 0 && newTimeThreshold >= 0) {
-            B = uint16(
-                (uint16(newStdBPS)*
-                FixedPointMathLib.sqrt(uint32(newTimeThreshold)))/2940000 
-            ); // 2940000 = sqrt(seconds in a day)*10_000
-            A = uint64(
-                1e18/B*(1-FixedPointMathLib.rpow(10001, uint24(MIN_WIDTH/2), 1))
-            );// \frac{1e18}{B} (1 - \frac{1}{1.0001^(MIN_WIDTH / 2)})
-            C = uint64(
-                1e18/B*(1-FixedPointMathLib.rpow(10001, uint24(MAX_WIDTH/2), 1))
-            );// \frac{1e18}{B} (1 - \frac{1}{1.0001^(MAX_WIDTH / 2)})
+        if (newZScoreBPS >= 0 && newTimeThreshold >= 0) {
+            B = uint32(uint16(newZScoreBPS)*FixedPointMathLib.sqrt(
+                    (10_000*uint256(uint32(newTimeThreshold)))/86400 // 86400 = seconds in a day
+                )/100);
+            A = getSigmaBounds(B, MIN_WIDTH); // \frac{1e18}{B} (1 - \frac{1}{1.0001^(MIN_WIDTH / 2*sqrt(7))})
+            C = getSigmaBounds(B, MAX_WIDTH); // \frac{1e18}{B} (1 - \frac{1}{1.0001^(MAX_WIDTH / 2*sqrt(7))})
             
         }
         require(managerFeeBPS + reinvestBPS <= 10000, "BPS");
@@ -192,8 +189,29 @@ abstract contract SpindleVaultStorage is
             tickThreshold,
             ivThresholdBPS,
             timeThreshold,
-            uint16(newStdBPS)
+            uint16(newZScoreBPS)
         );
+    }
+
+    function getSigmaBounds(uint32 b, int24 width) private pure returns (uint64 boundary) {
+        uint256 sqrtPriceReciprocal = 
+            FullMath.mulDiv(
+                1e18,
+                2**96,
+                TickMath.getSqrtRatioAtTick(width/2)
+            );
+        uint256 priceReciprocal = 
+            FullMath.mulDiv(
+                sqrtPriceReciprocal,
+                sqrtPriceReciprocal,
+                1e18
+            );
+        boundary = 
+            uint64(FullMath.mulDiv(
+                10_000,
+                1e18 - priceReciprocal,
+                b
+            ));
     }
 
     function renounceOwnership() public virtual override onlyManager {

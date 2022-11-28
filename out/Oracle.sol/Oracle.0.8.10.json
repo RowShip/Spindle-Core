@@ -150,44 +150,44 @@
   },
   "ast": {
     "absolutePath": "src/libraries/Oracle.sol",
-    "id": 14093,
+    "id": 14226,
     "exportedSymbols": {
       "FullMath": [
-        6400
+        6533
       ],
       "IUniswapV3Pool": [
-        5707
+        5830
       ],
       "IUniswapV3PoolActions": [
-        9645
+        9778
       ],
       "IUniswapV3PoolDerivedState": [
-        9676
+        9809
       ],
       "IUniswapV3PoolEvents": [
-        9795
+        9928
       ],
       "IUniswapV3PoolImmutables": [
-        9835
+        9968
       ],
       "IUniswapV3PoolOwnerActions": [
-        9861
+        9994
       ],
       "IUniswapV3PoolState": [
-        9969
+        10102
       ],
       "Oracle": [
-        14092
+        14225
       ],
       "TickMath": [
-        7354
+        7487
       ]
     },
     "nodeType": "SourceUnit",
     "src": "45:3410:54",
     "nodes": [
       {
-        "id": 13914,
+        "id": 14047,
         "nodeType": "PragmaDirective",
         "src": "45:24:54",
         "nodes": [],
@@ -199,32 +199,32 @@
         ]
       },
       {
-        "id": 13915,
+        "id": 14048,
         "nodeType": "ImportDirective",
         "src": "71:66:54",
         "nodes": [],
         "absolutePath": "lib/v3-core/contracts/interfaces/IUniswapV3Pool.sol",
         "file": "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 14093,
-        "sourceUnit": 5708,
+        "scope": 14226,
+        "sourceUnit": 5831,
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
-        "id": 13917,
+        "id": 14050,
         "nodeType": "ImportDirective",
         "src": "139:40:54",
         "nodes": [],
         "absolutePath": "src/libraries/FullMath.sol",
         "file": "./FullMath.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 14093,
-        "sourceUnit": 6752,
+        "scope": 14226,
+        "sourceUnit": 6885,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 13916,
+              "id": 14049,
               "name": "FullMath",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
@@ -237,30 +237,30 @@
         "unitAlias": ""
       },
       {
-        "id": 13918,
+        "id": 14051,
         "nodeType": "ImportDirective",
         "src": "180:24:54",
         "nodes": [],
         "absolutePath": "src/libraries/TickMath.sol",
         "file": "./TickMath.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 14093,
-        "sourceUnit": 7355,
+        "scope": 14226,
+        "sourceUnit": 7488,
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
-        "id": 14092,
+        "id": 14225,
         "nodeType": "ContractDefinition",
         "src": "288:3166:54",
         "nodes": [
           {
-            "id": 14033,
+            "id": 14166,
             "nodeType": "FunctionDefinition",
             "src": "909:1216:54",
             "nodes": [],
             "body": {
-              "id": 14032,
+              "id": 14165,
               "nodeType": "Block",
               "src": "1141:984:54",
               "nodes": [],
@@ -273,17 +273,17 @@
                           "typeIdentifier": "t_uint32",
                           "typeString": "uint32"
                         },
-                        "id": 13937,
+                        "id": 14070,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
-                          "id": 13935,
+                          "id": 14068,
                           "name": "_secondsAgoToStartOfTwap",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 13925,
+                          "referencedDeclaration": 14058,
                           "src": "1159:24:54",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint32",
@@ -293,11 +293,11 @@
                         "nodeType": "BinaryOperation",
                         "operator": ">",
                         "rightExpression": {
-                          "id": 13936,
+                          "id": 14069,
                           "name": "_secondsAgoToEndOfTwap",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 13927,
+                          "referencedDeclaration": 14060,
                           "src": "1186:22:54",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint32",
@@ -312,7 +312,7 @@
                       },
                       {
                         "hexValue": "4250",
-                        "id": 13938,
+                        "id": 14071,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -338,7 +338,7 @@
                           "typeString": "literal_string \"BP\""
                         }
                       ],
-                      "id": 13934,
+                      "id": 14067,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -352,7 +352,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 13939,
+                    "id": 14072,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -367,23 +367,23 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 13940,
+                  "id": 14073,
                   "nodeType": "ExpressionStatement",
                   "src": "1151:64:54"
                 },
                 {
                   "assignments": [
-                    13945
+                    14078
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 13945,
+                      "id": 14078,
                       "mutability": "mutable",
                       "name": "secondAgos",
                       "nameLocation": "1241:10:54",
                       "nodeType": "VariableDeclaration",
-                      "scope": 14032,
+                      "scope": 14165,
                       "src": "1225:26:54",
                       "stateVariable": false,
                       "storageLocation": "memory",
@@ -393,7 +393,7 @@
                       },
                       "typeName": {
                         "baseType": {
-                          "id": 13943,
+                          "id": 14076,
                           "name": "uint32",
                           "nodeType": "ElementaryTypeName",
                           "src": "1225:6:54",
@@ -402,7 +402,7 @@
                             "typeString": "uint32"
                           }
                         },
-                        "id": 13944,
+                        "id": 14077,
                         "nodeType": "ArrayTypeName",
                         "src": "1225:8:54",
                         "typeDescriptions": {
@@ -413,12 +413,12 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 13951,
+                  "id": 14084,
                   "initialValue": {
                     "arguments": [
                       {
                         "hexValue": "32",
-                        "id": 13949,
+                        "id": 14082,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -440,7 +440,7 @@
                           "typeString": "int_const 2"
                         }
                       ],
-                      "id": 13948,
+                      "id": 14081,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -453,7 +453,7 @@
                       },
                       "typeName": {
                         "baseType": {
-                          "id": 13946,
+                          "id": 14079,
                           "name": "uint32",
                           "nodeType": "ElementaryTypeName",
                           "src": "1258:6:54",
@@ -462,7 +462,7 @@
                             "typeString": "uint32"
                           }
                         },
-                        "id": 13947,
+                        "id": 14080,
                         "nodeType": "ArrayTypeName",
                         "src": "1258:8:54",
                         "typeDescriptions": {
@@ -471,7 +471,7 @@
                         }
                       }
                     },
-                    "id": 13950,
+                    "id": 14083,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -491,17 +491,17 @@
                 },
                 {
                   "assignments": [
-                    13953
+                    14086
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 13953,
+                      "id": 14086,
                       "mutability": "mutable",
                       "name": "twapDuration",
                       "nameLocation": "1287:12:54",
                       "nodeType": "VariableDeclaration",
-                      "scope": 14032,
+                      "scope": 14165,
                       "src": "1280:19:54",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -510,7 +510,7 @@
                         "typeString": "uint32"
                       },
                       "typeName": {
-                        "id": 13952,
+                        "id": 14085,
                         "name": "uint32",
                         "nodeType": "ElementaryTypeName",
                         "src": "1280:6:54",
@@ -522,23 +522,23 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 13957,
+                  "id": 14090,
                   "initialValue": {
                     "commonType": {
                       "typeIdentifier": "t_uint32",
                       "typeString": "uint32"
                     },
-                    "id": 13956,
+                    "id": 14089,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
-                      "id": 13954,
+                      "id": 14087,
                       "name": "_secondsAgoToStartOfTwap",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 13925,
+                      "referencedDeclaration": 14058,
                       "src": "1302:24:54",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint32",
@@ -548,11 +548,11 @@
                     "nodeType": "BinaryOperation",
                     "operator": "-",
                     "rightExpression": {
-                      "id": 13955,
+                      "id": 14088,
                       "name": "_secondsAgoToEndOfTwap",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 13927,
+                      "referencedDeclaration": 14060,
                       "src": "1329:22:54",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint32",
@@ -570,28 +570,28 @@
                 },
                 {
                   "expression": {
-                    "id": 13962,
+                    "id": 14095,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "baseExpression": {
-                        "id": 13958,
+                        "id": 14091,
                         "name": "secondAgos",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 13945,
+                        "referencedDeclaration": 14078,
                         "src": "1454:10:54",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_uint32_$dyn_memory_ptr",
                           "typeString": "uint32[] memory"
                         }
                       },
-                      "id": 13960,
+                      "id": 14093,
                       "indexExpression": {
                         "hexValue": "30",
-                        "id": 13959,
+                        "id": 14092,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -619,11 +619,11 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 13961,
+                      "id": 14094,
                       "name": "_secondsAgoToStartOfTwap",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 13925,
+                      "referencedDeclaration": 14058,
                       "src": "1470:24:54",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint32",
@@ -636,34 +636,34 @@
                       "typeString": "uint32"
                     }
                   },
-                  "id": 13963,
+                  "id": 14096,
                   "nodeType": "ExpressionStatement",
                   "src": "1454:40:54"
                 },
                 {
                   "expression": {
-                    "id": 13968,
+                    "id": 14101,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "baseExpression": {
-                        "id": 13964,
+                        "id": 14097,
                         "name": "secondAgos",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 13945,
+                        "referencedDeclaration": 14078,
                         "src": "1504:10:54",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_uint32_$dyn_memory_ptr",
                           "typeString": "uint32[] memory"
                         }
                       },
-                      "id": 13966,
+                      "id": 14099,
                       "indexExpression": {
                         "hexValue": "31",
-                        "id": 13965,
+                        "id": 14098,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -691,11 +691,11 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 13967,
+                      "id": 14100,
                       "name": "_secondsAgoToEndOfTwap",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 13927,
+                      "referencedDeclaration": 14060,
                       "src": "1520:22:54",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint32",
@@ -708,24 +708,24 @@
                       "typeString": "uint32"
                     }
                   },
-                  "id": 13969,
+                  "id": 14102,
                   "nodeType": "ExpressionStatement",
                   "src": "1504:38:54"
                 },
                 {
                   "assignments": [
-                    13974,
-                    13977
+                    14107,
+                    14110
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 13974,
+                      "id": 14107,
                       "mutability": "mutable",
                       "name": "tickCumulatives",
                       "nameLocation": "1569:15:54",
                       "nodeType": "VariableDeclaration",
-                      "scope": 14032,
+                      "scope": 14165,
                       "src": "1554:30:54",
                       "stateVariable": false,
                       "storageLocation": "memory",
@@ -735,7 +735,7 @@
                       },
                       "typeName": {
                         "baseType": {
-                          "id": 13972,
+                          "id": 14105,
                           "name": "int56",
                           "nodeType": "ElementaryTypeName",
                           "src": "1554:5:54",
@@ -744,7 +744,7 @@
                             "typeString": "int56"
                           }
                         },
-                        "id": 13973,
+                        "id": 14106,
                         "nodeType": "ArrayTypeName",
                         "src": "1554:7:54",
                         "typeDescriptions": {
@@ -756,12 +756,12 @@
                     },
                     {
                       "constant": false,
-                      "id": 13977,
+                      "id": 14110,
                       "mutability": "mutable",
                       "name": "secondsPerLiquidityCumulativeX128s",
                       "nameLocation": "1603:34:54",
                       "nodeType": "VariableDeclaration",
-                      "scope": 14032,
+                      "scope": 14165,
                       "src": "1586:51:54",
                       "stateVariable": false,
                       "storageLocation": "memory",
@@ -771,7 +771,7 @@
                       },
                       "typeName": {
                         "baseType": {
-                          "id": 13975,
+                          "id": 14108,
                           "name": "uint160",
                           "nodeType": "ElementaryTypeName",
                           "src": "1586:7:54",
@@ -780,7 +780,7 @@
                             "typeString": "uint160"
                           }
                         },
-                        "id": 13976,
+                        "id": 14109,
                         "nodeType": "ArrayTypeName",
                         "src": "1586:9:54",
                         "typeDescriptions": {
@@ -791,15 +791,15 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 13982,
+                  "id": 14115,
                   "initialValue": {
                     "arguments": [
                       {
-                        "id": 13980,
+                        "id": 14113,
                         "name": "secondAgos",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 13945,
+                        "referencedDeclaration": 14078,
                         "src": "1667:10:54",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_uint32_$dyn_memory_ptr",
@@ -815,32 +815,32 @@
                         }
                       ],
                       "expression": {
-                        "id": 13978,
+                        "id": 14111,
                         "name": "pool",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 13923,
+                        "referencedDeclaration": 14056,
                         "src": "1641:4:54",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_IUniswapV3Pool_$5707",
+                          "typeIdentifier": "t_contract$_IUniswapV3Pool_$5830",
                           "typeString": "contract IUniswapV3Pool"
                         }
                       },
-                      "id": 13979,
+                      "id": 14112,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "observe",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 9661,
+                      "referencedDeclaration": 9794,
                       "src": "1641:12:54",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_view$_t_array$_t_uint32_$dyn_memory_ptr_$returns$_t_array$_t_int56_$dyn_memory_ptr_$_t_array$_t_uint160_$dyn_memory_ptr_$",
                         "typeString": "function (uint32[] memory) view external returns (int56[] memory,uint160[] memory)"
                       }
                     },
-                    "id": 13981,
+                    "id": 14114,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -860,17 +860,17 @@
                 },
                 {
                   "assignments": [
-                    13984
+                    14117
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 13984,
+                      "id": 14117,
                       "mutability": "mutable",
                       "name": "tickCumulativesDelta",
                       "nameLocation": "1704:20:54",
                       "nodeType": "VariableDeclaration",
-                      "scope": 14032,
+                      "scope": 14165,
                       "src": "1698:26:54",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -879,7 +879,7 @@
                         "typeString": "int56"
                       },
                       "typeName": {
-                        "id": 13983,
+                        "id": 14116,
                         "name": "int56",
                         "nodeType": "ElementaryTypeName",
                         "src": "1698:5:54",
@@ -891,34 +891,34 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 13992,
+                  "id": 14125,
                   "initialValue": {
                     "commonType": {
                       "typeIdentifier": "t_int56",
                       "typeString": "int56"
                     },
-                    "id": 13991,
+                    "id": 14124,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
                       "baseExpression": {
-                        "id": 13985,
+                        "id": 14118,
                         "name": "tickCumulatives",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 13974,
+                        "referencedDeclaration": 14107,
                         "src": "1727:15:54",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_int56_$dyn_memory_ptr",
                           "typeString": "int56[] memory"
                         }
                       },
-                      "id": 13987,
+                      "id": 14120,
                       "indexExpression": {
                         "hexValue": "31",
-                        "id": 13986,
+                        "id": 14119,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -947,21 +947,21 @@
                     "operator": "-",
                     "rightExpression": {
                       "baseExpression": {
-                        "id": 13988,
+                        "id": 14121,
                         "name": "tickCumulatives",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 13974,
+                        "referencedDeclaration": 14107,
                         "src": "1748:15:54",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_int56_$dyn_memory_ptr",
                           "typeString": "int56[] memory"
                         }
                       },
-                      "id": 13990,
+                      "id": 14123,
                       "indexExpression": {
                         "hexValue": "30",
-                        "id": 13989,
+                        "id": 14122,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -997,17 +997,17 @@
                 },
                 {
                   "expression": {
-                    "id": 14003,
+                    "id": 14136,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
-                      "id": 13993,
+                      "id": 14126,
                       "name": "arithmeticMeanTick",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 13930,
+                      "referencedDeclaration": 14063,
                       "src": "1776:18:54",
                       "typeDescriptions": {
                         "typeIdentifier": "t_int24",
@@ -1023,17 +1023,17 @@
                             "typeIdentifier": "t_int56",
                             "typeString": "int56"
                           },
-                          "id": 14001,
+                          "id": 14134,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
                           "leftExpression": {
-                            "id": 13996,
+                            "id": 14129,
                             "name": "tickCumulativesDelta",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 13984,
+                            "referencedDeclaration": 14117,
                             "src": "1803:20:54",
                             "typeDescriptions": {
                               "typeIdentifier": "t_int56",
@@ -1045,11 +1045,11 @@
                           "rightExpression": {
                             "arguments": [
                               {
-                                "id": 13999,
+                                "id": 14132,
                                 "name": "twapDuration",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 13953,
+                                "referencedDeclaration": 14086,
                                 "src": "1832:12:54",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint32",
@@ -1064,7 +1064,7 @@
                                   "typeString": "uint32"
                                 }
                               ],
-                              "id": 13998,
+                              "id": 14131,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -1076,14 +1076,14 @@
                                 "typeString": "type(int32)"
                               },
                               "typeName": {
-                                "id": 13997,
+                                "id": 14130,
                                 "name": "int32",
                                 "nodeType": "ElementaryTypeName",
                                 "src": "1826:5:54",
                                 "typeDescriptions": {}
                               }
                             },
-                            "id": 14000,
+                            "id": 14133,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -1112,7 +1112,7 @@
                             "typeString": "int56"
                           }
                         ],
-                        "id": 13995,
+                        "id": 14128,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1124,14 +1124,14 @@
                           "typeString": "type(int24)"
                         },
                         "typeName": {
-                          "id": 13994,
+                          "id": 14127,
                           "name": "int24",
                           "nodeType": "ElementaryTypeName",
                           "src": "1797:5:54",
                           "typeDescriptions": {}
                         }
                       },
-                      "id": 14002,
+                      "id": 14135,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1152,7 +1152,7 @@
                       "typeString": "int24"
                     }
                   },
-                  "id": 14004,
+                  "id": 14137,
                   "nodeType": "ExpressionStatement",
                   "src": "1776:70:54"
                 },
@@ -1162,7 +1162,7 @@
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     },
-                    "id": 14017,
+                    "id": 14150,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1172,17 +1172,17 @@
                         "typeIdentifier": "t_int56",
                         "typeString": "int56"
                       },
-                      "id": 14007,
+                      "id": 14140,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "leftExpression": {
-                        "id": 14005,
+                        "id": 14138,
                         "name": "tickCumulativesDelta",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 13984,
+                        "referencedDeclaration": 14117,
                         "src": "1905:20:54",
                         "typeDescriptions": {
                           "typeIdentifier": "t_int56",
@@ -1193,7 +1193,7 @@
                       "operator": "<",
                       "rightExpression": {
                         "hexValue": "30",
-                        "id": 14006,
+                        "id": 14139,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1222,7 +1222,7 @@
                             "typeIdentifier": "t_int56",
                             "typeString": "int56"
                           },
-                          "id": 14015,
+                          "id": 14148,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1232,17 +1232,17 @@
                               "typeIdentifier": "t_int56",
                               "typeString": "int56"
                             },
-                            "id": 14013,
+                            "id": 14146,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
                             "lValueRequested": false,
                             "leftExpression": {
-                              "id": 14008,
+                              "id": 14141,
                               "name": "tickCumulativesDelta",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 13984,
+                              "referencedDeclaration": 14117,
                               "src": "1934:20:54",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_int56",
@@ -1254,11 +1254,11 @@
                             "rightExpression": {
                               "arguments": [
                                 {
-                                  "id": 14011,
+                                  "id": 14144,
                                   "name": "twapDuration",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 13953,
+                                  "referencedDeclaration": 14086,
                                   "src": "1963:12:54",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_uint32",
@@ -1273,7 +1273,7 @@
                                     "typeString": "uint32"
                                   }
                                 ],
-                                "id": 14010,
+                                "id": 14143,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": true,
@@ -1285,14 +1285,14 @@
                                   "typeString": "type(int32)"
                                 },
                                 "typeName": {
-                                  "id": 14009,
+                                  "id": 14142,
                                   "name": "int32",
                                   "nodeType": "ElementaryTypeName",
                                   "src": "1957:5:54",
                                   "typeDescriptions": {}
                                 }
                               },
-                              "id": 14012,
+                              "id": 14145,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -1317,7 +1317,7 @@
                           "operator": "!=",
                           "rightExpression": {
                             "hexValue": "30",
-                            "id": 14014,
+                            "id": 14147,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -1338,7 +1338,7 @@
                           }
                         }
                       ],
-                      "id": 14016,
+                      "id": 14149,
                       "isConstant": false,
                       "isInlineArray": false,
                       "isLValue": false,
@@ -1357,12 +1357,12 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 14021,
+                  "id": 14154,
                   "nodeType": "IfStatement",
                   "src": "1901:103:54",
                   "trueBody": {
                     "expression": {
-                      "id": 14019,
+                      "id": 14152,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1372,11 +1372,11 @@
                       "prefix": false,
                       "src": "1984:20:54",
                       "subExpression": {
-                        "id": 14018,
+                        "id": 14151,
                         "name": "arithmeticMeanTick",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 13930,
+                        "referencedDeclaration": 14063,
                         "src": "1984:18:54",
                         "typeDescriptions": {
                           "typeIdentifier": "t_int24",
@@ -1388,24 +1388,24 @@
                         "typeString": "int24"
                       }
                     },
-                    "id": 14020,
+                    "id": 14153,
                     "nodeType": "ExpressionStatement",
                     "src": "1984:20:54"
                   }
                 },
                 {
                   "expression": {
-                    "id": 14030,
+                    "id": 14163,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
-                      "id": 14022,
+                      "id": 14155,
                       "name": "secondsPerLiquidityX128",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 13932,
+                      "referencedDeclaration": 14065,
                       "src": "2015:23:54",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint160",
@@ -1419,28 +1419,28 @@
                         "typeIdentifier": "t_uint160",
                         "typeString": "uint160"
                       },
-                      "id": 14029,
+                      "id": 14162,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "leftExpression": {
                         "baseExpression": {
-                          "id": 14023,
+                          "id": 14156,
                           "name": "secondsPerLiquidityCumulativeX128s",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 13977,
+                          "referencedDeclaration": 14110,
                           "src": "2041:34:54",
                           "typeDescriptions": {
                             "typeIdentifier": "t_array$_t_uint160_$dyn_memory_ptr",
                             "typeString": "uint160[] memory"
                           }
                         },
-                        "id": 14025,
+                        "id": 14158,
                         "indexExpression": {
                           "hexValue": "31",
-                          "id": 14024,
+                          "id": 14157,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -1469,21 +1469,21 @@
                       "operator": "-",
                       "rightExpression": {
                         "baseExpression": {
-                          "id": 14026,
+                          "id": 14159,
                           "name": "secondsPerLiquidityCumulativeX128s",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 13977,
+                          "referencedDeclaration": 14110,
                           "src": "2081:34:54",
                           "typeDescriptions": {
                             "typeIdentifier": "t_array$_t_uint160_$dyn_memory_ptr",
                             "typeString": "uint160[] memory"
                           }
                         },
-                        "id": 14028,
+                        "id": 14161,
                         "indexExpression": {
                           "hexValue": "30",
-                          "id": 14027,
+                          "id": 14160,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -1520,14 +1520,14 @@
                       "typeString": "uint160"
                     }
                   },
-                  "id": 14031,
+                  "id": 14164,
                   "nodeType": "ExpressionStatement",
                   "src": "2015:103:54"
                 }
               ]
             },
             "documentation": {
-              "id": 13920,
+              "id": 14053,
               "nodeType": "StructuredDocumentation",
               "src": "314:590:54",
               "text": "@notice fetches time-weighted average tick using uniswap v3 oracle\n @dev written by opyn team\n @param pool Address of uniswap v3 pool that we want to observe\n @param _secondsAgoToStartOfTwap number of seconds to start of TWAP period\n @param _secondsAgoToEndOfTwap number of seconds to end of TWAP period\n @return arithmeticMeanTick The arithmetic mean tick from (block.timestamp - secondsAgo) to block.timestamp\n @return secondsPerLiquidityX128 The change in seconds per liquidity from (block.timestamp - secondsAgo)\n to block.timestamp"
@@ -1538,38 +1538,38 @@
             "name": "consultAtHistoricTime",
             "nameLocation": "918:21:54",
             "parameters": {
-              "id": 13928,
+              "id": 14061,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 13923,
+                  "id": 14056,
                   "mutability": "mutable",
                   "name": "pool",
                   "nameLocation": "964:4:54",
                   "nodeType": "VariableDeclaration",
-                  "scope": 14033,
+                  "scope": 14166,
                   "src": "949:19:54",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_IUniswapV3Pool_$5707",
+                    "typeIdentifier": "t_contract$_IUniswapV3Pool_$5830",
                     "typeString": "contract IUniswapV3Pool"
                   },
                   "typeName": {
-                    "id": 13922,
+                    "id": 14055,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 13921,
+                      "id": 14054,
                       "name": "IUniswapV3Pool",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 5707,
+                      "referencedDeclaration": 5830,
                       "src": "949:14:54"
                     },
-                    "referencedDeclaration": 5707,
+                    "referencedDeclaration": 5830,
                     "src": "949:14:54",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_IUniswapV3Pool_$5707",
+                      "typeIdentifier": "t_contract$_IUniswapV3Pool_$5830",
                       "typeString": "contract IUniswapV3Pool"
                     }
                   },
@@ -1577,12 +1577,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 13925,
+                  "id": 14058,
                   "mutability": "mutable",
                   "name": "_secondsAgoToStartOfTwap",
                   "nameLocation": "985:24:54",
                   "nodeType": "VariableDeclaration",
-                  "scope": 14033,
+                  "scope": 14166,
                   "src": "978:31:54",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1591,7 +1591,7 @@
                     "typeString": "uint32"
                   },
                   "typeName": {
-                    "id": 13924,
+                    "id": 14057,
                     "name": "uint32",
                     "nodeType": "ElementaryTypeName",
                     "src": "978:6:54",
@@ -1604,12 +1604,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 13927,
+                  "id": 14060,
                   "mutability": "mutable",
                   "name": "_secondsAgoToEndOfTwap",
                   "nameLocation": "1026:22:54",
                   "nodeType": "VariableDeclaration",
-                  "scope": 14033,
+                  "scope": 14166,
                   "src": "1019:29:54",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1618,7 +1618,7 @@
                     "typeString": "uint32"
                   },
                   "typeName": {
-                    "id": 13926,
+                    "id": 14059,
                     "name": "uint32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1019:6:54",
@@ -1633,17 +1633,17 @@
               "src": "939:115:54"
             },
             "returnParameters": {
-              "id": 13933,
+              "id": 14066,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 13930,
+                  "id": 14063,
                   "mutability": "mutable",
                   "name": "arithmeticMeanTick",
                   "nameLocation": "1084:18:54",
                   "nodeType": "VariableDeclaration",
-                  "scope": 14033,
+                  "scope": 14166,
                   "src": "1078:24:54",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1652,7 +1652,7 @@
                     "typeString": "int24"
                   },
                   "typeName": {
-                    "id": 13929,
+                    "id": 14062,
                     "name": "int24",
                     "nodeType": "ElementaryTypeName",
                     "src": "1078:5:54",
@@ -1665,12 +1665,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 13932,
+                  "id": 14065,
                   "mutability": "mutable",
                   "name": "secondsPerLiquidityX128",
                   "nameLocation": "1112:23:54",
                   "nodeType": "VariableDeclaration",
-                  "scope": 14033,
+                  "scope": 14166,
                   "src": "1104:31:54",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1679,7 +1679,7 @@
                     "typeString": "uint160"
                   },
                   "typeName": {
-                    "id": 13931,
+                    "id": 14064,
                     "name": "uint160",
                     "nodeType": "ElementaryTypeName",
                     "src": "1104:7:54",
@@ -1693,18 +1693,18 @@
               ],
               "src": "1077:59:54"
             },
-            "scope": 14092,
+            "scope": 14225,
             "stateMutability": "view",
             "virtual": false,
             "visibility": "internal"
           },
           {
-            "id": 14091,
+            "id": 14224,
             "nodeType": "FunctionDefinition",
             "src": "2655:797:54",
             "nodes": [],
             "body": {
-              "id": 14090,
+              "id": 14223,
               "nodeType": "Block",
               "src": "2830:622:54",
               "nodes": [],
@@ -1717,17 +1717,17 @@
                           "typeIdentifier": "t_uint16",
                           "typeString": "uint16"
                         },
-                        "id": 14049,
+                        "id": 14182,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
-                          "id": 14047,
+                          "id": 14180,
                           "name": "observationCardinality",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 14041,
+                          "referencedDeclaration": 14174,
                           "src": "2848:22:54",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint16",
@@ -1738,7 +1738,7 @@
                         "operator": "!=",
                         "rightExpression": {
                           "hexValue": "30",
-                          "id": 14048,
+                          "id": 14181,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -1760,7 +1760,7 @@
                       },
                       {
                         "hexValue": "4e49",
-                        "id": 14050,
+                        "id": 14183,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1786,7 +1786,7 @@
                           "typeString": "literal_string \"NI\""
                         }
                       ],
-                      "id": 14046,
+                      "id": 14179,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -1800,7 +1800,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 14051,
+                    "id": 14184,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1815,31 +1815,31 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 14052,
+                  "id": 14185,
                   "nodeType": "ExpressionStatement",
                   "src": "2840:42:54"
                 },
                 {
-                  "id": 14089,
+                  "id": 14222,
                   "nodeType": "UncheckedBlock",
                   "src": "2893:553:54",
                   "statements": [
                     {
                       "assignments": [
-                        14054,
+                        14187,
                         null,
                         null,
-                        14056
+                        14189
                       ],
                       "declarations": [
                         {
                           "constant": false,
-                          "id": 14054,
+                          "id": 14187,
                           "mutability": "mutable",
                           "name": "observationTimestamp",
                           "nameLocation": "2925:20:54",
                           "nodeType": "VariableDeclaration",
-                          "scope": 14089,
+                          "scope": 14222,
                           "src": "2918:27:54",
                           "stateVariable": false,
                           "storageLocation": "default",
@@ -1848,7 +1848,7 @@
                             "typeString": "uint32"
                           },
                           "typeName": {
-                            "id": 14053,
+                            "id": 14186,
                             "name": "uint32",
                             "nodeType": "ElementaryTypeName",
                             "src": "2918:6:54",
@@ -1863,12 +1863,12 @@
                         null,
                         {
                           "constant": false,
-                          "id": 14056,
+                          "id": 14189,
                           "mutability": "mutable",
                           "name": "initialized",
                           "nameLocation": "2956:11:54",
                           "nodeType": "VariableDeclaration",
-                          "scope": 14089,
+                          "scope": 14222,
                           "src": "2951:16:54",
                           "stateVariable": false,
                           "storageLocation": "default",
@@ -1877,7 +1877,7 @@
                             "typeString": "bool"
                           },
                           "typeName": {
-                            "id": 14055,
+                            "id": 14188,
                             "name": "bool",
                             "nodeType": "ElementaryTypeName",
                             "src": "2951:4:54",
@@ -1889,7 +1889,7 @@
                           "visibility": "internal"
                         }
                       ],
-                      "id": 14066,
+                      "id": 14199,
                       "initialValue": {
                         "arguments": [
                           {
@@ -1897,7 +1897,7 @@
                               "typeIdentifier": "t_uint16",
                               "typeString": "uint16"
                             },
-                            "id": 14064,
+                            "id": 14197,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -1909,17 +1909,17 @@
                                     "typeIdentifier": "t_uint16",
                                     "typeString": "uint16"
                                   },
-                                  "id": 14061,
+                                  "id": 14194,
                                   "isConstant": false,
                                   "isLValue": false,
                                   "isPure": false,
                                   "lValueRequested": false,
                                   "leftExpression": {
-                                    "id": 14059,
+                                    "id": 14192,
                                     "name": "observationIndex",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 14039,
+                                    "referencedDeclaration": 14172,
                                     "src": "3007:16:54",
                                     "typeDescriptions": {
                                       "typeIdentifier": "t_uint16",
@@ -1930,7 +1930,7 @@
                                   "operator": "+",
                                   "rightExpression": {
                                     "hexValue": "31",
-                                    "id": 14060,
+                                    "id": 14193,
                                     "isConstant": false,
                                     "isLValue": false,
                                     "isPure": true,
@@ -1951,7 +1951,7 @@
                                   }
                                 }
                               ],
-                              "id": 14062,
+                              "id": 14195,
                               "isConstant": false,
                               "isInlineArray": false,
                               "isLValue": false,
@@ -1967,11 +1967,11 @@
                             "nodeType": "BinaryOperation",
                             "operator": "%",
                             "rightExpression": {
-                              "id": 14063,
+                              "id": 14196,
                               "name": "observationCardinality",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 14041,
+                              "referencedDeclaration": 14174,
                               "src": "3031:22:54",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint16",
@@ -1993,32 +1993,32 @@
                             }
                           ],
                           "expression": {
-                            "id": 14057,
+                            "id": 14190,
                             "name": "pool",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 14037,
+                            "referencedDeclaration": 14170,
                             "src": "2971:4:54",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_IUniswapV3Pool_$5707",
+                              "typeIdentifier": "t_contract$_IUniswapV3Pool_$5830",
                               "typeString": "contract IUniswapV3Pool"
                             }
                           },
-                          "id": 14058,
+                          "id": 14191,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
                           "memberName": "observations",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 9968,
+                          "referencedDeclaration": 10101,
                           "src": "2971:17:54",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_uint256_$returns$_t_uint32_$_t_int56_$_t_uint160_$_t_bool_$",
                             "typeString": "function (uint256) view external returns (uint32,int56,uint160,bool)"
                           }
                         },
-                        "id": 14065,
+                        "id": 14198,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2038,7 +2038,7 @@
                     },
                     {
                       "condition": {
-                        "id": 14068,
+                        "id": 14201,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2048,11 +2048,11 @@
                         "prefix": true,
                         "src": "3264:12:54",
                         "subExpression": {
-                          "id": 14067,
+                          "id": 14200,
                           "name": "initialized",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 14056,
+                          "referencedDeclaration": 14189,
                           "src": "3265:11:54",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bool",
@@ -2064,17 +2064,17 @@
                           "typeString": "bool"
                         }
                       },
-                      "id": 14078,
+                      "id": 14211,
                       "nodeType": "IfStatement",
                       "src": "3260:102:54",
                       "trueBody": {
-                        "id": 14077,
+                        "id": 14210,
                         "nodeType": "Block",
                         "src": "3278:84:54",
                         "statements": [
                           {
                             "expression": {
-                              "id": 14075,
+                              "id": 14208,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -2082,11 +2082,11 @@
                               "leftHandSide": {
                                 "components": [
                                   {
-                                    "id": 14069,
+                                    "id": 14202,
                                     "name": "observationTimestamp",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 14054,
+                                    "referencedDeclaration": 14187,
                                     "src": "3297:20:54",
                                     "typeDescriptions": {
                                       "typeIdentifier": "t_uint32",
@@ -2097,7 +2097,7 @@
                                   null,
                                   null
                                 ],
-                                "id": 14070,
+                                "id": 14203,
                                 "isConstant": false,
                                 "isInlineArray": false,
                                 "isLValue": true,
@@ -2116,7 +2116,7 @@
                                 "arguments": [
                                   {
                                     "hexValue": "30",
-                                    "id": 14073,
+                                    "id": 14206,
                                     "isConstant": false,
                                     "isLValue": false,
                                     "isPure": true,
@@ -2139,32 +2139,32 @@
                                     }
                                   ],
                                   "expression": {
-                                    "id": 14071,
+                                    "id": 14204,
                                     "name": "pool",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 14037,
+                                    "referencedDeclaration": 14170,
                                     "src": "3327:4:54",
                                     "typeDescriptions": {
-                                      "typeIdentifier": "t_contract$_IUniswapV3Pool_$5707",
+                                      "typeIdentifier": "t_contract$_IUniswapV3Pool_$5830",
                                       "typeString": "contract IUniswapV3Pool"
                                     }
                                   },
-                                  "id": 14072,
+                                  "id": 14205,
                                   "isConstant": false,
                                   "isLValue": false,
                                   "isPure": false,
                                   "lValueRequested": false,
                                   "memberName": "observations",
                                   "nodeType": "MemberAccess",
-                                  "referencedDeclaration": 9968,
+                                  "referencedDeclaration": 10101,
                                   "src": "3327:17:54",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_function_external_view$_t_uint256_$returns$_t_uint32_$_t_int56_$_t_uint160_$_t_bool_$",
                                     "typeString": "function (uint256) view external returns (uint32,int56,uint160,bool)"
                                   }
                                 },
-                                "id": 14074,
+                                "id": 14207,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": false,
@@ -2185,7 +2185,7 @@
                                 "typeString": "tuple()"
                               }
                             },
-                            "id": 14076,
+                            "id": 14209,
                             "nodeType": "ExpressionStatement",
                             "src": "3296:51:54"
                           }
@@ -2194,17 +2194,17 @@
                     },
                     {
                       "expression": {
-                        "id": 14087,
+                        "id": 14220,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftHandSide": {
-                          "id": 14079,
+                          "id": 14212,
                           "name": "secondsAgo",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 14044,
+                          "referencedDeclaration": 14177,
                           "src": "3376:10:54",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint32",
@@ -2218,7 +2218,7 @@
                             "typeIdentifier": "t_uint32",
                             "typeString": "uint32"
                           },
-                          "id": 14086,
+                          "id": 14219,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -2227,7 +2227,7 @@
                             "arguments": [
                               {
                                 "expression": {
-                                  "id": 14082,
+                                  "id": 14215,
                                   "name": "block",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
@@ -2238,7 +2238,7 @@
                                     "typeString": "block"
                                   }
                                 },
-                                "id": 14083,
+                                "id": 14216,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": false,
@@ -2259,7 +2259,7 @@
                                   "typeString": "uint256"
                                 }
                               ],
-                              "id": 14081,
+                              "id": 14214,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -2271,14 +2271,14 @@
                                 "typeString": "type(uint32)"
                               },
                               "typeName": {
-                                "id": 14080,
+                                "id": 14213,
                                 "name": "uint32",
                                 "nodeType": "ElementaryTypeName",
                                 "src": "3389:6:54",
                                 "typeDescriptions": {}
                               }
                             },
-                            "id": 14084,
+                            "id": 14217,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -2296,11 +2296,11 @@
                           "nodeType": "BinaryOperation",
                           "operator": "-",
                           "rightExpression": {
-                            "id": 14085,
+                            "id": 14218,
                             "name": "observationTimestamp",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 14054,
+                            "referencedDeclaration": 14187,
                             "src": "3415:20:54",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint32",
@@ -2319,7 +2319,7 @@
                           "typeString": "uint32"
                         }
                       },
-                      "id": 14088,
+                      "id": 14221,
                       "nodeType": "ExpressionStatement",
                       "src": "3376:59:54"
                     }
@@ -2328,7 +2328,7 @@
               ]
             },
             "documentation": {
-              "id": 14034,
+              "id": 14167,
               "nodeType": "StructuredDocumentation",
               "src": "2131:519:54",
               "text": " @notice Given a pool, it returns the number of seconds ago of the oldest stored observation\n @param pool Address of Uniswap V3 pool that we want to observe\n @param observationIndex The observation index from pool.slot0()\n @param observationCardinality The observationCardinality from pool.slot0()\n @dev (, , uint16 observationIndex, uint16 observationCardinality, , , ) = pool.slot0();\n @return secondsAgo The number of seconds ago that the oldest observation was stored"
@@ -2339,38 +2339,38 @@
             "name": "getMaxSecondsAgo",
             "nameLocation": "2664:16:54",
             "parameters": {
-              "id": 14042,
+              "id": 14175,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 14037,
+                  "id": 14170,
                   "mutability": "mutable",
                   "name": "pool",
                   "nameLocation": "2705:4:54",
                   "nodeType": "VariableDeclaration",
-                  "scope": 14091,
+                  "scope": 14224,
                   "src": "2690:19:54",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_IUniswapV3Pool_$5707",
+                    "typeIdentifier": "t_contract$_IUniswapV3Pool_$5830",
                     "typeString": "contract IUniswapV3Pool"
                   },
                   "typeName": {
-                    "id": 14036,
+                    "id": 14169,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 14035,
+                      "id": 14168,
                       "name": "IUniswapV3Pool",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 5707,
+                      "referencedDeclaration": 5830,
                       "src": "2690:14:54"
                     },
-                    "referencedDeclaration": 5707,
+                    "referencedDeclaration": 5830,
                     "src": "2690:14:54",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_IUniswapV3Pool_$5707",
+                      "typeIdentifier": "t_contract$_IUniswapV3Pool_$5830",
                       "typeString": "contract IUniswapV3Pool"
                     }
                   },
@@ -2378,12 +2378,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 14039,
+                  "id": 14172,
                   "mutability": "mutable",
                   "name": "observationIndex",
                   "nameLocation": "2726:16:54",
                   "nodeType": "VariableDeclaration",
-                  "scope": 14091,
+                  "scope": 14224,
                   "src": "2719:23:54",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2392,7 +2392,7 @@
                     "typeString": "uint16"
                   },
                   "typeName": {
-                    "id": 14038,
+                    "id": 14171,
                     "name": "uint16",
                     "nodeType": "ElementaryTypeName",
                     "src": "2719:6:54",
@@ -2405,12 +2405,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 14041,
+                  "id": 14174,
                   "mutability": "mutable",
                   "name": "observationCardinality",
                   "nameLocation": "2759:22:54",
                   "nodeType": "VariableDeclaration",
-                  "scope": 14091,
+                  "scope": 14224,
                   "src": "2752:29:54",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2419,7 +2419,7 @@
                     "typeString": "uint16"
                   },
                   "typeName": {
-                    "id": 14040,
+                    "id": 14173,
                     "name": "uint16",
                     "nodeType": "ElementaryTypeName",
                     "src": "2752:6:54",
@@ -2434,17 +2434,17 @@
               "src": "2680:107:54"
             },
             "returnParameters": {
-              "id": 14045,
+              "id": 14178,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 14044,
+                  "id": 14177,
                   "mutability": "mutable",
                   "name": "secondsAgo",
                   "nameLocation": "2818:10:54",
                   "nodeType": "VariableDeclaration",
-                  "scope": 14091,
+                  "scope": 14224,
                   "src": "2811:17:54",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2453,7 +2453,7 @@
                     "typeString": "uint32"
                   },
                   "typeName": {
-                    "id": 14043,
+                    "id": 14176,
                     "name": "uint32",
                     "nodeType": "ElementaryTypeName",
                     "src": "2811:6:54",
@@ -2467,7 +2467,7 @@
               ],
               "src": "2810:19:54"
             },
-            "scope": 14092,
+            "scope": 14225,
             "stateMutability": "view",
             "virtual": false,
             "visibility": "internal"
@@ -2479,18 +2479,18 @@
         "contractDependencies": [],
         "contractKind": "library",
         "documentation": {
-          "id": 13919,
+          "id": 14052,
           "nodeType": "StructuredDocumentation",
           "src": "206:82:54",
           "text": "@title Oracle\n @notice Provides functions to integrate with V3 pool oracle"
         },
         "fullyImplemented": true,
         "linearizedBaseContracts": [
-          14092
+          14225
         ],
         "name": "Oracle",
         "nameLocation": "296:6:54",
-        "scope": 14093,
+        "scope": 14226,
         "usedErrors": []
       }
     ],

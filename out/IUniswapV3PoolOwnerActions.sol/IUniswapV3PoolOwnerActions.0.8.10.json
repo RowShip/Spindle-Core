@@ -203,17 +203,17 @@
   },
   "ast": {
     "absolutePath": "lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolOwnerActions.sol",
-    "id": 9862,
+    "id": 27040,
     "exportedSymbols": {
       "IUniswapV3PoolOwnerActions": [
-        9861
+        27039
       ]
     },
     "nodeType": "SourceUnit",
     "src": "45:1143:37",
     "nodes": [
       {
-        "id": 9837,
+        "id": 27015,
         "nodeType": "PragmaDirective",
         "src": "45:24:37",
         "nodes": [],
@@ -225,17 +225,17 @@
         ]
       },
       {
-        "id": 9861,
+        "id": 27039,
         "nodeType": "ContractDefinition",
         "src": "187:1000:37",
         "nodes": [
           {
-            "id": 9846,
+            "id": 27024,
             "nodeType": "FunctionDefinition",
             "src": "440:73:37",
             "nodes": [],
             "documentation": {
-              "id": 9839,
+              "id": 27017,
               "nodeType": "StructuredDocumentation",
               "src": "230:205:37",
               "text": "@notice Set the denominator of the protocol's % share of the fees\n @param feeProtocol0 new protocol fee for token0 of the pool\n @param feeProtocol1 new protocol fee for token1 of the pool"
@@ -247,17 +247,17 @@
             "name": "setFeeProtocol",
             "nameLocation": "449:14:37",
             "parameters": {
-              "id": 9844,
+              "id": 27022,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9841,
+                  "id": 27019,
                   "mutability": "mutable",
                   "name": "feeProtocol0",
                   "nameLocation": "470:12:37",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9846,
+                  "scope": 27024,
                   "src": "464:18:37",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -266,7 +266,7 @@
                     "typeString": "uint8"
                   },
                   "typeName": {
-                    "id": 9840,
+                    "id": 27018,
                     "name": "uint8",
                     "nodeType": "ElementaryTypeName",
                     "src": "464:5:37",
@@ -279,12 +279,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 9843,
+                  "id": 27021,
                   "mutability": "mutable",
                   "name": "feeProtocol1",
                   "nameLocation": "490:12:37",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9846,
+                  "scope": 27024,
                   "src": "484:18:37",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -293,7 +293,7 @@
                     "typeString": "uint8"
                   },
                   "typeName": {
-                    "id": 9842,
+                    "id": 27020,
                     "name": "uint8",
                     "nodeType": "ElementaryTypeName",
                     "src": "484:5:37",
@@ -308,23 +308,23 @@
               "src": "463:40:37"
             },
             "returnParameters": {
-              "id": 9845,
+              "id": 27023,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "512:0:37"
             },
-            "scope": 9861,
+            "scope": 27039,
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "id": 9860,
+            "id": 27038,
             "nodeType": "FunctionDefinition",
             "src": "1007:178:37",
             "nodes": [],
             "documentation": {
-              "id": 9847,
+              "id": 27025,
               "nodeType": "StructuredDocumentation",
               "src": "519:483:37",
               "text": "@notice Collect the protocol fee accrued to the pool\n @param recipient The address to which collected protocol fees should be sent\n @param amount0Requested The maximum amount of token0 to send, can be 0 to collect fees in only token1\n @param amount1Requested The maximum amount of token1 to send, can be 0 to collect fees in only token0\n @return amount0 The protocol fee collected in token0\n @return amount1 The protocol fee collected in token1"
@@ -336,17 +336,17 @@
             "name": "collectProtocol",
             "nameLocation": "1016:15:37",
             "parameters": {
-              "id": 9854,
+              "id": 27032,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9849,
+                  "id": 27027,
                   "mutability": "mutable",
                   "name": "recipient",
                   "nameLocation": "1049:9:37",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9860,
+                  "scope": 27038,
                   "src": "1041:17:37",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -355,7 +355,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 9848,
+                    "id": 27026,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1041:7:37",
@@ -369,12 +369,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 9851,
+                  "id": 27029,
                   "mutability": "mutable",
                   "name": "amount0Requested",
                   "nameLocation": "1076:16:37",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9860,
+                  "scope": 27038,
                   "src": "1068:24:37",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -383,7 +383,7 @@
                     "typeString": "uint128"
                   },
                   "typeName": {
-                    "id": 9850,
+                    "id": 27028,
                     "name": "uint128",
                     "nodeType": "ElementaryTypeName",
                     "src": "1068:7:37",
@@ -396,12 +396,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 9853,
+                  "id": 27031,
                   "mutability": "mutable",
                   "name": "amount1Requested",
                   "nameLocation": "1110:16:37",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9860,
+                  "scope": 27038,
                   "src": "1102:24:37",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -410,7 +410,7 @@
                     "typeString": "uint128"
                   },
                   "typeName": {
-                    "id": 9852,
+                    "id": 27030,
                     "name": "uint128",
                     "nodeType": "ElementaryTypeName",
                     "src": "1102:7:37",
@@ -425,17 +425,17 @@
               "src": "1031:101:37"
             },
             "returnParameters": {
-              "id": 9859,
+              "id": 27037,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9856,
+                  "id": 27034,
                   "mutability": "mutable",
                   "name": "amount0",
                   "nameLocation": "1159:7:37",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9860,
+                  "scope": 27038,
                   "src": "1151:15:37",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -444,7 +444,7 @@
                     "typeString": "uint128"
                   },
                   "typeName": {
-                    "id": 9855,
+                    "id": 27033,
                     "name": "uint128",
                     "nodeType": "ElementaryTypeName",
                     "src": "1151:7:37",
@@ -457,12 +457,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 9858,
+                  "id": 27036,
                   "mutability": "mutable",
                   "name": "amount1",
                   "nameLocation": "1176:7:37",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9860,
+                  "scope": 27038,
                   "src": "1168:15:37",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -471,7 +471,7 @@
                     "typeString": "uint128"
                   },
                   "typeName": {
-                    "id": 9857,
+                    "id": 27035,
                     "name": "uint128",
                     "nodeType": "ElementaryTypeName",
                     "src": "1168:7:37",
@@ -485,7 +485,7 @@
               ],
               "src": "1150:34:37"
             },
-            "scope": 9861,
+            "scope": 27039,
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
@@ -497,18 +497,18 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 9838,
+          "id": 27016,
           "nodeType": "StructuredDocumentation",
           "src": "71:116:37",
           "text": "@title Permissioned pool actions\n @notice Contains pool methods that may only be called by the factory owner"
         },
         "fullyImplemented": false,
         "linearizedBaseContracts": [
-          9861
+          27039
         ],
         "name": "IUniswapV3PoolOwnerActions",
         "nameLocation": "197:26:37",
-        "scope": 9862,
+        "scope": 27040,
         "usedErrors": []
       }
     ],

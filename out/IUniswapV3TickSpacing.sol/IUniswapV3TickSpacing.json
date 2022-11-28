@@ -100,17 +100,17 @@
   },
   "ast": {
     "absolutePath": "src/interfaces/IUniswapV3TickSpacing.sol",
-    "id": 13778,
+    "id": 36434,
     "exportedSymbols": {
       "IUniswapV3TickSpacing": [
-        13777
+        36433
       ]
     },
     "nodeType": "SourceUnit",
     "src": "36:120:50",
     "nodes": [
       {
-        "id": 13771,
+        "id": 36427,
         "nodeType": "PragmaDirective",
         "src": "36:24:50",
         "nodes": [],
@@ -122,12 +122,12 @@
         ]
       },
       {
-        "id": 13777,
+        "id": 36433,
         "nodeType": "ContractDefinition",
         "src": "62:93:50",
         "nodes": [
           {
-            "id": 13776,
+            "id": 36432,
             "nodeType": "FunctionDefinition",
             "src": "100:53:50",
             "nodes": [],
@@ -138,23 +138,23 @@
             "name": "tickSpacing",
             "nameLocation": "109:11:50",
             "parameters": {
-              "id": 13772,
+              "id": 36428,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "120:2:50"
             },
             "returnParameters": {
-              "id": 13775,
+              "id": 36431,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 13774,
+                  "id": 36430,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 13776,
+                  "scope": 36432,
                   "src": "146:5:50",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -163,7 +163,7 @@
                     "typeString": "int24"
                   },
                   "typeName": {
-                    "id": 13773,
+                    "id": 36429,
                     "name": "int24",
                     "nodeType": "ElementaryTypeName",
                     "src": "146:5:50",
@@ -177,7 +177,7 @@
               ],
               "src": "145:7:50"
             },
-            "scope": 13777,
+            "scope": 36433,
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
@@ -190,11 +190,11 @@
         "contractKind": "interface",
         "fullyImplemented": false,
         "linearizedBaseContracts": [
-          13777
+          36433
         ],
         "name": "IUniswapV3TickSpacing",
         "nameLocation": "72:21:50",
-        "scope": 13778,
+        "scope": 36434,
         "usedErrors": []
       }
     ],

@@ -2373,35 +2373,35 @@
   },
   "ast": {
     "absolutePath": "lib/v3-core/contracts/interfaces/IUniswapV3Pool.sol",
-    "id": 5746,
+    "id": 5831,
     "exportedSymbols": {
       "IUniswapV3Pool": [
-        5745
+        5830
       ],
       "IUniswapV3PoolActions": [
-        9683
+        9787
       ],
       "IUniswapV3PoolDerivedState": [
-        9714
+        9818
       ],
       "IUniswapV3PoolEvents": [
-        9833
+        9937
       ],
       "IUniswapV3PoolImmutables": [
-        9873
+        9977
       ],
       "IUniswapV3PoolOwnerActions": [
-        9899
+        10003
       ],
       "IUniswapV3PoolState": [
-        10007
+        10111
       ]
     },
     "nodeType": "SourceUnit",
     "src": "45:764:30",
     "nodes": [
       {
-        "id": 5725,
+        "id": 5810,
         "nodeType": "PragmaDirective",
         "src": "45:24:30",
         "nodes": [],
@@ -2413,85 +2413,85 @@
         ]
       },
       {
-        "id": 5726,
+        "id": 5811,
         "nodeType": "ImportDirective",
         "src": "71:45:30",
         "nodes": [],
         "absolutePath": "lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolImmutables.sol",
         "file": "./pool/IUniswapV3PoolImmutables.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 5746,
-        "sourceUnit": 9874,
+        "scope": 5831,
+        "sourceUnit": 9978,
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
-        "id": 5727,
+        "id": 5812,
         "nodeType": "ImportDirective",
         "src": "117:40:30",
         "nodes": [],
         "absolutePath": "lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol",
         "file": "./pool/IUniswapV3PoolState.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 5746,
-        "sourceUnit": 10008,
+        "scope": 5831,
+        "sourceUnit": 10112,
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
-        "id": 5728,
+        "id": 5813,
         "nodeType": "ImportDirective",
         "src": "158:47:30",
         "nodes": [],
         "absolutePath": "lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolDerivedState.sol",
         "file": "./pool/IUniswapV3PoolDerivedState.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 5746,
-        "sourceUnit": 9715,
+        "scope": 5831,
+        "sourceUnit": 9819,
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
-        "id": 5729,
+        "id": 5814,
         "nodeType": "ImportDirective",
         "src": "206:42:30",
         "nodes": [],
         "absolutePath": "lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolActions.sol",
         "file": "./pool/IUniswapV3PoolActions.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 5746,
-        "sourceUnit": 9684,
+        "scope": 5831,
+        "sourceUnit": 9788,
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
-        "id": 5730,
+        "id": 5815,
         "nodeType": "ImportDirective",
         "src": "249:47:30",
         "nodes": [],
         "absolutePath": "lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolOwnerActions.sol",
         "file": "./pool/IUniswapV3PoolOwnerActions.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 5746,
-        "sourceUnit": 9900,
+        "scope": 5831,
+        "sourceUnit": 10004,
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
-        "id": 5731,
+        "id": 5816,
         "nodeType": "ImportDirective",
         "src": "297:41:30",
         "nodes": [],
         "absolutePath": "lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolEvents.sol",
         "file": "./pool/IUniswapV3PoolEvents.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 5746,
-        "sourceUnit": 9834,
+        "scope": 5831,
+        "sourceUnit": 9938,
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
-        "id": 5745,
+        "id": 5830,
         "nodeType": "ContractDefinition",
         "src": "605:203:30",
         "nodes": [],
@@ -2499,73 +2499,73 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 5733,
+              "id": 5818,
               "name": "IUniswapV3PoolImmutables",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 9873,
+              "referencedDeclaration": 9977,
               "src": "637:24:30"
             },
-            "id": 5734,
+            "id": 5819,
             "nodeType": "InheritanceSpecifier",
             "src": "637:24:30"
           },
           {
             "baseName": {
-              "id": 5735,
+              "id": 5820,
               "name": "IUniswapV3PoolState",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 10007,
+              "referencedDeclaration": 10111,
               "src": "667:19:30"
             },
-            "id": 5736,
+            "id": 5821,
             "nodeType": "InheritanceSpecifier",
             "src": "667:19:30"
           },
           {
             "baseName": {
-              "id": 5737,
+              "id": 5822,
               "name": "IUniswapV3PoolDerivedState",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 9714,
+              "referencedDeclaration": 9818,
               "src": "692:26:30"
             },
-            "id": 5738,
+            "id": 5823,
             "nodeType": "InheritanceSpecifier",
             "src": "692:26:30"
           },
           {
             "baseName": {
-              "id": 5739,
+              "id": 5824,
               "name": "IUniswapV3PoolActions",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 9683,
+              "referencedDeclaration": 9787,
               "src": "724:21:30"
             },
-            "id": 5740,
+            "id": 5825,
             "nodeType": "InheritanceSpecifier",
             "src": "724:21:30"
           },
           {
             "baseName": {
-              "id": 5741,
+              "id": 5826,
               "name": "IUniswapV3PoolOwnerActions",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 9899,
+              "referencedDeclaration": 10003,
               "src": "751:26:30"
             },
-            "id": 5742,
+            "id": 5827,
             "nodeType": "InheritanceSpecifier",
             "src": "751:26:30"
           },
           {
             "baseName": {
-              "id": 5743,
+              "id": 5828,
               "name": "IUniswapV3PoolEvents",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 9833,
+              "referencedDeclaration": 9937,
               "src": "783:20:30"
             },
-            "id": 5744,
+            "id": 5829,
             "nodeType": "InheritanceSpecifier",
             "src": "783:20:30"
           }
@@ -2574,24 +2574,24 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 5732,
+          "id": 5817,
           "nodeType": "StructuredDocumentation",
           "src": "340:265:30",
           "text": "@title The interface for a Uniswap V3 Pool\n @notice A Uniswap pool facilitates swapping and automated market making between any two assets that strictly conform\n to the ERC20 specification\n @dev The pool interface is broken up into many smaller pieces"
         },
         "fullyImplemented": false,
         "linearizedBaseContracts": [
-          5745,
-          9833,
-          9899,
-          9683,
-          9714,
-          10007,
-          9873
+          5830,
+          9937,
+          10003,
+          9787,
+          9818,
+          10111,
+          9977
         ],
         "name": "IUniswapV3Pool",
         "nameLocation": "615:14:30",
-        "scope": 5746,
+        "scope": 5831,
         "usedErrors": []
       }
     ],

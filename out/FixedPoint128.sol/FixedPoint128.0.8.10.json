@@ -70,17 +70,17 @@
   },
   "ast": {
     "absolutePath": "src/libraries/FixedPoint128.sol",
-    "id": 11105,
+    "id": 11238,
     "exportedSymbols": {
       "FixedPoint128": [
-        11104
+        11237
       ]
     },
     "nodeType": "SourceUnit",
     "src": "45:266:51",
     "nodes": [
       {
-        "id": 11099,
+        "id": 11232,
         "nodeType": "PragmaDirective",
         "src": "45:24:51",
         "nodes": [],
@@ -92,12 +92,12 @@
         ]
       },
       {
-        "id": 11104,
+        "id": 11237,
         "nodeType": "ContractDefinition",
         "src": "211:99:51",
         "nodes": [
           {
-            "id": 11103,
+            "id": 11236,
             "nodeType": "VariableDeclaration",
             "src": "239:68:51",
             "nodes": [],
@@ -105,7 +105,7 @@
             "mutability": "constant",
             "name": "Q128",
             "nameLocation": "265:4:51",
-            "scope": 11104,
+            "scope": 11237,
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -113,7 +113,7 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 11101,
+              "id": 11234,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
               "src": "239:7:51",
@@ -124,7 +124,7 @@
             },
             "value": {
               "hexValue": "3078313030303030303030303030303030303030303030303030303030303030303030",
-              "id": 11102,
+              "id": 11235,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -147,18 +147,18 @@
         "contractDependencies": [],
         "contractKind": "library",
         "documentation": {
-          "id": 11100,
+          "id": 11233,
           "nodeType": "StructuredDocumentation",
           "src": "71:140:51",
           "text": "@title FixedPoint128\n @notice A library for handling binary fixed point numbers, see https://en.wikipedia.org/wiki/Q_(number_format)"
         },
         "fullyImplemented": true,
         "linearizedBaseContracts": [
-          11104
+          11237
         ],
         "name": "FixedPoint128",
         "nameLocation": "219:13:51",
-        "scope": 11105,
+        "scope": 11238,
         "usedErrors": []
       }
     ],

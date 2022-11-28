@@ -287,17 +287,17 @@
   },
   "ast": {
     "absolutePath": "lib/v3-core/contracts/interfaces/pool/IUniswapV3PoolImmutables.sol",
-    "id": 9874,
+    "id": 9978,
     "exportedSymbols": {
       "IUniswapV3PoolImmutables": [
-        9873
+        9977
       ]
     },
     "nodeType": "SourceUnit",
     "src": "45:1766:36",
     "nodes": [
       {
-        "id": 9835,
+        "id": 9939,
         "nodeType": "PragmaDirective",
         "src": "45:24:36",
         "nodes": [],
@@ -309,17 +309,17 @@
         ]
       },
       {
-        "id": 9873,
+        "id": 9977,
         "nodeType": "ContractDefinition",
         "src": "224:1586:36",
         "nodes": [
           {
-            "id": 9842,
+            "id": 9946,
             "nodeType": "FunctionDefinition",
             "src": "408:51:36",
             "nodes": [],
             "documentation": {
-              "id": 9837,
+              "id": 9941,
               "nodeType": "StructuredDocumentation",
               "src": "265:138:36",
               "text": "@notice The contract that deployed the pool, which must adhere to the IUniswapV3Factory interface\n @return The contract address"
@@ -331,23 +331,23 @@
             "name": "factory",
             "nameLocation": "417:7:36",
             "parameters": {
-              "id": 9838,
+              "id": 9942,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "424:2:36"
             },
             "returnParameters": {
-              "id": 9841,
+              "id": 9945,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9840,
+                  "id": 9944,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9842,
+                  "scope": 9946,
                   "src": "450:7:36",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -356,7 +356,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 9839,
+                    "id": 9943,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "450:7:36",
@@ -371,18 +371,18 @@
               ],
               "src": "449:9:36"
             },
-            "scope": 9873,
+            "scope": 9977,
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "id": 9848,
+            "id": 9952,
             "nodeType": "FunctionDefinition",
             "src": "583:50:36",
             "nodes": [],
             "documentation": {
-              "id": 9843,
+              "id": 9947,
               "nodeType": "StructuredDocumentation",
               "src": "465:113:36",
               "text": "@notice The first of the two tokens of the pool, sorted by address\n @return The token contract address"
@@ -394,23 +394,23 @@
             "name": "token0",
             "nameLocation": "592:6:36",
             "parameters": {
-              "id": 9844,
+              "id": 9948,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "598:2:36"
             },
             "returnParameters": {
-              "id": 9847,
+              "id": 9951,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9846,
+                  "id": 9950,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9848,
+                  "scope": 9952,
                   "src": "624:7:36",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -419,7 +419,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 9845,
+                    "id": 9949,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "624:7:36",
@@ -434,18 +434,18 @@
               ],
               "src": "623:9:36"
             },
-            "scope": 9873,
+            "scope": 9977,
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "id": 9854,
+            "id": 9958,
             "nodeType": "FunctionDefinition",
             "src": "758:50:36",
             "nodes": [],
             "documentation": {
-              "id": 9849,
+              "id": 9953,
               "nodeType": "StructuredDocumentation",
               "src": "639:114:36",
               "text": "@notice The second of the two tokens of the pool, sorted by address\n @return The token contract address"
@@ -457,23 +457,23 @@
             "name": "token1",
             "nameLocation": "767:6:36",
             "parameters": {
-              "id": 9850,
+              "id": 9954,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "773:2:36"
             },
             "returnParameters": {
-              "id": 9853,
+              "id": 9957,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9852,
+                  "id": 9956,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9854,
+                  "scope": 9958,
                   "src": "799:7:36",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -482,7 +482,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 9851,
+                    "id": 9955,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "799:7:36",
@@ -497,18 +497,18 @@
               ],
               "src": "798:9:36"
             },
-            "scope": 9873,
+            "scope": 9977,
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "id": 9860,
+            "id": 9964,
             "nodeType": "FunctionDefinition",
             "src": "903:46:36",
             "nodes": [],
             "documentation": {
-              "id": 9855,
+              "id": 9959,
               "nodeType": "StructuredDocumentation",
               "src": "814:84:36",
               "text": "@notice The pool's fee in hundredths of a bip, i.e. 1e-6\n @return The fee"
@@ -520,23 +520,23 @@
             "name": "fee",
             "nameLocation": "912:3:36",
             "parameters": {
-              "id": 9856,
+              "id": 9960,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "915:2:36"
             },
             "returnParameters": {
-              "id": 9859,
+              "id": 9963,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9858,
+                  "id": 9962,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9860,
+                  "scope": 9964,
                   "src": "941:6:36",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -545,7 +545,7 @@
                     "typeString": "uint24"
                   },
                   "typeName": {
-                    "id": 9857,
+                    "id": 9961,
                     "name": "uint24",
                     "nodeType": "ElementaryTypeName",
                     "src": "941:6:36",
@@ -559,18 +559,18 @@
               ],
               "src": "940:8:36"
             },
-            "scope": 9873,
+            "scope": 9977,
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "id": 9866,
+            "id": 9970,
             "nodeType": "FunctionDefinition",
             "src": "1318:53:36",
             "nodes": [],
             "documentation": {
-              "id": 9861,
+              "id": 9965,
               "nodeType": "StructuredDocumentation",
               "src": "955:358:36",
               "text": "@notice The pool tick spacing\n @dev Ticks can only be used at multiples of this value, minimum of 1 and always positive\n e.g.: a tickSpacing of 3 means ticks can be initialized every 3rd tick, i.e., ..., -6, -3, 0, 3, 6, ...\n This value is an int24 to avoid casting even though it is always positive.\n @return The tick spacing"
@@ -582,23 +582,23 @@
             "name": "tickSpacing",
             "nameLocation": "1327:11:36",
             "parameters": {
-              "id": 9862,
+              "id": 9966,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1338:2:36"
             },
             "returnParameters": {
-              "id": 9865,
+              "id": 9969,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9864,
+                  "id": 9968,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9866,
+                  "scope": 9970,
                   "src": "1364:5:36",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -607,7 +607,7 @@
                     "typeString": "int24"
                   },
                   "typeName": {
-                    "id": 9863,
+                    "id": 9967,
                     "name": "int24",
                     "nodeType": "ElementaryTypeName",
                     "src": "1364:5:36",
@@ -621,18 +621,18 @@
               ],
               "src": "1363:7:36"
             },
-            "scope": 9873,
+            "scope": 9977,
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "id": 9872,
+            "id": 9976,
             "nodeType": "FunctionDefinition",
             "src": "1745:63:36",
             "nodes": [],
             "documentation": {
-              "id": 9867,
+              "id": 9971,
               "nodeType": "StructuredDocumentation",
               "src": "1377:363:36",
               "text": "@notice The maximum amount of position liquidity that can use any tick in the range\n @dev This parameter is enforced per tick to prevent liquidity from overflowing a uint128 at any point, and\n also prevents out-of-range liquidity from being used to prevent adding in-range liquidity to a pool\n @return The max amount of liquidity per tick"
@@ -644,23 +644,23 @@
             "name": "maxLiquidityPerTick",
             "nameLocation": "1754:19:36",
             "parameters": {
-              "id": 9868,
+              "id": 9972,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1773:2:36"
             },
             "returnParameters": {
-              "id": 9871,
+              "id": 9975,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9870,
+                  "id": 9974,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9872,
+                  "scope": 9976,
                   "src": "1799:7:36",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -669,7 +669,7 @@
                     "typeString": "uint128"
                   },
                   "typeName": {
-                    "id": 9869,
+                    "id": 9973,
                     "name": "uint128",
                     "nodeType": "ElementaryTypeName",
                     "src": "1799:7:36",
@@ -683,7 +683,7 @@
               ],
               "src": "1798:9:36"
             },
-            "scope": 9873,
+            "scope": 9977,
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
@@ -695,18 +695,18 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 9836,
+          "id": 9940,
           "nodeType": "StructuredDocumentation",
           "src": "71:153:36",
           "text": "@title Pool state that never changes\n @notice These parameters are fixed for a pool forever, i.e., the methods will always return the same values"
         },
         "fullyImplemented": false,
         "linearizedBaseContracts": [
-          9873
+          9977
         ],
         "name": "IUniswapV3PoolImmutables",
         "nameLocation": "234:24:36",
-        "scope": 9874,
+        "scope": 9978,
         "usedErrors": []
       }
     ],

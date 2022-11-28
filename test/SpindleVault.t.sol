@@ -61,6 +61,17 @@ contract SpindleVaultTestBase is Test {
             -887220,
             887220
         ));
+        // Update the strategy parameters for the vault
+        spindleVault.updateManagerParams(
+            100, // 1% manager fee
+            users[0], // manager treasury address
+            100, // 1% reinvest fee paid to keepers who call reinvest()
+            1, // minimum tick threshold to trigger any recenter
+            10, // tick threshold to trigger tickRecenter
+            10, // 0.1% iv threshold to trigger ivRecenter
+            86400, // time threshold to trigger timeRecenter
+            20000 // 2 standard deviations of trading activity over the recenterTimeThreshold
+        );
 
     }
     function _deploy(bytes memory _code) internal returns (address addr) {
@@ -227,8 +238,8 @@ contract SpindleVaultTest is SpindleVaultTestBase {
 
         //Make sure manager balance was updated correctly
         uint16 feeBPS = spindleVault.managerFeeBPS();
-        console.log("expected", spindleVault.managerBalance0());
-        console.log("actual", feeBPS*a/10000);
+        console.log("expected manager balance", spindleVault.managerBalance0());
+        console.log("actual manager balance", feeBPS*a/10000);
         assertEq(spindleVault.managerBalance0(), feeBPS*a/10000);
         assertEq(spindleVault.managerBalance1(), feeBPS*b/10000);
 
@@ -270,6 +281,6 @@ contract SpindleVaultTest is SpindleVaultTestBase {
         console.log("Should recenter the liquidity position bounds");
 
         _washTrades();
-        
+
     }
 }

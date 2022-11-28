@@ -188,17 +188,17 @@
   },
   "ast": {
     "absolutePath": "src/interfaces/IEIP173Proxy.sol",
-    "id": 13720,
+    "id": 36376,
     "exportedSymbols": {
       "IEIP173Proxy": [
-        13719
+        36375
       ]
     },
     "nodeType": "SourceUnit",
     "src": "36:347:46",
     "nodes": [
       {
-        "id": 13696,
+        "id": 36352,
         "nodeType": "PragmaDirective",
         "src": "36:24:46",
         "nodes": [],
@@ -210,12 +210,12 @@
         ]
       },
       {
-        "id": 13719,
+        "id": 36375,
         "nodeType": "ContractDefinition",
         "src": "62:320:46",
         "nodes": [
           {
-            "id": 13701,
+            "id": 36357,
             "nodeType": "FunctionDefinition",
             "src": "91:54:46",
             "nodes": [],
@@ -226,23 +226,23 @@
             "name": "proxyAdmin",
             "nameLocation": "100:10:46",
             "parameters": {
-              "id": 13697,
+              "id": 36353,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "110:2:46"
             },
             "returnParameters": {
-              "id": 13700,
+              "id": 36356,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 13699,
+                  "id": 36355,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 13701,
+                  "scope": 36357,
                   "src": "136:7:46",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -251,7 +251,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 13698,
+                    "id": 36354,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "136:7:46",
@@ -266,13 +266,13 @@
               ],
               "src": "135:9:46"
             },
-            "scope": 13719,
+            "scope": 36375,
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "id": 13706,
+            "id": 36362,
             "nodeType": "FunctionDefinition",
             "src": "151:55:46",
             "nodes": [],
@@ -283,17 +283,17 @@
             "name": "transferProxyAdmin",
             "nameLocation": "160:18:46",
             "parameters": {
-              "id": 13704,
+              "id": 36360,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 13703,
+                  "id": 36359,
                   "mutability": "mutable",
                   "name": "newAdmin",
                   "nameLocation": "187:8:46",
                   "nodeType": "VariableDeclaration",
-                  "scope": 13706,
+                  "scope": 36362,
                   "src": "179:16:46",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -302,7 +302,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 13702,
+                    "id": 36358,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "179:7:46",
@@ -318,18 +318,18 @@
               "src": "178:18:46"
             },
             "returnParameters": {
-              "id": 13705,
+              "id": 36361,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "205:0:46"
             },
-            "scope": 13719,
+            "scope": 36375,
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "id": 13711,
+            "id": 36367,
             "nodeType": "FunctionDefinition",
             "src": "212:55:46",
             "nodes": [],
@@ -340,17 +340,17 @@
             "name": "upgradeTo",
             "nameLocation": "221:9:46",
             "parameters": {
-              "id": 13709,
+              "id": 36365,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 13708,
+                  "id": 36364,
                   "mutability": "mutable",
                   "name": "newImplementation",
                   "nameLocation": "239:17:46",
                   "nodeType": "VariableDeclaration",
-                  "scope": 13711,
+                  "scope": 36367,
                   "src": "231:25:46",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -359,7 +359,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 13707,
+                    "id": 36363,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "231:7:46",
@@ -375,18 +375,18 @@
               "src": "230:27:46"
             },
             "returnParameters": {
-              "id": 13710,
+              "id": 36366,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "266:0:46"
             },
-            "scope": 13719,
+            "scope": 36375,
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "id": 13718,
+            "id": 36374,
             "nodeType": "FunctionDefinition",
             "src": "273:107:46",
             "nodes": [],
@@ -397,17 +397,17 @@
             "name": "upgradeToAndCall",
             "nameLocation": "282:16:46",
             "parameters": {
-              "id": 13716,
+              "id": 36372,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 13713,
+                  "id": 36369,
                   "mutability": "mutable",
                   "name": "newImplementation",
                   "nameLocation": "307:17:46",
                   "nodeType": "VariableDeclaration",
-                  "scope": 13718,
+                  "scope": 36374,
                   "src": "299:25:46",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -416,7 +416,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 13712,
+                    "id": 36368,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "299:7:46",
@@ -430,12 +430,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 13715,
+                  "id": 36371,
                   "mutability": "mutable",
                   "name": "data",
                   "nameLocation": "341:4:46",
                   "nodeType": "VariableDeclaration",
-                  "scope": 13718,
+                  "scope": 36374,
                   "src": "326:19:46",
                   "stateVariable": false,
                   "storageLocation": "calldata",
@@ -444,7 +444,7 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 13714,
+                    "id": 36370,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "326:5:46",
@@ -459,12 +459,12 @@
               "src": "298:48:46"
             },
             "returnParameters": {
-              "id": 13717,
+              "id": 36373,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "379:0:46"
             },
-            "scope": 13719,
+            "scope": 36375,
             "stateMutability": "payable",
             "virtual": false,
             "visibility": "external"
@@ -477,11 +477,11 @@
         "contractKind": "interface",
         "fullyImplemented": false,
         "linearizedBaseContracts": [
-          13719
+          36375
         ],
         "name": "IEIP173Proxy",
         "nameLocation": "72:12:46",
-        "scope": 13720,
+        "scope": 36376,
         "usedErrors": []
       }
     ],

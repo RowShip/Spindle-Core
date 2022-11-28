@@ -2,12 +2,12 @@
   "abi": [],
   "bytecode": {
     "object": "0x60566037600b82828239805160001a607314602a57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220700a20f8d5e70a2d63db9b6eae5512f3fc352ddbe4bdcb803ef3770719a7832064736f6c63430008110033",
-    "sourceMap": "211:99:11:-:0;;;;;;;;;;;;;;;-1:-1:-1;;;211:99:11;;;;;;;;;;;;;;;;;",
+    "sourceMap": "211:99:47:-:0;;;;;;;;;;;;;;;-1:-1:-1;;;211:99:47;;;;;;;;;;;;;;;;;",
     "linkReferences": {}
   },
   "deployedBytecode": {
     "object": "0x73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220700a20f8d5e70a2d63db9b6eae5512f3fc352ddbe4bdcb803ef3770719a7832064736f6c63430008110033",
-    "sourceMap": "211:99:11:-:0;;;;;;;;",
+    "sourceMap": "211:99:47:-:0;;;;;;;;",
     "linkReferences": {}
   },
   "methodIdentifiers": {},
@@ -70,19 +70,19 @@
   },
   "ast": {
     "absolutePath": "src/libraries/FixedPoint128.sol",
-    "id": 1229,
+    "id": 29389,
     "exportedSymbols": {
       "FixedPoint128": [
-        1228
+        29388
       ]
     },
     "nodeType": "SourceUnit",
-    "src": "45:266:11",
+    "src": "45:266:47",
     "nodes": [
       {
-        "id": 1223,
+        "id": 29383,
         "nodeType": "PragmaDirective",
-        "src": "45:24:11",
+        "src": "45:24:47",
         "nodes": [],
         "literals": [
           "solidity",
@@ -92,20 +92,20 @@
         ]
       },
       {
-        "id": 1228,
+        "id": 29388,
         "nodeType": "ContractDefinition",
-        "src": "211:99:11",
+        "src": "211:99:47",
         "nodes": [
           {
-            "id": 1227,
+            "id": 29387,
             "nodeType": "VariableDeclaration",
-            "src": "239:68:11",
+            "src": "239:68:47",
             "nodes": [],
             "constant": true,
             "mutability": "constant",
             "name": "Q128",
-            "nameLocation": "265:4:11",
-            "scope": 1228,
+            "nameLocation": "265:4:47",
+            "scope": 29388,
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -113,10 +113,10 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 1225,
+              "id": 29385,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "239:7:11",
+              "src": "239:7:47",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -124,14 +124,14 @@
             },
             "value": {
               "hexValue": "3078313030303030303030303030303030303030303030303030303030303030303030",
-              "id": 1226,
+              "id": 29386,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "272:35:11",
+              "src": "272:35:47",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_340282366920938463463374607431768211456_by_1",
                 "typeString": "int_const 3402...(31 digits omitted)...1456"
@@ -147,22 +147,22 @@
         "contractDependencies": [],
         "contractKind": "library",
         "documentation": {
-          "id": 1224,
+          "id": 29384,
           "nodeType": "StructuredDocumentation",
-          "src": "71:140:11",
+          "src": "71:140:47",
           "text": "@title FixedPoint128\n @notice A library for handling binary fixed point numbers, see https://en.wikipedia.org/wiki/Q_(number_format)"
         },
         "fullyImplemented": true,
         "linearizedBaseContracts": [
-          1228
+          29388
         ],
         "name": "FixedPoint128",
-        "nameLocation": "219:13:11",
-        "scope": 1229,
+        "nameLocation": "219:13:47",
+        "scope": 29389,
         "usedErrors": []
       }
     ],
     "license": "GPL-2.0-or-later"
   },
-  "id": 11
+  "id": 47
 }

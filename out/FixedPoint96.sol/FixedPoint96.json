@@ -70,17 +70,17 @@
   },
   "ast": {
     "absolutePath": "src/libraries/FixedPoint96.sol",
-    "id": 37470,
+    "id": 37576,
     "exportedSymbols": {
       "FixedPoint96": [
-        37469
+        37575
       ]
     },
     "nodeType": "SourceUnit",
     "src": "45:300:52",
     "nodes": [
       {
-        "id": 37461,
+        "id": 37567,
         "nodeType": "PragmaDirective",
         "src": "45:24:52",
         "nodes": [],
@@ -92,12 +92,12 @@
         ]
       },
       {
-        "id": 37469,
+        "id": 37575,
         "nodeType": "ContractDefinition",
         "src": "210:134:52",
         "nodes": [
           {
-            "id": 37465,
+            "id": 37571,
             "nodeType": "VariableDeclaration",
             "src": "237:39:52",
             "nodes": [],
@@ -105,7 +105,7 @@
             "mutability": "constant",
             "name": "RESOLUTION",
             "nameLocation": "261:10:52",
-            "scope": 37469,
+            "scope": 37575,
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -113,7 +113,7 @@
               "typeString": "uint8"
             },
             "typeName": {
-              "id": 37463,
+              "id": 37569,
               "name": "uint8",
               "nodeType": "ElementaryTypeName",
               "src": "237:5:52",
@@ -124,7 +124,7 @@
             },
             "value": {
               "hexValue": "3936",
-              "id": 37464,
+              "id": 37570,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -141,7 +141,7 @@
             "visibility": "internal"
           },
           {
-            "id": 37468,
+            "id": 37574,
             "nodeType": "VariableDeclaration",
             "src": "282:59:52",
             "nodes": [],
@@ -149,7 +149,7 @@
             "mutability": "constant",
             "name": "Q96",
             "nameLocation": "308:3:52",
-            "scope": 37469,
+            "scope": 37575,
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -157,7 +157,7 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 37466,
+              "id": 37572,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
               "src": "282:7:52",
@@ -168,7 +168,7 @@
             },
             "value": {
               "hexValue": "307831303030303030303030303030303030303030303030303030",
-              "id": 37467,
+              "id": 37573,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -191,18 +191,18 @@
         "contractDependencies": [],
         "contractKind": "library",
         "documentation": {
-          "id": 37462,
+          "id": 37568,
           "nodeType": "StructuredDocumentation",
           "src": "71:139:52",
           "text": "@title FixedPoint96\n @notice A library for handling binary fixed point numbers, see https://en.wikipedia.org/wiki/Q_(number_format)"
         },
         "fullyImplemented": true,
         "linearizedBaseContracts": [
-          37469
+          37575
         ],
         "name": "FixedPoint96",
         "nameLocation": "218:12:52",
-        "scope": 37470,
+        "scope": 37576,
         "usedErrors": []
       }
     ],

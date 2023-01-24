@@ -11,7 +11,7 @@ import {FullMath} from "./libraries/FullMath.sol";
 
 import {Uniswap} from "./libraries/Uniswap.sol";
 
-uint256 constant Q96 = 2**96;
+uint256 constant Q96 = 2 ** 96;
 
 contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
     using SafeERC20 for IERC20;
@@ -81,13 +81,12 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
     /// @return amount1 amount of token1 transferred from msg.sender to mint `mintAmount`
     /// @return liquidityMinted amount of liquidity added to the underlying Uniswap V3 position
     // solhint-disable-next-line function-max-lines, code-complexity
-    function mint(uint256 mintAmount, address receiver)
+    function mint(
+        uint256 mintAmount,
+        address receiver
+    )
         external
-        returns (
-            uint256 amount0,
-            uint256 amount1,
-            uint128 liquidityMinted
-        )
+        returns (uint256 amount0, uint256 amount1, uint128 liquidityMinted)
     {
         require(mintAmount > 0, "mint 0");
 
@@ -195,13 +194,12 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
         uint256 fee1;
     }
 
-    function burn(uint256 burnAmount, address receiver)
+    function burn(
+        uint256 burnAmount,
+        address receiver
+    )
         external
-        returns (
-            uint256 amount0,
-            uint256 amount1,
-            uint128 liquidityBurned
-        )
+        returns (uint256 amount0, uint256 amount1, uint128 liquidityBurned)
     {
         require(burnAmount > 0, "burn 0");
 
@@ -325,13 +323,17 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
         uint160 sqrtPriceX96;
         uint224 priceX96;
         int24 tick;
-        uint256 iv;
     }
 
     /// @notice Strategy recentering based on time threshold
     /// @param amount0Min minimum amount of token0 to receive
     /// @param amount1Min minimum amount of token1 to receive
-    function timeRecenter(uint256 amount0Min, uint256 amount1Min) external {
+    function timeRecenter(
+        uint256 amount0Min,
+        uint256 amount1Min,
+        int24 upperTick,
+        int24 lowerTick
+    ) external {
         // check if recentering based on time threshold is allowed
         uint256 auctionTimestamp = timeAtLastRecenter + timeThreshold;
 
@@ -348,7 +350,14 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
             "tickDelta <= minTickThreshold"
         );
 
-        _executeAuction(auctionTimestamp, amount0Min, amount1Min, cache);
+        _executeAuction(
+            auctionTimestamp, 
+            amount0Min,
+            amount1Min,
+            upperTick,
+            lowerTick, 
+            cache
+        );
     }
 
     /// @notice Strategy recentering based on tick threshold
@@ -358,7 +367,9 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
     function tickRecenter(
         uint256 auctionTriggerTime,
         uint256 amount0Min,
-        uint256 amount1Min
+        uint256 amount1Min,
+        int24 upperTick,
+        int24 lowerTick
     ) external {
         require(
             auctionTriggerTime > block.timestamp,
@@ -379,49 +390,34 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
             "tickDelta >= tickThreshold"
         );
 
-        _executeAuction(auctionTriggerTime, amount0Min, amount1Min, cache);
-    }
-
-    /// @notice Strategy recentering based on iv threshold
-    /// @param amount0Min minimum amount of token0 to receive
-    /// @param amount1Min minimum amount of token1 to receive
-    function ivRecenter(uint256 amount0Min, uint256 amount1Min) external {
-
-        RecenterCache memory cache = _populateRecenterCache(pool);
-
-        uint256 ratio = FullMath.mulDiv(
-            10_000,
-            cache.iv > ivAtLastRecenter ? cache.iv - ivAtLastRecenter : ivAtLastRecenter - cache.iv,
-            ivAtLastRecenter
-        );
-
-        require(ratio >= ivThresholdBPS, "ivDelta >= ivThreshold");
-
         _executeAuction(
-            block.timestamp + AUCTION_TIME, // skip to the end of auction for IV recentering
+            auctionTriggerTime, 
             amount0Min,
             amount1Min,
+            upperTick,
+            lowerTick, 
             cache
         );
     }
 
     /// @notice Populates recenter cache with price related pool data
     /// @return cache contains pool data needed for recenter computations
-    function _populateRecenterCache(IUniswapV3Pool pool)
-        internal
-        returns (RecenterCache memory cache)
-    {
+    function _populateRecenterCache(
+        IUniswapV3Pool pool
+    ) internal       view
+    returns (RecenterCache memory cache) {
         (cache.sqrtPriceX96, cache.tick, , , , , ) = pool.slot0();
         cache.priceX96 = uint224(
             FullMath.mulDiv(cache.sqrtPriceX96, cache.sqrtPriceX96, Q96)
         );
-        cache.iv = SpindleOracle.estimate24H(pool);
     }
 
     function _executeAuction(
         uint256 auctionTimestamp,
         uint256 amount0Min,
         uint256 amount1Min,
+        int24 upperTick,
+        int24 lowerTick,
         RecenterCache memory cache
     ) internal {
         (
@@ -448,14 +444,10 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
         );
         emit FeesEarned(feesEarned0, feesEarned1);
 
-        // Decide primary position width based on IV
-        int24 w = _computeNextPositionWidth(cache.iv);
-        w = w >> 1;
-
         // Update primary position's ticks
         unchecked {
-            primary.lower = TickMath.floor(cache.tick - w, TICK_SPACING);
-            primary.upper = TickMath.ceil(cache.tick + w, TICK_SPACING);
+            primary.lower = TickMath.floor(lowerTick, TICK_SPACING);
+            primary.upper = TickMath.ceil(upperTick, TICK_SPACING);
             if (primary.lower < MIN_TICK) primary.lower = MIN_TICK;
             if (primary.upper > MAX_TICK) primary.upper = MAX_TICK;
         }
@@ -515,15 +507,7 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
         Uniswap.Position memory primary,
         RecenterCache memory cache,
         uint256 auctionTimestamp
-    )
-        private
-        view
-        returns (
-            uint256 amount0,
-            uint256 amount1,
-            bool zeroForOne
-        )
-    {
+    ) private view returns (uint256 amount0, uint256 amount1, bool zeroForOne) {
         // get current amounts
         uint256 amount0Current = token0.balanceOf(address(this)) -
             managerBalance0;
@@ -606,11 +590,9 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
 
     /// @dev Computes position width based on volatility. Doesn't revert
     /// @dev ExpectedMove = P0 * IV * sqrt(T)
-    function _computeNextPositionWidth(uint256 _sigma)
-        internal
-        view
-        returns (int24)
-    {
+    function _computeNextPositionWidth(
+        uint256 _sigma
+    ) internal view returns (int24) {
         if (_sigma <= A) return MIN_WIDTH; // \frac{1e18}{B} (1 - \frac{1}{1.0001^(MIN_WIDTH / 2*sqrt(7))})
         if (_sigma >= C) return MAX_WIDTH; // \frac{1e18}{B} (1 - \frac{1}{1.0001^(MAX_WIDTH / 2*sqrt(7))})
         _sigma *= B;
@@ -651,14 +633,10 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
     /// @return amount0 actual amount of token0 to forward when minting `mintAmount`
     /// @return amount1 actual amount of token1 to forward when minting `mintAmount`
     /// @return mintAmount maximum number of SS-UNI tokens to mint
-    function getMintAmounts(uint256 amount0Max, uint256 amount1Max)
-        external
-        returns (
-            uint256 amount0,
-            uint256 amount1,
-            uint256 mintAmount
-        )
-    {
+    function getMintAmounts(
+        uint256 amount0Max,
+        uint256 amount1Max
+    ) external returns (uint256 amount0, uint256 amount1, uint256 mintAmount) {
         uint256 totalSupply = totalSupply();
         if (totalSupply > 0) {
             (amount0, amount1, mintAmount) = _computeMintAmounts(
@@ -703,10 +681,9 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
         );
     }
 
-    function getUnderlyingBalancesAtPrice(uint160 sqrtRatioX96)
-        external
-        returns (uint256 amount0Current, uint256 amount1Current)
-    {
+    function getUnderlyingBalancesAtPrice(
+        uint160 sqrtRatioX96
+    ) external returns (uint256 amount0Current, uint256 amount1Current) {
         (
             Uniswap.Position memory primary,
             Uniswap.Position memory limit
@@ -805,8 +782,8 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
         (, , uint256 feesEarned0, uint256 feesEarned1) = primary.withdraw(
             primaryLiquidity
         );
-        
-        // Transfer keeper rewards. 
+
+        // Transfer keeper rewards.
         token0.safeTransfer(msg.sender, (feesEarned0 * reinvestBPS) / 10000);
         token1.safeTransfer(msg.sender, (feesEarned1 * reinvestBPS) / 10000);
 
@@ -819,7 +796,6 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
         emit FeesEarned(feesEarned0, feesEarned1);
         feesEarned0 += leftover0;
         feesEarned1 += leftover1;
-
 
         leftover0 = token0.balanceOf(address(this)) - managerBalance0;
         leftover1 = token1.balanceOf(address(this)) - managerBalance1;
@@ -895,14 +871,7 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
         uint256 totalSupply,
         uint256 amount0Max,
         uint256 amount1Max
-    )
-        private
-        returns (
-            uint256 amount0,
-            uint256 amount1,
-            uint256 mintAmount
-        )
-    {
+    ) private returns (uint256 amount0, uint256 amount1, uint256 mintAmount) {
         (
             uint256 amount0Current,
             uint256 amount1Current
@@ -958,11 +927,10 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
         managerBalance1 += (_fee1 * managerFeeBPS) / 10000;
     }
 
-    function _subtractAdminFees(uint256 rawFee0, uint256 rawFee1)
-        private
-        view
-        returns (uint256 fee0, uint256 fee1)
-    {
+    function _subtractAdminFees(
+        uint256 rawFee0,
+        uint256 rawFee1
+    ) private view returns (uint256 fee0, uint256 fee1) {
         uint256 deduct0 = (rawFee0 * (managerFeeBPS)) / 10000;
         uint256 deduct1 = (rawFee1 * (managerFeeBPS)) / 10000;
         fee0 = rawFee0 - deduct0;

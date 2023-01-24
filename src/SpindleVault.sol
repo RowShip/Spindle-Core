@@ -386,10 +386,6 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
     /// @param amount0Min minimum amount of token0 to receive
     /// @param amount1Min minimum amount of token1 to receive
     function ivRecenter(uint256 amount0Min, uint256 amount1Min) external {
-        require(
-            block.timestamp >= (timeAtLastRecenter + timeThreshold),
-            "time threshold not reached"
-        );
 
         RecenterCache memory cache = _populateRecenterCache(pool);
 
@@ -410,7 +406,7 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
     }
 
     /// @notice Populates recenter cache with price related pool data
-    /// @return cache contains data needed for recenter computations
+    /// @return cache contains pool data needed for recenter computations
     function _populateRecenterCache(IUniswapV3Pool pool)
         internal
         returns (RecenterCache memory cache)
@@ -498,6 +494,8 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
             amount1,
             zeroForOne
         );
+
+        timeAtLastRecenter = uint48(block.timestamp);
 
         packedSlot = PackedSlot(
             primary.lower,
@@ -643,7 +641,7 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
 
     /// @notice Computes |a - b|
     /// @return the absolute difference between a and b
-    function getAbsDiff(int256 a, int256 b) internal pure returns (int256) {
+    function getAbsDiff(int256 a, int256 b) private pure returns (int256) {
         return a > b ? a - b : b - a;
     }
 
@@ -807,6 +805,12 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
         (, , uint256 feesEarned0, uint256 feesEarned1) = primary.withdraw(
             primaryLiquidity
         );
+        
+        // Transfer keeper rewards. 
+        token0.safeTransfer(msg.sender, (feesEarned0 * reinvestBPS) / 10000);
+        token1.safeTransfer(msg.sender, (feesEarned1 * reinvestBPS) / 10000);
+
+        // Apply admin fees.
         _applyFees(feesEarned0, feesEarned1);
         (feesEarned0, feesEarned1) = _subtractAdminFees(
             feesEarned0,
@@ -816,8 +820,6 @@ contract SpindleVault is IUniswapV3MintCallback, SpindleVaultStorage {
         feesEarned0 += leftover0;
         feesEarned1 += leftover1;
 
-        token0.safeTransfer(msg.sender, (feesEarned0 * reinvestBPS) / 10000);
-        token1.safeTransfer(msg.sender, (feesEarned1 * reinvestBPS) / 10000);
 
         leftover0 = token0.balanceOf(address(this)) - managerBalance0;
         leftover1 = token1.balanceOf(address(this)) - managerBalance1;

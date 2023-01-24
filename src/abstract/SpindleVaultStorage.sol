@@ -26,6 +26,7 @@ import "@rari-capital/solmate/src/utils/FixedPointMathLib.sol";
 /// @dev Add all inherited contracts with state vars here: APPEND ONLY
 /// @dev ERC20Upgradable Includes Initialize
 // solhint-disable-next-line max-states-count
+
 abstract contract SpindleVaultStorage is
     ERC20Upgradeable, /* XXXX DONT MODIFY ORDERING XXXX */
     OwnableUninitialized
@@ -46,7 +47,7 @@ abstract contract SpindleVaultStorage is
    
     int24 public tickAtLastRecenter; /// @dev tick when last recenter executed
     uint256 public ivAtLastRecenter; /// @dev implied volatility when last recenter executed
-    uint256 public timeAtLastRecenter; /// @dev timestamp when last recenter executed
+    uint48 public timeAtLastRecenter; /// @dev timestamp when last recenter executed
 
     uint16 public managerFeeBPS;
     address public managerTreasury;
@@ -113,9 +114,9 @@ abstract contract SpindleVaultStorage is
     /// @param _name name of SS-UNI token
     /// @param _symbol symbol of SS-UNI token
     /// @param _pool address of Uniswap V3 pool
-    /// note that the 4 above params are NOT UPDATEABLE AFTER INILIALIZATION
-    /// @param _lowerTick initial lowerTick (only changeable with executiveRebalance)
-    /// @param _upperTick initial upperTick (only changeable with executiveRebalance)
+    /// note that the 3 above params are NOT UPDATEABLE AFTER INILIALIZATION
+    /// @param _lowerTick initial lowerTick (only changeable with recenter calls)
+    /// @param _upperTick initial upperTick (only changeable with recenter calls)
     /// @param _manager_ address of manager (ownership can be transferred)
     function initialize(
         string memory _name,
@@ -142,6 +143,12 @@ abstract contract SpindleVaultStorage is
         packedSlot.primaryLower = _lowerTick;
         packedSlot.primaryUpper = _upperTick;
         _manager = _manager_;
+
+        // Initialize "at recenter" snapshots
+        (,int24 tick, , , , , ) = pool.slot0();
+        tickAtLastRecenter = tick;
+        //ivAtLastRecenter = SpindleOracle.estimate24H(pool);
+        timeAtLastRecenter = uint48(block.timestamp);
 
         // e.g. "Swap Sweep Uniswap V3 USDC/DAI LP" and "SS-UNI"
         __ERC20_init(_name, _symbol);
@@ -171,10 +178,11 @@ abstract contract SpindleVaultStorage is
         if (newIVThresholdBPS >= 0) ivThresholdBPS = uint16(newIVThresholdBPS);
         if (newTimeThreshold >= 0) timeThreshold = uint32(newTimeThreshold);
         if (newStdBPS >= 0 && newTimeThreshold >= 0) {
-            B = uint16(
-                (uint16(newStdBPS)*
-                FixedPointMathLib.sqrt(uint32(newTimeThreshold)))/2940000 
-            ); // 2940000 = sqrt(seconds in a day)*10_000
+            B = FullMath.mulDiv(
+                    2**96, 
+                    (uint16(newStdBPS)*FixedPointMathLib.sqrt(uint32(newTimeThreshold))), 
+                    2940000 // 2940000 = sqrt(seconds in a day)*10_000
+                );
             A = uint64(
                 1e18/B*(1-FixedPointMathLib.rpow(10001, uint24(MIN_WIDTH/2), 1))
             );// \frac{1e18}{B} (1 - \frac{1}{1.0001^(MIN_WIDTH / 2)})

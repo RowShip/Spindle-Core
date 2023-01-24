@@ -178,11 +178,10 @@ abstract contract SpindleVaultStorage is
         if (newIVThresholdBPS >= 0) ivThresholdBPS = uint16(newIVThresholdBPS);
         if (newTimeThreshold >= 0) timeThreshold = uint32(newTimeThreshold);
         if (newStdBPS >= 0 && newTimeThreshold >= 0) {
-            B = FullMath.mulDiv(
-                    2**96, 
-                    (uint16(newStdBPS)*FixedPointMathLib.sqrt(uint32(newTimeThreshold))), 
-                    2940000 // 2940000 = sqrt(seconds in a day)*10_000
-                );
+            B = uint16(
+                (uint16(newStdBPS)*
+                FixedPointMathLib.sqrt(uint32(newTimeThreshold)))/2940000 
+            ); //
             A = uint64(
                 1e18/B*(1-FixedPointMathLib.rpow(10001, uint24(MIN_WIDTH/2), 1))
             );// \frac{1e18}{B} (1 - \frac{1}{1.0001^(MIN_WIDTH / 2)})
